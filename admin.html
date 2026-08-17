@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作者发布页 · 思维导图</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#eef1f8;color:#1f2733;
+    padding:24px 16px 60px;line-height:1.6;}
+  .wrap{max-width:760px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 6px 24px rgba(35,52,90,.1);
+    padding:22px 22px 28px;}
+  h1{font-size:1.15rem;font-weight:800;color:#5b4fd6;}
+  .sub{color:#5b6678;font-size:.82rem;margin:6px 0 16px;}
+  .sec{border:1px solid #e7ebf4;border-radius:12px;padding:14px 16px;margin:14px 0;background:#fafbfe;}
+  .sec h2{font-size:.92rem;color:#33415c;margin-bottom:10px;}
+  label{font-size:.8rem;color:#5b6678;display:block;margin:8px 0 3px;}
+  input[type=file],input[type=text],input[type=password],textarea{width:100%;font-size:.84rem;padding:8px 10px;border:1px solid #d8dfee;
+    border-radius:8px;font-family:inherit;background:#fff;color:#1f2733;}
+  textarea{height:130px;resize:vertical;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.74rem;}
+  .btn{background:#5b4fd6;color:#fff;border:none;padding:9px 16px;border-radius:9px;font-size:.84rem;font-weight:700;
+    cursor:pointer;margin:8px 8px 0 0;transition:.15s;}
+  .btn:hover{background:#4a3fc0;}
+  .btn.ghost{background:#eef1f8;color:#33415c;}
+  .btn.ghost:hover{background:#e2e7f4;}
+  .stat{font-size:.84rem;color:#1f9d6b;font-weight:700;margin-top:8px;}
+  .err{color:#ef4b5e;font-size:.82rem;margin-top:8px;}
+  .ok{color:#1f9d6b;font-size:.82rem;margin-top:8px;}
+  .note{font-size:.76rem;color:#7a869c;margin-top:8px;line-height:1.7;}
+  details{margin-top:6px;}
+  summary{cursor:pointer;font-size:.82rem;color:#3a6fd6;font-weight:600;}
+  .hidden{display:none;}
+  code{background:#f0f2f8;padding:1px 5px;border-radius:4px;font-size:.78rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛠️ 作者发布页</h1>
+  <div class="sub">只有你有这个页面。用它把导图更新发布到线上，所有拿到链接的人打开即同步。读者请用不带 <code>/admin.html</code> 的主链接（或 <code>?reader=1</code> 阅读版）。</div>
+
+  <div class="sec">
+    <h2>① 解锁（发布密码）</h2>
+    <label>发布密码</label>
+    <input type="password" id="pw" placeholder="默认 jj2026，可在文件里改 PUBLISH_PW">
+    <div id="pwErr" class="err hidden">密码错误</div>
+  </div>
+
+  <div id="main" class="hidden">
+    <div class="sec">
+      <h2>② 选择导图 JSON</h2>
+      <label>从主程序「导出 JSON」得到的文件</label>
+      <input type="file" id="file" accept=".json">
+      <div id="stat" class="stat"></div>
+    </div>
+
+    <div class="sec">
+      <h2>③ 生成发布包（自动 rev+1）</h2>
+      <button class="btn" onclick="buildData()">生成 data.js + version.js</button>
+      <div class="note">生成后版本号自动 +1。把下面<strong>两个文件上传到同一目录</strong>（七牛空间根目录），全员打开即见新版本，且同步按钮会闪烁提醒。</div>
+      <label>data.js（内容数据）</label>
+      <textarea id="out" placeholder="生成后这里出现 data.js 内容" readonly></textarea>
+      <div style="margin:6px 0">
+        <button class="btn ghost" onclick="copyOut()">📋 复制 data.js</button>
+        <button class="btn ghost" onclick="downloadOut()">⬇ 下载 data.js</button>
+      </div>
+      <label>version.js（版本号，仅一行）</label>
+      <textarea id="outV" placeholder="生成后这里出现 version.js 内容" readonly style="height:54px"></textarea>
+      <div style="margin:6px 0">
+        <button class="btn ghost" onclick="copyOutV()">📋 复制 version.js</button>
+        <button class="btn ghost" onclick="downloadOutV()">⬇ 下载 version.js</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2>④ 发布到线上（七牛云）</h2>
+      <div class="note">把上面生成的 <code>data.js</code> 和 <code>version.js</code> 两个文件上传到七牛空间<strong>同一目录</strong>（建议根目录）即可。两种上传方式：</div>
+      <details open>
+        <summary>A. 控制台拖拽（零门槛，推荐首次用）</summary>
+        <div style="margin-top:10px" class="note">
+          1. 登录七牛云控制台 → 对象存储 → 你的空间（需设为<strong>公开</strong>）<br>
+          2. 点「上传文件」，把 <code>data.js</code> 和 <code>version.js</code> 一起拖进去（同名覆盖）<br>
+          3. 确认 index.html 也已在该空间可访问（见「手机访问地址」里的七牛链接）<br>
+          4. 完成！所有打开你链接的人，1 分钟内同步按钮自动闪烁提醒更新。
+        </div>
+      </details>
+      <details>
+        <summary>B. qshell 命令行（配置一次，以后一行命令）</summary>
+        <div style="margin-top:10px" class="note">
+          1. 下载 qshell，配置 <code>~/.qshell/account.json</code>（填 AccessKey / SecretKey）<br>
+          2. 把下面的命令存成 <code>publish.sh</code>，每次发布后运行：<br>
+          <code>qshell fput 你的空间名 data.js data.js</code><br>
+          <code>qshell fput 你的空间名 version.js version.js</code><br>
+          3. 首次需把 index.html 也上传一次，之后只更新 data.js / version.js 即可。
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+const PUBLISH_PW = 'jj2026';   // ← 作者在这里改自己的密码
+document.getElementById('pw').addEventListener('input', e=>{
+  const v=e.target.value;
+  if(v===PUBLISH_PW){ document.getElementById('main').classList.remove('hidden'); document.getElementById('pwErr').classList.add('hidden'); }
+  else if(v.length>=4){ document.getElementById('pwErr').classList.remove('hidden'); }
+});
+function makeRoot(){ return { id:'a0', text:'中级经济师（人力）备考思维导图', isBook:true, rev:0, children:[] }; }
+let _jsonText='';
+document.getElementById('file').addEventListener('change', e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result); _jsonText=r.result;
+      let root = d.isBook ? d : (()=>{ const rt=makeRoot(); rt.children.push(d); return rt; })();
+      let nodes=0, cards=0;
+      (function walk(n){ nodes++; const t=(n.detail||'').replace(/<[^>]*>/g,'').trim(); if(t) cards++;
+        (n.children||[]).forEach(walk); })(root);
+      const ch = root.children ? root.children.length : 0;
+      document.getElementById('stat').textContent = `✓ 已载入：章节 ${ch} 个 · 节点 ${nodes} 个 · 可成卡片 ${cards} 张 · 当前 rev ${root.rev||0}`;
+    }catch(err){ document.getElementById('stat').textContent='✗ JSON 解析失败'; }
+  };
+  r.readAsText(f);
+});
+function buildData(){
+  if(!_jsonText){ alert('先选 JSON 文件'); return; }
+  const d=JSON.parse(_jsonText);
+  let root = d.isBook ? d : (()=>{ const rt=makeRoot(); rt.children.push(d); return rt; })();
+  root.rev = (root.rev||0)+1;
+  let uid=1; (function walk(n){ n.id='a'+(uid++); (n.children||[]).forEach(walk); })(root);
+  const txt = "window.MAP_DATA = "+JSON.stringify(root,null,1)+";\n";
+  document.getElementById('out').value = txt;
+  document.getElementById('outV').value = "window.MAP_REV = "+root.rev+";\n";
+}
+function copyOut(){ const t=document.getElementById('out').value; if(!t){alert('先生成');return;}
+  navigator.clipboard.writeText(t).then(()=>alert('已复制 data.js 内容')); }
+function downloadOut(){ const t=document.getElementById('out').value; if(!t){alert('先生成');return;}
+  const b=new Blob([t],{type:'application/javascript'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download='data.js'; a.click(); }
+function copyOutV(){ const t=document.getElementById('outV').value; if(!t){alert('先生成');return;}
+  navigator.clipboard.writeText(t).then(()=>alert('已复制 version.js 内容')); }
+function downloadOutV(){ const t=document.getElementById('outV').value; if(!t){alert('先生成');return;}
+  const b=new Blob([t],{type:'application/javascript'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download='version.js'; a.click(); }
+async function pubSupa(){
+  const url=document.getElementById('supUrl').value.trim();
+  const bucket=document.getElementById('supBucket').value.trim();
+  const path=document.getElementById('supPath').value.trim()||'data.js';
+  const key=document.getElementById('supKey').value.trim();
+  const txt=document.getElementById('out').value;
+  if(!url||!bucket||!key){ alert('填完整 Supabase 信息'); return; }
+  if(!txt){ alert('先生成 data.js'); return; }
+  try{
+    const res=await fetch(`${url}/storage/v1/object/${bucket}/${path}`,{
+      method:'PUT',
+      headers:{'apikey':key,'Authorization':'Bearer '+key,'Content-Type':'application/json','x-upsert':'true'},
+      body:txt
+    });
+    if(res.ok){ alert('✓ 已发布到 Supabase！\n分享链接：主链接?src='+url+'/storage/v1/object/public/'+bucket+'/'+path); }
+    else { alert('✗ 发布失败：'+res.status+' '+await res.text()); }
+  }catch(e){ alert('✗ 网络错误：'+e.message); }
+}
+</script>
+</body>
+</html>
