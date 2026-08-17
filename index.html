@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中级经济师（人力）备考思维导图 · 可编辑 · 持续更新</title>
+<style>
+  :root{
+    --bg:#eef1f8; --paper:#ffffff; --line:#cdd6e8;
+    --ink:#1f2733; --sub:#5b6678; --dim:#9aa6bb;
+    --lv0:#7c6cf0; --lv1:#3b82f6; --lv2:#10b981; --lv3:#f59e0b; --lv4:#ef5b6f;
+    --gold:#f5b301; --fact:#1f9d6b; --tip:#8b5cf6; --warn:#e8821a; --must:#ef4b5e; --key:#2f80ed;
+    --shadow:0 4px 16px rgba(35,52,90,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:var(--bg);}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+  /* ---------- 顶栏 banner ---------- */
+  .banner{position:sticky;top:0;z-index:60;
+    background:linear-gradient(120deg,#6d5dd3 0%,#5b8def 55%,#3aa0c9 100%);
+    color:#fff;padding:14px 18px 12px;box-shadow:0 6px 20px rgba(80,90,160,.22);}
+  .banner h1{font-size:1.12rem;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+  .banner h1 .badge{background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);
+    font-size:.68rem;padding:2px 9px;border-radius:20px;font-weight:600;letter-spacing:0;}
+  .ver{font-size:.68rem;padding:2px 9px;border-radius:20px;font-weight:700;background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);}
+  .ver.ok{background:rgba(31,157,107,.9);border-color:rgba(255,255,255,.5);}
+  .ver.bad{background:rgba(239,75,94,.92);border-color:rgba(255,255,255,.5);}
+  .toolbar{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+  .btn{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;
+    padding:6px 13px;border-radius:9px;font-size:.8rem;cursor:pointer;transition:.16s;white-space:nowrap;font-weight:600;}
+  .btn:hover{background:rgba(255,255,255,.3);transform:translateY(-1px);}
+  .btn.primary{background:#fff;color:#5b4fd6;border-color:#fff;}
+  .btn.primary:hover{background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+  .btn.publish{background:linear-gradient(135deg,#16a34a,#22c55e);border-color:#16a34a;color:#fff;font-weight:700;}
+  .btn.publish:hover{background:linear-gradient(135deg,#15803d,#16a34a);transform:translateY(-1px);box-shadow:0 6px 18px rgba(34,197,94,.4);}
+  .btn.ghost{background:transparent;border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85);}
+  .hint{font-size:.74rem;color:rgba(255,255,255,.82);margin-top:9px;}
+
+  /* ---------- 画布 ---------- */
+  .canvas{max-width:1040px;margin:18px auto 60px;padding:0 14px;}
+  .tree{background:var(--paper);border-radius:18px;box-shadow:var(--shadow);padding:18px 14px 22px;}
+
+  /* ---------- 节点 ---------- */
+  .node{position:relative;margin:5px 0;}
+  .node-head{position:relative;display:flex;align-items:center;gap:9px;
+    background:var(--paper);border:1px solid #e7ebf4;border-left:4px solid var(--c,#aaa);
+    border-radius:12px;padding:9px 12px;box-shadow:0 1px 3px rgba(35,52,90,.05);transition:.16s;}
+  .node-head:hover{box-shadow:var(--shadow);transform:translateX(2px);border-color:#d6deee;}
+  .node.lv0 > .node-head{background:linear-gradient(120deg,#f3f0ff,#eef4ff);
+    border-left:4px solid var(--lv0);font-size:1.02rem;}
+  .node.lv1 > .node-head{border-left-color:var(--lv1);}
+  .node.lv2 > .node-head{border-left-color:var(--lv2);}
+  .node.lv3 > .node-head{border-left-color:var(--lv3);}
+  .node.lv4 > .node-head,.node.lv5 > .node-head{border-left-color:var(--lv4);}
+
+  .caret{width:22px;height:22px;border-radius:50%;flex-srink:0;display:flex;align-items:center;justify-content:center;
+    font-size:.62rem;color:var(--sub);background:#f1f4fb;border:1px solid #e2e8f4;cursor:pointer;transition:.2s;}
+  .node.collapsed > .node-head .caret{transform:rotate(-90deg);}
+
+  .icon{width:27px;height:27px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:.8rem;font-weight:800;color:#fff;background:var(--c,#aaa);}
+  .node.lv0 .icon{background:linear-gradient(135deg,var(--lv0),#9b8cf5);}
+  .node.lv1 .icon{background:linear-gradient(135deg,var(--lv1),#60a5fa);}
+  .node.lv2 .icon{background:linear-gradient(135deg,var(--lv2),#34d399);}
+  .node.lv3 .icon{background:linear-gradient(135deg,var(--lv3),#fbbf24);}
+  .node.lv4 .icon,.node.lv5 .icon{background:linear-gradient(135deg,var(--lv4),#fca5b3);}
+
+  .title{flex:1;min-width:0;font-weight:700;font-size:.9rem;outline:none;border-radius:6px;padding:2px 5px;cursor:text;word-break:break-word;}
+  .title:focus{background:#eef4ff;box-shadow:0 0 0 2px #5b8def;}
+
+  .stars{font-size:.86rem;cursor:pointer;user-select:none;flex-shrink:0;letter-spacing:1px;line-height:1;}
+  .stars .s{color:var(--dim);transition:.12s;}
+  .stars .s.on{color:var(--gold);text-shadow:0 0 6px rgba(245,179,1,.5);}
+
+  .acts{display:flex;gap:4px;flex-shrink:0;}
+  .mini{width:27px;height:27px;border-radius:7px;border:1px solid #e2e8f4;background:#f6f8fd;color:var(--sub);
+    cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .mini:hover{background:#eef4ff;border-color:#5b8def;color:#3a6fd6;}
+  .mini.del:hover{background:#fff0f1;border-color:var(--must);color:var(--must);}
+  /* 调色盘 */
+  .palette{position:fixed;z-index:200;display:flex;gap:6px;background:#fff;padding:8px 9px;border-radius:12px;
+    box-shadow:0 8px 28px rgba(35,52,90,.22);border:1px solid #e2e8f4;}
+  .swatch{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px #e2e8f4;
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#888;transition:.12s;}
+  .swatch:hover{transform:scale(1.18);}
+
+  /* ---------- 缩进树连线 ---------- */
+  .node-body{position:relative;padding-left:24px;margin-left:13px;}
+  .lv0 > .node-body{padding-left:6px;margin-left:0;}
+  .node-body::before{content:'';position:absolute;left:0;top:-4px;bottom:18px;width:2px;background:var(--line);border-radius:2px;}
+  .lv0 > .node-body::before{display:none;}
+  .node:not(.lv0) > .node-head::before{content:'';position:absolute;left:-24px;top:21px;width:24px;height:2px;background:var(--line);border-radius:2px;}
+  .node.collapsed > .node-body{display:none;}
+
+  /* ---------- 说明块（富文本） ---------- */
+  .note-wrap{margin:6px 0 2px;}
+  .ntbar{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;}
+  .ntbtn{width:26px;height:26px;border-radius:7px;border:1px solid #e2e8f4;background:#f6f8fd;color:var(--sub);
+    cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;font-weight:800;font-family:inherit;}
+  .ntbtn:hover{background:#eef4ff;border-color:#5b8def;color:#3a6fd6;}
+  .ntbtn.c{font-size:1rem;}
+  .note{width:100%;background:#fafbfe;border:1px solid #e7ebf4;border-left:4px solid var(--lv2);
+    border-radius:9px;color:var(--ink);font-size:.85rem;padding:8px 11px;min-height:36px;outline:none;
+    font-family:inherit;line-height:1.65;transition:.15s;word-break:break-word;}
+  .note:empty:before{content:'点此输入说明 / 考点 / 口诀，选中文字可加粗·斜体·下划线·着色…';color:var(--dim);font-size:.8rem;}
+  .note:focus{box-shadow:0 0 0 2px #5b8def;border-color:#5b8def;}
+  .addnote{font-size:.76rem;color:var(--dim);cursor:pointer;margin:5px 0 2px;display:inline-block;font-weight:600;}
+  .addnote:hover{color:#3a6fd6;}
+
+  /* ---------- 预览模式：隐藏所有编辑控件，只留干净导图 ---------- */
+  body.preview .acts,
+  body.preview .addnote,
+  body.preview .ntbar{display:none !important;}
+  body.preview .title{cursor:default;user-select:none;}
+  body.preview .stars{pointer-events:none;}
+  body.preview .note{cursor:default;user-select:text;}
+  body.preview .note:empty,
+  body.preview .note-wrap:has(.note:empty){display:none !important;}
+
+  /* ---------- 阅读模式：手机友好的竖向卡片流 ---------- */
+  body.reading .banner .toolbar,
+  body.reading .banner .hint{display:none;}
+  body.reading .banner{padding:12px 16px;box-shadow:0 4px 14px rgba(80,90,160,.18);}
+  body.reading .canvas{margin:0;padding:8px 12px 90px;max-width:none;}
+  body.reading .tree{box-shadow:none;background:transparent;border-radius:0;padding:0;}
+  body.reading .node{margin:10px 0;}
+  body.reading .node-head{box-shadow:0 1px 4px rgba(35,52,90,.06);border:1px solid #eef1f7;
+    background:#fff;border-radius:14px;padding:13px 14px;}
+  body.reading .node.lv0 > .node-head{background:linear-gradient(120deg,#f3f0ff,#eef4ff);font-size:1.08rem;}
+  body.reading .title{font-size:1rem;font-weight:800;cursor:default;user-select:none;}
+  body.reading .icon{width:30px;height:30px;font-size:.9rem;}
+  body.reading .caret{width:26px;height:26px;}
+  body.reading .stars{font-size:1rem;pointer-events:none;}
+  body.reading .acts,
+  body.reading .addnote,
+  body.reading .ntbar{display:none !important;}
+  body.reading .note{background:#fafbff;border-left:4px solid var(--lv2);font-size:.95rem;line-height:1.85;
+    padding:11px 14px;border-radius:11px;}
+  body.reading .note:empty,
+  body.reading .note-wrap:has(.note:empty){display:none !important;}
+  .fab{position:fixed;right:16px;bottom:18px;z-index:90;display:none;background:#5b4fd6;color:#fff;border:none;
+    border-radius:30px;padding:13px 20px;font-size:.92rem;font-weight:700;
+    box-shadow:0 6px 20px rgba(91,79,214,.4);cursor:pointer;}
+  body.reading .fab{display:block;}
+
+  /* ========== 翻卡片模式（精美版） ========== */
+  .cardview{position:fixed;inset:0;z-index:300;
+    background:linear-gradient(160deg,#0f0c29 0%,#302b63 40%,#24243e 70%,#1a1a2e 100%);
+    display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px;
+    overflow-y:auto;}
+  .cardview.on{display:flex;}
+  .closecv{position:fixed;top:14px;right:18px;color:rgba(255,255,255,.7);font-size:1.8rem;cursor:pointer;z-index:310;
+    width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.08);
+    transition:.2s;}
+  .closecv:hover{background:rgba(255,255,255,.18);color:#fff;}
+
+  /* 卡片舞台 */
+  .cardstage{width:min(94vw,460px);min-height:min(60vh,560px);position:relative;margin-top:8px;}
+  .card{width:100%;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 25px 70px rgba(0,0,0,.45), 0 8px 24px rgba(0,0,0,.25);position:relative;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+
+  /* ---- 头部（考点名 + 星级 + 章节，渐变）---- */
+  .chead{
+    background:var(--card-grad, linear-gradient(145deg,#667eea 0%,#764ba2 50%,#f093fb 100%));
+    color:#fff;padding:26px 26px 22px;position:relative;overflow:hidden;text-align:center;}
+  /* 纹理叠加 */
+  .chead::before{content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.065;mix-blend-mode:overlay;pointer-events:none;}
+  /* 装饰圆 */
+  .chead::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;
+    background:rgba(255,255,255,.07);top:-80px;right:-60px;pointer-events:none;}
+  .chead > *{position:relative;z-index:1;}
+  /* 章节标签 */
+  .ctag{display:inline-block;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);
+    font-size:.7rem;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:.5px;
+    margin-bottom:14px;backdrop-filter:blur(4px);}
+  /* 标题区 */
+  .cf-title{font-size:1.5rem;font-weight:900;line-height:1.4;text-shadow:0 2px 12px rgba(0,0,0,.2);
+    max-width:100%;word-break:break-word;margin-bottom:12px;}
+  /* 星级 */
+  .cf-stars{font-size:1.15rem;letter-spacing:4px;text-shadow:0 0 10px rgba(245,179,1,.5);}
+  .cf-stars .gs{color:rgba(255,255,255,.3);}
+  .cf-stars .gs.on{color:#fde68a;}
+
+  /* ---- 内容区（直接显示完整 detail，保留彩色）---- */
+  .cbody-wrap{
+    background:var(--card-back-bg, #fff);
+    color:var(--card-ink, #1f2733);position:relative;
+    padding:22px 24px 26px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  /* 内容区纹理 */
+  .cbody-wrap::before{content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
+    opacity:.045;mix-blend-mode:multiply;pointer-events:none;z-index:0;}
+  .cbody-wrap > *{position:relative;z-index:1;}
+  .cb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+    padding-bottom:12px;border-bottom:2px solid #f0eff5;flex-shrink:0;}
+  .cb-path{font-size:.72rem;color:#8b5cf6;font-weight:800;letter-spacing:.3px;max-width:70%;}
+  .cb-chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;
+    background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+  /* ===== 富文本：完整保留用户标注的颜色/加粗/斜体/下划线 ===== */
+  .cb-body{font-size:.95rem;line-height:1.95;word-break:break-word;color:#2d3748;flex:1;
+    padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.75);
+    box-shadow:inset 0 1px 4px rgba(35,52,90,.04);backdrop-filter:blur(2px);}
+  /* 加粗 */
+  .cb-body b, .cb-body strong{font-weight:800;color:inherit;}
+  /* 斜体 */
+  .cb-body i, .cb-body em{font-style:italic;}
+  /* 下划线 */
+  .cb-body u{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:2px;}
+  /* 彩色字体 —— 覆盖所有可能写法 */
+  .cb-body font[color]{color:attr(color) !important;}
+  .cb-body font[color="#ef4b5e"], .cb-body font[color=#ef4b5e],
+  .cb-body [style*="color:#ef4b5e"], .cb-body [style*="color: rgb(239, 75, 94)"]{color:#ef4b5e !important;font-weight:700;}  /* 红-强调 */
+  .cb-body font[color="#8b5cf6"], .cb-body font[color=#8b5cf6],
+  .cb-body [style*="color:#8b5cf6"], .cb-body [style*="color: rgb(139, 92, 246)"]{color:#7c3aed !important;font-weight:700;}  /* 紫-概念 */
+  .cb-body font[color="#1f9d6b"], .cb-body font[color=#1f9d6b],
+  .cb-body [style*="color:#1f9d6b"], .cb-body [style*="color: rgb(31, 157, 107)"]{color:#059669 !important;font-weight:600;}  /* 绿-重点 */
+  .cb-body font[color="#2f80ed"], .cb-body font[color=#2f80ed],
+  .cb-body [style*="color:#2f80ed"], .cb-body [style*="color: rgb(47, 128, 237)"]{color:#1d4ed8 !important;font-weight:700;}  /* 蓝-关键 */
+  .cb-body font[color="#e8821a"], .cb-body font[color=#e8821a],
+  .cb-body [style*="color:#e8821a"], .cb-body [style*="color: rgb(232, 130, 26)"]{color:#c2410c !important;font-weight:700;}  /* 橙-提示 */
+  .cb-body font[color="#f5b301"], .cb-body font[color=#f5b301],
+  .cb-body [style*="color:#f5b301"], .cb-body [style*="color: rgb(245, 179, 1)"]{color:#b45309 !important;font-weight:700;}  /* 金-注意 */
+  /* 深色背景卡片的内容区：自动用浅色文字 */
+  .cbody-wrap.dark-theme .cb-body{color:#e8ecf4;background:rgba(30,35,55,.65);}
+  .cbody-wrap.dark-theme .cb-header{border-color:rgba(255,255,255,.12);}
+  .cbody-wrap.dark-theme .cb-path{color:#a78bfa;}
+  .cbody-wrap.dark-theme b, .cbody-wrap.dark-theme strong{color:#fff;}
+  .cb-body div{margin:7px 0;}
+  .cb-body br{display:block;content:'';margin:5px 0;}
+
+  /* 导航栏 */
+  .cardnav{display:flex;gap:10px;margin-top:20px;align-items:center;flex-shrink:0;}
+  .cbtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;
+    padding:12px 20px;border-radius:14px;font-size:.9rem;cursor:pointer;font-weight:700;transition:.2s;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+  .cbtn:hover{background:rgba(255,255,255,.24);transform:translateY(-1px);}
+  .cbtn:active{transform:scale(.96);}
+  .cbtn-next{background:linear-gradient(135deg,#667eea,#764ba2);border-color:transparent;
+    box-shadow:0 6px 20px rgba(102,126,234,.4);}
+  .cbtn-next:hover{box-shadow:0 8px 28px rgba(102,126,234,.55);}
+
+  /* 进度条 */
+  .cprog-wrap{width:min(94vw,440px);margin-top:14px;display:flex;align-items:center;gap:12px;}
+  .cprog-bar{flex:1;height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
+  .cprog-fill{height:100%;background:linear-gradient(90deg,#667eea,#f093fb);border-radius:3px;
+    transition:width .4s ease;}
+  .cprog-text{color:rgba(255,255,255,.7);font-size:.8rem;font-weight:600;white-space:nowrap;min-width:72px;
+    text-align:right;}
+
+  .cardview .hint{color:rgba(255,255,255,.55);max-width:440px;text-align:center;margin-top:10px;
+    font-size:.76rem;line-height:1.5;}
+
+  /* 手机适配 */
+  @media(max-width:560px){
+    .cardstage{width:94vw;min-height:56vh;}
+    .chead{padding:22px 18px 18px;}
+    .cf-title{font-size:1.32rem;}
+    .cbody-wrap{padding:18px 16px 22px;}
+    .cb-body{font-size:.9rem;}
+    .cbtn{padding:10px 16px;font-size:.85rem;}
+  }
+
+  @media print{
+    body{background:#fff;} .banner{display:none;} .canvas{margin:0;padding:0;}
+    .tree{box-shadow:none;padding:0;} .node-head{break-inside:avoid;box-shadow:none;}
+    .note{background:#fff!important;} .mini,.acts{display:none;}
+  }
+  @media(max-width:560px){
+    .banner h1{font-size:1rem;} .title{font-size:.85rem;}
+    /* 手机端：所有模块纯左对齐，去掉缩进空白与竖线；层级靠图标色/标题字号+字重区分 */
+    .node-body, .lv0 > .node-body{padding-left:0 !important;margin-left:0 !important;}
+    .node-body::before, .node:not(.lv0) > .node-head::before{display:none !important;}
+    /* 强化层级：标题字号随层级递减，左对齐也能一眼分清 */
+    .node.lv0 > .node-head .title{font-size:1.06rem;font-weight:800;}
+    .node.lv1 > .node-head .title{font-size:.96rem;font-weight:800;}
+    .node.lv2 > .node-head .title{font-size:.9rem;font-weight:700;}
+    .node.lv3 > .node-head .title,
+    .node.lv4 > .node-head .title,
+    .node.lv5 > .node-head .title{font-size:.86rem;font-weight:600;color:#485066;}
+  }
+  /* 同步按钮：发现新版本时闪烁提醒 */
+  .btn.blink{animation:syncblink 1s steps(2,end) infinite;}
+  @keyframes syncblink{0%{background:#5b4fd6;}50%{background:#ef4b5e;}100%{background:#5b4fd6;}}
+  .sync-badge{margin-left:6px;background:#ef4b5e;color:#fff;font-size:.66rem;font-weight:800;border-radius:10px;padding:1px 7px;vertical-align:middle;}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <h1>🧠 中级经济师（人力）备考思维导图 <span class="badge">持续更新</span> <span class="ver" id="ver">初始化…</span></h1>
+  <div class="toolbar">
+    <button class="btn" onclick="expandAll()">展开全部</button>
+    <button class="btn" onclick="collapseAll()">折叠全部</button>
+    <button class="btn" data-edit onclick="addChapter()">➕ 新增章节</button>
+    <button class="btn" id="syncBtn" onclick="syncNow()">🔄 同步更新<span class="sync-badge" id="syncBadge" style="display:none">新</span></button>
+    <button class="btn publish" id="pubBtn" data-edit onclick="publishNow()">📤 发布</button>
+    <button class="btn ghost" data-edit onclick="saveSBConf()" title="配置发布源（Supabase）">⚙️ 配置</button>
+    <button class="btn" onclick="exportMD()">导出 MD</button>
+    <button class="btn" onclick="exportJSON()">导出 JSON</button>
+    <button class="btn" data-edit onclick="document.getElementById('imp').click()">导入 JSON</button>
+    <button class="btn" onclick="toggleReading()">📱 阅读</button>
+    <!-- 卡片模式已移除 -->
+    <button class="btn primary" id="modeBtn" data-edit onclick="toggleMode()">👁 预览模式</button>
+    <button class="btn" data-edit onclick="saveLocal()">保存</button>
+    <input type="file" id="imp" accept=".json" style="display:none" onchange="importJSON(event)">
+  </div>
+  <div class="hint" id="hint">打开自动同步最新发布版 · 点 🔄 手动同步 · 双击节点文字改 · 点 ★ 设重要度 · 悬浮右侧 ＋加子 / ﹢加同级 / 🗑删除 · 顶栏「➕ 新增章节」加同级别章 · 说明框选中文字用 B/I/U/🎨 排版。</div>
+</div>
+
+<div class="canvas">
+  <div class="tree" id="tree"></div>
+</div>
+<button class="fab" onclick="toggleReading()">✏️ 返回编辑</button>
+
+<!-- 卡片视图（单面直显，无翻面） -->
+<div class="cardview" id="cardView">
+  <div class="closecv" onclick="toggleCards()">✕</div>
+  <div class="cardstage">
+    <div class="card" id="theCard">
+      <div class="chead">
+        <div class="ctag" id="cTag"></div>
+        <div class="cf-title" id="cTitle"></div>
+        <div class="cf-stars" id="cStars"></div>
+      </div>
+      <div class="cbody-wrap" id="cBodyWrap">
+        <div class="cb-header">
+          <div class="cb-path" id="cPath"></div>
+          <div class="cb-chip" id="cChip"></div>
+        </div>
+        <div class="cb-body" id="cBody"></div>
+      </div>
+    </div>
+  </div>
+  <div class="cardnav">
+    <button class="cbtn" onclick="event.stopPropagation();cardPrev()">← 上一张</button>
+    <button class="cbtn cbtn-next" onclick="event.stopPropagation();cardNext()">下一张 →</button>
+  </div>
+  <div class="cprog-wrap">
+    <div class="cprog-bar"><div class="cprog-fill" id="cProgFill"></div></div>
+    <div class="cprog-text" id="cProg"></div>
+  </div>
+  <div class="hint">⌨️ ← → 切换 · 手机左右滑 · 标题下直接显示完整内容 · 颜色与加粗原样保留</div>
+</div>
+
+<script>
+/* ---------- 数据模型 ---------- */
+let uid = 1;
+const nid = () => 'n' + (uid++);
+function N(text, stars=0, detail=null, children=[]) {
+  return { id: nid(), text, stars, detail, children };
+}
+/* ---------- 内置兜底数据（用户彩色版，离线/同步失败时用）。
+   来自用户导出的彩色 JSON，含 <font color> + <b> 富文本标注。
+   线上 data.js 同步成功后会被更新版本覆盖。 */
+
+const EMBEDDED = {
+  "id": "n63",
+  "text": "中级经济师（人力）备考思维导图",
+  "isBook": true,
+  "rev": 4,
+  "children": [
+    {
+      "id": "n64",
+      "text": "第六章 人员甄选（平均分值 12 分）",
+      "stars": 3,
+      "detail": "",
+      "children": [
+        {
+          "id": "n65",
+          "text": "第一节 甄选及其有效性",
+          "stars": 3,
+          "detail": "",
+          "children": [
+            {
+              "id": "n66",
+              "text": "一、甄选的概念及其意义",
+              "stars": 1,
+              "detail": "<b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">1、目的：人职最优匹配。</font></b><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">2、复杂性：短时间、信息不对等情况下判断求职者未来达到优良绩效。</font></b></div><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">3、甄选是员工招募过程的后续阶段（招聘：1招募、2甄选、3录用、4评估）</font></b></div>",
+              "children": [
+                {
+                  "id": "n67",
+                  "text": "基本概念",
+                  "stars": 0,
+                  "detail": "甄选即雇佣和选择之意，也称筛选或选拔。指通过工具和手段对招募到的求职者进行观察和筛选。",
+                  "children": []
+                },
+                {
+                  "id": "n68",
+                  "text": "具体条件三要素",
+                  "stars": 0,
+                  "detail": "① 符合组织需要，是最恰当的职业空缺填补者；② 甄选过程复杂，决策本身总有风险；③ 目的在于谋求职位需求与求职者最优匹配。",
+                  "children": []
+                },
+                {
+                  "id": "n69",
+                  "text": "内涵要点",
+                  "stars": 0,
+                  "detail": "<font color=\"#2f80ed\">【</font><b><font color=\"#2f80ed\">重点】</font><font color=\"#ef4b5e\">不要把注意力过多放在对求职者的主观判断上，</font><font color=\"#1f9d6b\">要重点关注求职者条件和空缺岗位需要达到的各客观标准。</font></b>",
+                  "children": [
+                    {
+                      "id": "n70",
+                      "text": "【事实层】教材定义/原文",
+                      "stars": 0,
+                      "detail": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ],
+              "color": ""
+            },
+            {
+              "id": "n71",
+              "text": "二、甄选的价值与意义",
+              "stars": 1,
+              "detail": "",
+              "children": [
+                {
+                  "id": "n72",
+                  "text": "1、企业",
+                  "stars": 0,
+                  "detail": "1、符合企业需要的优秀员工是<font color=\"#ef4b5e\"><b>确保</b></font>组织战略<font color=\"#ef4b5e\"><b>目标实现</b></font>的<font color=\"#1f9d6b\"><b>最根本保障</b></font><div>了解：选择了正确的人，实际上就等于奠定了培养和开发的基础</div>",
+                  "children": []
+                },
+                {
+                  "id": "n73",
+                  "text": "2、企业",
+                  "stars": 0,
+                  "detail": "2、弥补甄选决策<font color=\"#ef4b5e\"><b>失误</b></font>的<font color=\"#ef4b5e\"><b>代价可能极高</b></font><div>决策失误代价高：<b><font color=\"#ef4b5e\" style=\"\">直接成本</font>（培训/岗位调整/重新雇用/劳动纠纷）+ <font color=\"#ef4b5e\" style=\"\">机会成本</font>（丧失良机甚至毁灭打击）</b>。</div>",
+                  "children": []
+                },
+                {
+                  "id": "n74",
+                  "text": "3、员工",
+                  "stars": 0,
+                  "detail": "<div>3、甄选决策<b><font color=\"#ef4b5e\">失误</font></b>可能会对<font color=\"#ef4b5e\"><b>员工</b></font>本人<b><font color=\"#ef4b5e\">造成伤害</font></b><br></div>了解：慎重正确的甄选决策是对求职者负责，属于组织勇于承担社会责任的表现。",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "n75",
+              "text": "三、甄选的可靠性与有效性（信度 & 效度）",
+              "stars": 3,
+              "detail": "",
+              "children": [
+                {
+                  "id": "n76",
+                  "text": "核心关系（必考）",
+                  "stars": 0,
+                  "detail": "信度是效度的必要条件，但不是充分条件。信度不好→效度一定差；效度好→信度一定较高；但信度高≠效度高。",
+                  "children": [
+                    {
+                      "id": "n77",
+                      "text": "【易混点】最高频",
+                      "stars": 0,
+                      "detail": "区分必要条件与充分条件。",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n78",
+                  "text": "信度（可靠性）：测试结果的一致性和稳定性",
+                  "stars": 0,
+                  "detail": "<font color=\"#e8821a\">信度：1不受随机误差干扰、2反复同一等值测试分数的一致性。</font><font color=\"#f5b301\">它是任何测试工具最基本的要求。</font><font color=\"#2f80ed\">不低于0.7视为信度较好。</font>",
+                  "children": [
+                    {
+                      "id": "n79",
+                      "text": "重测信度（再测信度）时间",
+                      "stars": 0,
+                      "detail": "同一测试不同时间对同一群体施测的结果一致性。<font color=\"#2f80ed\">半月到半年比较合适</font>",
+                      "children": []
+                    },
+                    {
+                      "id": "n80",
+                      "text": "复本信度   AB卷",
+                      "stars": 0,
+                      "detail": "两个等值但内容不同的测验版本结果一致性。",
+                      "children": []
+                    },
+                    {
+                      "id": "n81",
+                      "text": "内部一致性信度",
+                      "stars": 0,
+                      "detail": "同一测验内部各题目之间的一致性程度。很好的测试工具必须有很好的内部一致性。",
+                      "children": [
+                        {
+                          "id": "n82",
+                          "text": "半分信度",
+                          "stars": 0,
+                          "detail": "同一测试奇偶数题划分",
+                          "children": []
+                        },
+                        {
+                          "id": "n83",
+                          "text": "同质性信度  克伦巴赫α系数",
+                          "stars": 0,
+                          "detail": "所有题目考查同一内容",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n84",
+                      "text": "评价者信度",
+                      "stars": 0,
+                      "detail": "不同评价者对同一对象评分的一致性。",
+                      "children": []
+                    },
+                    {
+                      "id": "n85",
+                      "text": "高信度五个注意事项",
+                      "stars": 0,
+                      "detail": "1、过程标准化<div>2、样品代表性</div><div>3、良好的环境（心理和物理）</div><div>4、难度和长度</div><div>5、条目不宜多</div>",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n86",
+                  "text": "效度（有效性）：测量内容的准确程度",
+                  "stars": 0,
+                  "detail": "",
+                  "children": [
+                    {
+                      "id": "n87",
+                      "text": "内容效度（内容与目标相关）",
+                      "stars": 0,
+                      "detail": "<div><b><font color=\"#e8821a\">好的内容效度：1范围内、2有代表性。</font></b></div><div><b><font color=\"#f5b301\">专家判断法。</font></b></div><div><b><font color=\"#2f80ed\">不适合：智力、领导力、诚实。</font></b></div><div><b><font color=\"#8b5cf6\">局限性：1基本假设已具备、2主观判断。</font></b></div>",
+                      "children": []
+                    },
+                    {
+                      "id": "n88",
+                      "text": "效标效度（效标关联效度）",
+                      "stars": 0,
+                      "detail": "测验分数与外部效标的相关程度，分同时效度和预测效度。",
+                      "children": [
+                        {
+                          "id": "n89",
+                          "text": "预测效度",
+                          "stars": 0,
+                          "detail": "<b>之前和之后的分数。<font color=\"#ef4b5e\">缺点：等待时间长</font></b>",
+                          "children": []
+                        },
+                        {
+                          "id": "n90",
+                          "text": "同时效度（同步效度）",
+                          "stars": 0,
+                          "detail": "<b>在岗两次</b>",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n91",
+                      "text": "构想效度（结构效度）",
+                      "stars": 0,
+                      "detail": "测验是否测量了理论构想的特质。<div>影响因素：1代表性不足、2代表性过宽。</div>",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n92",
+                  "text": "【口诀】信度四兄弟 / 效度三剑客",
+                  "stars": 0,
+                  "detail": "信度：重测、复本、内部一致、评价者→\"重复内评\"；效度：内容、效标(关联)、构想(结构)→\"内关结\"。",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "n93",
+          "text": "第二节 甄选的主要方法",
+          "stars": 3,
+          "detail": "",
+          "children": [
+            {
+              "id": "n94",
+              "text": "一、心理测验",
+              "stars": 3,
+              "detail": "",
+              "children": [
+                {
+                  "id": "n95",
+                  "text": "能力测试",
+                  "stars": 0,
+                  "detail": "一般能力（智力）测试 + 特殊能力（倾向）测试。",
+                  "children": [
+                    {
+                      "id": "n96",
+                      "text": "认知能力测试（脑力）前测试 必须有较高的预测试效度",
+                      "stars": 0,
+                      "detail": "最关注：语言理解、数学、推理。",
+                      "children": [
+                        {
+                          "id": "n97",
+                          "text": "一般认知能力测试（一般心理、智力、智商）",
+                          "stars": 0,
+                          "detail": "同时<b><font color=\"#1f9d6b\">多种</font></b>内容：记忆+口头表达+数学。",
+                          "children": []
+                        },
+                        {
+                          "id": "n98",
+                          "text": "特殊认知能力测试（特定新浪、能力倾向测试、职业能力倾向测试）",
+                          "stars": 0,
+                          "detail": "<b><font color=\"#1f9d6b\">特定</font></b>内容：归纳演绎、语言理解、空间关系、创造力、记忆力等。",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n99",
+                      "text": "运动和身体能力测试（体力）",
+                      "stars": 0,
+                      "detail": null,
+                      "children": [
+                        {
+                          "id": "n100",
+                          "text": "心理运动能力测试（心灵手巧）",
+                          "stars": 0,
+                          "detail": null,
+                          "children": []
+                        },
+                        {
+                          "id": "n101",
+                          "text": "身体运动能力测试（运动员）",
+                          "stars": 0,
+                          "detail": null,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n102",
+                  "text": "人格测试",
+                  "stars": 0,
+                  "detail": "<b><font color=\"#1f9d6b\">广义</font></b>人格<font color=\"#1f9d6b\"><b>有能力</b></font>及<font color=\"#1f9d6b\"><b>其他</b></font>、<b><font color=\"#ef4b5e\">狭义</font></b>人格只有<font color=\"#ef4b5e\"><b>其他</b></font><div><b style=\"\"><font color=\"#8b5cf6\">整体性、动态性、稳定性</font></b></div><div><b style=\"\"><font color=\"#2f80ed\">人格在很大程度上决定着一个人的行为方式，可判断能否胜任未来的职位。</font></b></div>",
+                  "children": [
+                    {
+                      "id": "n103",
+                      "text": "自陈量表法（自评）、评价量表发（他评）、投射法（自由）",
+                      "stars": 0,
+                      "detail": null,
+                      "children": []
+                    },
+                    {
+                      "id": "n104",
+                      "text": "MBTI人格类型测试",
+                      "stars": 0,
+                      "detail": "<b><font color=\"#ef4b5e\">内外</font></b>（内倾-外倾）&nbsp; &nbsp; &nbsp; &nbsp; （内部世界-外部世界）<b><font color=\"#ef4b5e\">有方向</font></b>（注意力集中方向）<div><font color=\"#ef4b5e\"><b>&nbsp; &nbsp; &nbsp; &nbsp;（<span style=\"font-family: inherit; font-size: 0.85rem;\">感觉-直觉</span></b></font><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\"><b>）</b></font><font color=\"rgba(0, 0, 0, 0)\">&nbsp; &nbsp; &nbsp; &nbsp;</font>（感觉经验-想象抽象）<b style=\"\"><font color=\"#ef4b5e\">获取信息</font></b>（获取信息方式）</span></div><div><span style=\"font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">（</font></b></span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">情</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">感-</span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">理</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">性（现：</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#1f9d6b\"><b>思考</b></font></span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">）</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">）</font></b>（</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">逻辑关系-价值重要</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"rgba(0, 0, 0, 0)\">）</font><b style=\"color: rgb(239, 75, 94);\">之中处理决策</b>（处理信息和做出决策的方式）</span></div><div><b><font color=\"#ef4b5e\"><span style=\"font-family: inherit; font-size: 0.85rem;\">（</span><span style=\"font-family: inherit; font-size: 0.85rem;\">判断-知觉</span></font></b><span style=\"font-family: inherit; font-size: 0.85rem;\"><b style=\"\"><font color=\"#ef4b5e\">）</font></b>（判断、计划、有目标-灵活、好奇、易冲动、适应强）</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\" style=\"font-weight: bold;\">对待外界 </font><font style=\"\">（表现对外界的方式）</font></span></div>",
+                      "children": []
+                    },
+                    {
+                      "id": "n105",
+                      "text": "“大五”人格理论",
+                      "stars": 0,
+                      "detail": "外向性、愉悦性、公正严谨性、神经质性和开放性（<b><font color=\"#ef4b5e\">雨神禁外放</font></b>）",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n106",
+                  "text": "职业兴趣测试 · 霍兰德六角形（【口诀】\"现实社会很残忍、企业转型需研究\"）",
+                  "stars": 3,
+                  "detail": "约翰·霍兰德提出六种基本职业兴趣类型，六角形中位置相邻相似、不相邻差异大。",
+                  "children": [
+                    {
+                      "id": "n107",
+                      "text": "R 现实型 / I 研究型 / A 艺术型",
+                      "stars": 0,
+                      "detail": "现实型：物体（技能性和技术性职业）<div>研究型：研究（研究类和工程设计职业）</div><div>艺术型：自由（文学艺术职业）</div>",
+                      "children": [
+                        {
+                          "id": "n108",
+                          "text": "工作样本测试",
+                          "stars": 0,
+                          "detail": "让候选人完成实际工作任务样本，直接观察工作表现。",
+                          "children": []
+                        },
+                        {
+                          "id": "n109",
+                          "text": "【关键区分】",
+                          "stars": 0,
+                          "detail": "工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。",
+                          "children": [
+                            {
+                              "id": "n110",
+                              "text": "【易混点】",
+                              "stars": 0,
+                              "detail": "实际 vs 模拟，常考对比。",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n111",
+                      "text": "S 社会型 / E 企业型 / C 常规型",
+                      "stars": 0,
+                      "detail": "社会型：培训（教育咨询职业）<div>企业型：领导（企业领导和行政管理）</div><div>常规型：办事（办公室事务、图书管理、会计、统计）职业</div>",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n112",
+              "text": "二、成绩测试  （熟练性测试 学绩测试）后测试 注重内容效度",
+              "stars": 2,
+              "detail": "认知性测试&nbsp;",
+              "children": [
+                {
+                  "id": "n113",
+                  "text": "知识测试  笔试",
+                  "stars": 0,
+                  "detail": "测量候选人对特定领域知识的掌握程度（笔试为主）。<div><font color=\"#ef4b5e\"><b>从事任何类型的工作都需要具备一定的知识</b></font></div><div>综合知识测试、专业知识测试、外语测试。</div><div><b>并非所有的笔试都属于知识测试。（行政能力测试、申论）</b></div>",
+                  "children": []
+                },
+                {
+                  "id": "n114",
+                  "text": "工作样本测试  实际 实地 具体 动手",
+                  "stars": 0,
+                  "detail": "让候选人完成实际工作任务样本，直接观察工作表现。<div><b>效度高于认知能力测试和人格测试</b></div><div><font color=\"#1f9d6b\"><b>优点：效度最高</b></font></div><div><b style=\"\"><font color=\"#8b5cf6\">缺点：1适用性很低、2开发成本高。</font></b></div>",
+                  "children": []
+                },
+                {
+                  "id": "n115",
+                  "text": "【关键区分】",
+                  "stars": 0,
+                  "detail": "<b><font color=\"#ef4b5e\">工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。</font></b>",
+                  "children": [
+                    {
+                      "id": "n116",
+                      "text": "【易混点】",
+                      "stars": 0,
+                      "detail": "<b>实际 vs 模拟，常考对比。</b>",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n117",
+              "text": "三、评价中心技术 模拟",
+              "stars": 3,
+              "detail": "<span style=\"color: rgb(239, 75, 94); font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\">管理和团队、不是并列综合多种、校标效度很高</span>",
+              "children": [
+                {
+                  "id": "n118",
+                  "text": "含义",
+                  "stars": 0,
+                  "detail": "也称管理评价中心技术，由多位评价者对于求职者在一系列练习中的表现进行评价。",
+                  "children": []
+                },
+                {
+                  "id": "n119",
+                  "text": "主要形式",
+                  "stars": 0,
+                  "detail": "",
+                  "children": [
+                    {
+                      "id": "n120",
+                      "text": "公文筐测试（文件筐）最常用 最核心  无 3人际交往能力、5压力承受能力。",
+                      "stars": 0,
+                      "detail": "模拟管理者处理日常文书，考察计划/组织/分析/决策/书面沟通。最常考形式。<div><font color=\"#1f9d6b\"><b>优点：1高内容效度和效标效度、2场地要求不高、3表面效度高</b></font></div><div><font color=\"#8b5cf6\"><b>缺点：1编制成本高、平分困难、2无法人际交往、团队能力测试</b></font></div>",
+                      "children": []
+                    },
+                    {
+                      "id": "n121",
+                      "text": "无领导小组讨论（LGD）经常使用",
+                      "stars": 3,
+                      "detail": "<div><font color=\"#2f80ed\">集体讨论观察言行</font></div>一组候选人自由讨论无指定领导，考察沟通/影响力/团队合作/领导潜质。<div><b><font color=\"#ef4b5e\">五种形式：</font></b></div><div><b><font color=\"#ef4b5e\">1、开放式问题：全面性和针对性&nbsp; 考查思路 （什么样的领导是好领导？）</font></b></div><div><font color=\"#ef4b5e\"><b>2、两难性问题：两种互有利弊&nbsp; &nbsp; &nbsp;考查分析能力、语言表达能力、说服力（重视工作的领导好，还是重视人的领导好？）</b></font></div><div><font color=\"#ef4b5e\"><b>3、多项选择问题：重要性排序&nbsp; &nbsp; &nbsp;考查</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">抓&nbsp;</b><font color=\"#ef4b5e\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>本质能力&nbsp;</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">（多-本）</b></div><div><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">4、操作性问题：参与合作</b></div><div><b style=\"\"><font color=\"#ef4b5e\">5、资源争夺性问题：</font><font color=\"#2f80ed\">指定角色 </font><font color=\"#ef4b5e\">分析问题分析问题、逻辑思维、语言表达、辩论、说服、反应灵活性。</font></b></div><div><div><font color=\"#1f9d6b\"><b>优点（</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">全优</b><font color=\"#1f9d6b\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>）</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">：1领导能力、2问题解决能力、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#e8821a\">3人际交往能力</font></b><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#f5b301\">4行政管理能力、</font></b><b style=\"font-family: inherit; font-size: 0.85rem;\">5压力承受能力。</b></div><div><font color=\"#8b5cf6\"><b>缺点：1测试题目要求高、2评价者评分技术要求高、3被测试者有意识变现和掩饰自己</b></font></div></div>",
+                      "children": []
+                    },
+                    {
+                      "id": "n122",
+                      "text": "角色扮演 无 4行政管理能力",
+                      "stars": 0,
+                      "detail": "候选人在模拟情境扮演特定角色，考察应变/人际敏感度/问题解决。",
+                      "children": []
+                    },
+                    {
+                      "id": "n123",
+                      "text": "（二）改善面试效果的方法",
+                      "stars": 0,
+                      "detail": "",
+                      "children": [
+                        {
+                          "id": "n124",
+                          "text": "① 采用情境化结构面试",
+                          "stars": 0,
+                          "detail": "提前设计标准化问题和评分标准。",
+                          "children": []
+                        },
+                        {
+                          "id": "n125",
+                          "text": "② 面试前做好充分准备",
+                          "stars": 0,
+                          "detail": "审阅简历、明确考察要点。",
+                          "children": []
+                        },
+                        {
+                          "id": "n126",
+                          "text": "③ 系统培训面试考官",
+                          "stars": 0,
+                          "detail": "减少评价偏差。",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "n127",
+              "text": "四、面试",
+              "stars": 3,
+              "detail": "",
+              "children": [
+                {
+                  "id": "n128",
+                  "text": "（一）基本概念及类型",
+                  "stars": 0,
+                  "detail": "面试是迄今为止实践中运用<b><font color=\"#ef4b5e\">最广泛</font></b>的人员甄选方法，通过<font color=\"#ef4b5e\"><b>面对面</b></font>观察与问答评估候选人资格条件。",
+                  "children": [
+                    {
+                      "id": "n129",
+                      "text": "根据面试结构划分的面试类型",
+                      "stars": 3,
+                      "detail": "",
+                      "children": [
+                        {
+                          "id": "n130",
+                          "text": "非结构化面试 随性",
+                          "stars": 0,
+                          "detail": "<b><font color=\"#1f9d6b\">优点：自然顺畅、逻辑关系清晰、深入讨论</font></b><div><b><font color=\"#8b5cf6\">缺点：难确保公平、难确保都能被问到、考官个人影响、信度和效度比结构化低</font></b></div>",
+                          "children": []
+                        },
+                        {
+                          "id": "n131",
+                          "text": "结构化面试 标准",
+                          "stars": 0,
+                          "detail": "<b><font color=\"#ef4b5e\">和上面相反</font></b>",
+                          "children": []
+                        },
+                        {
+                          "id": "n132",
+                          "text": "半结构化面试 相结合",
+                          "stars": 0,
+                          "detail": "<b><font color=\"#ef4b5e\">结合了以上的优点</font></b>",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n133",
+                      "text": "根据面试组织形式划分的面试类型",
+                      "stars": 0,
+                      "detail": null,
+                      "children": [
+                        {
+                          "id": "n134",
+                          "text": "单独面试 1V1",
+                          "stars": 0,
+                          "detail": "",
+                          "children": []
+                        },
+                        {
+                          "id": "n135",
+                          "text": "系列面试 顺序",
+                          "stars": 0,
+                          "detail": "",
+                          "children": []
+                        },
+                        {
+                          "id": "n136",
+                          "text": "小组面试 多V1",
+                          "stars": 0,
+                          "detail": "",
+                          "children": []
+                        },
+                        {
+                          "id": "n137",
+                          "text": "集体面试 1V多 或 多V多",
+                          "stars": 0,
+                          "detail": "",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n138",
+                      "text": "特殊的面试形式",
+                      "stars": 0,
+                      "detail": null,
+                      "children": [
+                        {
+                          "id": "n139",
+                          "text": "压力面试",
+                          "stars": 0,
+                          "detail": null,
+                          "children": []
+                        },
+                        {
+                          "id": "n140",
+                          "text": "电话和网络视频面试",
+                          "stars": 0,
+                          "detail": null,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "n141",
+                  "text": "（三）改善面试效果的方法",
+                  "stars": 0,
+                  "detail": "",
+                  "children": [
+                    {
+                      "id": "n142",
+                      "text": "① 采用情境化结构面试",
+                      "stars": 0,
+                      "detail": "提前设计标准化问题和评分标准。",
+                      "children": []
+                    },
+                    {
+                      "id": "n143",
+                      "text": "② 面试前做好充分准备",
+                      "stars": 0,
+                      "detail": "审阅简历、明确考察要点。",
+                      "children": [
+                        {
+                          "id": "n144",
+                          "text": "注意",
+                          "stars": 0,
+                          "detail": "预测效度通常较低，需与其他方法结合使用。",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "n145",
+                      "text": "③ 系统培训面试考官",
+                      "stars": 0,
+                      "detail": "减少评价偏差。",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "n146",
+                  "text": "【黄金结论】最佳甄选组合",
+                  "stars": 0,
+                  "detail": "研究表明：工作样本测试 + 高度结构化面试 + 认知能力测试 的综合组合，双度系数（效度）超过 0.6。",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "n147",
+              "text": "五、履历分析",
+              "stars": 1,
+              "detail": "",
+              "children": [
+                {
+                  "id": "n148",
+                  "text": "三要素",
+                  "stars": 0,
+                  "detail": "履历信息的收集、加权、计分。",
+                  "children": []
+                },
+                {
+                  "id": "n149",
+                  "text": "最新发展",
+                  "stars": 0,
+                  "detail": "大数据履历分析、AI 辅助筛选。",
+                  "children": []
+                },
+                {
+                  "id": "n150",
+                  "text": "注意",
+                  "stars": 0,
+                  "detail": "预测效度通常较低，需与其他方法结合使用。",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+EMBEDDED.rev = 6;
+
+/* ---------- 数据源 / 模式 ---------- */
+const HOST = 'https://514d1c47aa5f4ee4a0d1e76cf161fc95.app.workbuddy.link';
+const IS_LOCAL = location.protocol === 'file:';
+const params = new URLSearchParams(location.search);
+const IS_READER = params.has('reader');           // 读者版：纯查看，无编辑控件
+const SRC = params.get('src');                     // 可选：自定义数据源地址（如 Supabase Storage）
+let data = null;
+let LIVE_REV = EMBEDDED.rev;
+
+/* ---------- 发布配置（作者自助：浏览器直传 Supabase Storage） ---------- */
+/* 作者只需在应用内点 ⚙️ 填一次项目地址+anon key+bucket，存 localStorage，之后点 📤 发布即可全网更新。
+   anon key 是公钥，可安全写进前端。详见《Supabase发布配置指引》。 */
+const SB_KEY_CONF = 'jj_sb_conf';
+const SB = { url:'https://aioxfarinloodhkgbsvo.supabase.co', key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpb3hmYXJpbmxvb2Roa2dic3ZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NzkyNTUsImV4cCI6MjEwMDM1NTI1NX0.6pTCNkiqfiCiLLev2KL7luIzv4V20kMGaEDNEq0M_S8', bucket:'mindmap', dataPath:'data.js', verPath:'version.js' };
+function loadSBConf(){
+  try{
+    const c = JSON.parse(localStorage.getItem(SB_KEY_CONF) || '{}');
+    if(c && c.url && c.key){ SB.url=c.url; SB.key=c.key; SB.bucket=c.bucket||'mindmap'; }
+  }catch(_){}
+}
+function saveSBConf(){
+  const url = prompt('Supabase 项目地址（https://xxxx.supabase.co）：', SB.url||'');
+  if(!url) return;
+  const key = prompt('Supabase anon key（公钥，可公开粘贴）：', SB.key||'');
+  if(!key) return;
+  const bucket = prompt('Bucket 名（默认 mindmap）：', SB.bucket||'mindmap');
+  SB.url=url.trim().replace(/\/$/,'');
+  SB.key=key.trim();
+  SB.bucket=(bucket||'mindmap').trim();
+  localStorage.setItem(SB_KEY_CONF, JSON.stringify({url:SB.url,key:SB.key,bucket:SB.bucket}));
+  alert('✅ 已保存发布配置。以后改完内容点「📤 发布」即可全网更新，无需找 AI。');
+}
+/* 线上数据源基址：Supabase 公开地址优先，否则回退 SRC/HOST */
+function liveBase(){
+  if(SB.url && SB.key){
+    return (SB.url + '/storage/v1/object/public/' + SB.bucket).replace(/\/$/,'');
+  }
+  const b = IS_LOCAL ? (SRC || HOST) : (SRC || '');
+  return b ? b.replace(/\/$/,'') : '';
+}
+
+/* ---------- 渲染 ---------- */
+const tree = document.getElementById('tree');
+let _anchorId = null;   // 指定重渲染后要"钉住"的节点，避免页面跳动找不到位置
+function render() {
+  let prevTop = null;
+  if (_anchorId) {
+    const prev = tree.querySelector('[data-id="' + _anchorId + '"]');
+    if (prev) prevTop = prev.getBoundingClientRect().top;
+  }
+  tree.innerHTML = '';
+  data.children.forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
+  if (prevTop !== null && _anchorId) {
+    const now = tree.querySelector('[data-id="' + _anchorId + '"]');
+    if (now) window.scrollBy(0, now.getBoundingClientRect().top - prevTop);
+  }
+  _anchorId = null;
+}
+function renderNode(node, lv) {
+  const wrap = document.createElement('div');
+  wrap.className = 'node lv' + Math.min(lv,5);
+  wrap.dataset.id = node.id;
+
+  const head = document.createElement('div');
+  head.className = 'node-head';
+
+  const caret = document.createElement('span');
+  caret.className = 'caret'; caret.textContent = '▶';
+  caret.onclick = (e) => { e.stopPropagation(); wrap.classList.toggle('collapsed'); };
+  head.appendChild(caret);
+
+  const icon = document.createElement('span');
+  icon.className = 'icon';
+  icon.textContent = lv === 0 ? '📖' : (lv === 1 ? '§' : '•');
+  head.appendChild(icon);
+
+  const title = document.createElement('div');
+  title.className = 'title'; title.contentEditable = (editMode && !readingMode) ? 'true' : 'false'; title.spellcheck = false;
+  title.textContent = node.text;
+  title.onblur = () => { node.text = title.textContent.trim(); saveLocal(); };
+  title.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); title.blur(); } };
+  head.appendChild(title);
+
+  const stars = document.createElement('span');
+  stars.className = 'stars';
+  stars.innerHTML = [0,1,2].map(i =>
+    `<span class="s ${i<node.stars?'on':''}">★</span>`
+  ).join('');
+  stars.onclick = (e) => {
+    const idx = [...stars.children].indexOf(e.target);
+    if (idx >= 0) {
+      node.stars = (e.target.classList.contains('on') && node.stars === idx+1) ? idx : idx+1;
+      [...stars.children].forEach((s,i)=> s.classList.toggle('on', i < node.stars));   // 原地更新，不重渲染
+      saveLocal();
+    }
+  };
+  head.appendChild(stars);
+
+  const acts = document.createElement('span');
+  acts.className = 'acts';
+  const bAdd = document.createElement('button'); bAdd.className='mini'; bAdd.title='加子节点'; bAdd.textContent='＋';
+  bAdd.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; node.children.push(N('新节点')); saveLocal(); render(); };
+  const bSib = document.createElement('button'); bSib.className='mini'; bSib.title='加同级节点'; bSib.textContent='﹢';
+  bSib.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; addSibling(node); saveLocal(); render(); };
+  const bDel = document.createElement('button'); bDel.className='mini del'; bDel.title='删除'; bDel.textContent='🗑';
+  bDel.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; delNode(node); saveLocal(); render(); };
+  acts.append(bAdd, bSib, bDel);
+  head.appendChild(acts);
+
+  wrap.appendChild(head);
+
+  const body = document.createElement('div');
+  body.className = 'node-body';
+
+  if (node.detail == null) {
+    const add = document.createElement('span');
+    add.className = 'addnote'; add.textContent = '＋ 添加说明';
+    add.onclick = () => { node.detail = ''; saveLocal(); render(); };
+    body.appendChild(add);
+  } else {
+    const nwrap = document.createElement('div'); nwrap.className = 'note-wrap';
+    const bar = document.createElement('div'); bar.className = 'ntbar';
+    const mk = (label, cmd) => {
+      const b = document.createElement('button'); b.className = 'ntbtn'; b.innerHTML = label; b.title = cmd;
+      b.onmousedown = (e) => { e.preventDefault(); };
+      b.onclick = () => { document.execCommand(cmd, false, null); };
+      return b;
+    };
+    bar.append(mk('B','bold'), mk('I','italic'), mk('U','underline'));
+    const colBtn = document.createElement('button'); colBtn.className = 'ntbtn c'; colBtn.innerHTML = '🎨'; colBtn.title = '选中文字后点此着色';
+    colBtn.onmousedown = (e) => { e.preventDefault(); openPalette(colBtn); };
+    bar.appendChild(colBtn);
+    nwrap.appendChild(bar);
+
+    const note = document.createElement('div');
+    note.className = 'note'; note.contentEditable = (editMode && !readingMode) ? 'true' : 'false'; note.spellcheck = false;
+    note.innerHTML = node.detail || '';
+    note.oninput = () => { node.detail = note.innerHTML; saveLocal(); };
+    nwrap.appendChild(note);
+    body.appendChild(nwrap);
+  }
+
+  node.children.forEach(ch => body.appendChild(renderNode(ch, lv+1)));
+  wrap.appendChild(body);
+  return wrap;
+}
+
+/* ---------- 操作 ---------- */
+function findParent(target, node=data, parent=null) {
+  if (node === target) return parent;
+  for (const ch of node.children) {
+    const r = findParent(target, ch, node);
+    if (r !== undefined) return r;
+  }
+  return undefined;
+}
+function delNode(node) {
+  if (node === data) { alert('根节点不能删'); return; }
+  const p = findParent(node);
+  if (p) p.children = p.children.filter(c => c !== node);
+}
+function addSibling(node) {
+  if (node === data) { data.children.push(N('新节点')); return; }
+  const p = findParent(node);
+  if (p) { const i = p.children.indexOf(node); p.children.splice(i+1, 0, N('新节点')); }
+}
+function addChapter() {
+  const n = N('新章节（双击改名）');
+  data.children.push(n);
+  _anchorId = n.id;          // 新增后滚动到该章，便于立即编辑
+  saveLocal(); render();
+}
+
+/* ---------- 调色盘（说明选字着色） ---------- */
+function openPalette(anchor){
+  closePalette();
+  const pal = document.createElement('div'); pal.className = 'palette';
+  const cols = ['#ef4b5e', '#e8821a', '#f5b301', '#1f9d6b', '#2f80ed', '#8b5cf6', '#1f2733'];
+  cols.forEach(c => {
+    const sw = document.createElement('span'); sw.className = 'swatch'; sw.style.background = c;
+    sw.onmousedown = (e) => { e.preventDefault(); e.stopPropagation(); document.execCommand('foreColor', false, c); closePalette(); };
+    pal.appendChild(sw);
+  });
+  const clr = document.createElement('span'); clr.className = 'swatch'; clr.textContent = '✕'; clr.title = '清除格式'; clr.style.background = '#fff';
+  clr.onmousedown = (e) => { e.preventDefault(); e.stopPropagation(); document.execCommand('removeFormat'); closePalette(); };
+  pal.appendChild(clr);
+  document.body.appendChild(pal);
+  const r = anchor.getBoundingClientRect();
+  pal.style.top = (r.bottom + 6) + 'px';
+  pal.style.left = Math.max(8, r.left) + 'px';
+  window._pal = pal;
+  setTimeout(() => document.addEventListener('mousedown', onDocDown, true), 0);
+}
+function onDocDown(e){
+  if (window._pal && !window._pal.contains(e.target)) closePalette();
+}
+function closePalette(){
+  if (window._pal) { window._pal.remove(); window._pal = null; document.removeEventListener('mousedown', onDocDown, true); }
+}
+
+/* ---------- 展开/折叠 ---------- */
+function expandAll(){ document.querySelectorAll('.node').forEach(n=>n.classList.remove('collapsed')); }
+function collapseAll(){ document.querySelectorAll('.node').forEach(n=>{ if(!n.classList.contains('lv0')) n.classList.add('collapsed'); }); }
+
+/* ---------- 编辑 / 预览 / 阅读 ---------- */
+let editMode = true;
+let readingMode = false;
+function toggleMode(){
+  if (IS_READER) return;
+  saveLocal();
+  editMode = !editMode;
+  document.body.classList.toggle('preview', !editMode);
+  document.getElementById('modeBtn').textContent = editMode ? '👁 预览模式' : '✏️ 编辑模式';
+  render();
+}
+function toggleReading(){
+  saveLocal();
+  readingMode = !readingMode;
+  document.body.classList.toggle('reading', readingMode);
+  render();
+}
+
+/* ---------- 持久化（本机工作副本） ---------- */
+const KEY = 'jj_mindmap_shared';
+function saveLocal(){ if(!data) return; localStorage.setItem(KEY, JSON.stringify(data)); flashSaved(); }
+function readLocal(){ try{ const s=localStorage.getItem(KEY); if(s){ const d=JSON.parse(s); if(d&&d.text){ if(!d.isBook) return null; return d; } } }catch(e){} return null; }
+function flashSaved(){
+  const h=document.querySelector('.banner h1'); const old=h.innerHTML;
+  h.innerHTML='✓ 已保存到本机'; setTimeout(()=>h.innerHTML=old,900);
+}
+function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
+function reindex(){ (function walk(n){ n.id=nid(); n.children.forEach(walk); })(data); }
+
+/* 合并：以线上发布版为结构基准，保留本机新增的节点（按 id 不在发布版中的子树） */
+function mergeKeepLocal(base, local){
+  const baseIds = new Set();
+  (function c(n){ baseIds.add(n.id); n.children.forEach(c); })(base);
+  const byId={}; (function i(n){ byId[n.id]=n; n.children.forEach(i); })(base);
+  const adds=[];
+  (function walk(n, parent){
+    if(!baseIds.has(n.id)){ adds.push({pid: parent?parent.id:null, node:n}); return; }
+    n.children.forEach(ch=>walk(ch,n));
+  })(local, null);
+  adds.forEach(a=>{ if(a.pid!=null && byId[a.pid]) byId[a.pid].children.push(a.node); else base.children.push(a.node); });
+  return base;
+}
+
+function showStatus(txt, ok){
+  const el=document.getElementById('ver'); if(!el) return;
+  el.textContent = txt; el.className = 'ver' + (ok===true?' ok':ok===false?' bad':'');
+}
+
+/* 轮询远端版本号：发现新版本则让同步按钮闪烁提醒（纯前端，无需后端） */
+let _pollTimer=null, _vEl=null, _pendingRev=LIVE_REV, _blinkTimer=null;
+function pollVersion(){
+  const b=liveBase();
+  const url=(b ? b+'/'+SB.verPath : SB.verPath)+'?_='+Date.now();
+  const s=document.createElement('script');
+  s.src=url;
+  s.onload=()=>{ const rv=window.MAP_REV; if(typeof rv==='number' && rv>_pendingRev) flagSync(rv); };
+  s.onerror=()=>{};
+  if(_vEl && _vEl.parentNode) _vEl.parentNode.removeChild(_vEl);
+  _vEl=s; document.head.appendChild(s);
+}
+function flagSync(rv){
+  _pendingRev=rv;
+  const btn=document.getElementById('syncBtn'); if(btn) btn.classList.add('blink');
+  const bd=document.getElementById('syncBadge'); if(bd){ bd.style.display='inline-block'; bd.textContent='新'; }
+  showStatus('发现新版本 v'+rv+'，点 🔄 同步更新', false);
+  /* 闪烁 6 秒后自动停止（引起注意即可，不一直烦人） */
+  if(_blinkTimer) clearTimeout(_blinkTimer);
+  _blinkTimer = setTimeout(()=>{
+    const b=document.getElementById('syncBtn'); if(b) b.classList.remove('blink');
+    _blinkTimer = null;
+  }, 6000);
+}
+function clearSyncFlag(){
+  _pendingRev=LIVE_REV;
+  if(_blinkTimer){ clearTimeout(_blinkTimer); _blinkTimer=null; }
+  const btn=document.getElementById('syncBtn'); if(btn) btn.classList.remove('blink');
+  const bd=document.getElementById('syncBadge'); if(bd) bd.style.display='none';
+}
+function startPolling(){
+  if(_pollTimer) clearInterval(_pollTimer);
+  _pollTimer=setInterval(pollVersion, 60000);   // 每 60 秒查一次版本
+  setTimeout(pollVersion, 2500);                // 打开后 2.5 秒先查一次
+}
+
+/* 拉取线上最新发布版（明确加载 data.js；Supabase 优先，否则回退 SRC/HOST） */
+function syncNow(){
+  showStatus('正在同步…', null);
+  const s=document.createElement('script');
+  const base = liveBase();
+  /* 明确指定 /data.js，不再依赖默认 index.html */
+  let url = base;
+  if(url && !url.endsWith('.js')) url = url + '/' + SB.dataPath;
+  s.src = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+  s.onload = onLive;
+  s.onerror = ()=> showStatus('同步失败（可能离线），显示当前内容', false);
+  document.head.appendChild(s);
+}
+
+/* 作者发布：把当前内容生成 data.js + version.js，直传 Supabase Storage（浏览器上传，无需 AI/后端） */
+async function publishNow(){
+  if(IS_READER) return;
+  if(!SB.url || !SB.key){
+    alert('尚未配置发布源。\n点工具栏「⚙️ 配置」，粘贴你的 Supabase 项目地址 + anon key + bucket 即可（详见《Supabase发布配置指引》）。');
+    return;
+  }
+  if(!confirm('确认发布到全网？\n所有打开你链接的人，1 分钟内会收到「🔄 同步更新」闪烁提醒。')) return;
+  showStatus('正在发布…', null);
+  try{
+    const root = deepCopy(data);
+    const newRev = (LIVE_REV || root.rev || 0) + 1;
+    root.rev = newRev;
+    saveLocal();                 // 先存本地
+    const dataJs = "window.MAP_DATA = " + JSON.stringify(root) + ";\n";
+    const verJs  = "window.MAP_REV = " + newRev + ";\n";
+    await uploadSB(SB.dataPath, dataJs);
+    await uploadSB(SB.verPath, verJs);
+    LIVE_REV = newRev;
+    data.rev = newRev;
+    showStatus('✅ 已发布 v'+newRev+'，全员即将收到提醒', true);
+    clearSyncFlag();
+  }catch(e){
+    console.error(e);
+    showStatus('❌ 发布失败：' + (e && e.message ? e.message : e), false);
+  }
+}
+/* 用 Supabase Storage REST API 直传（anon key 写入，需 bucket 开 anon 写策略） */
+async function uploadSB(path, content){
+  const url = SB.url + '/storage/v1/object/' + SB.bucket + '/' + path + '?upsert=true';
+  const res = await fetch(url, {
+    method:'POST',
+    headers:{
+      'apikey': SB.key,
+      'Authorization':'Bearer ' + SB.key,
+      'Content-Type':'application/javascript',
+      'x-upsert':'true',
+      'Cache-Control':'no-store'
+    },
+    body: content
+  });
+  if(!res.ok){
+    let msg = 'HTTP ' + res.status;
+    try{ const j = await res.json(); if(j && j.message) msg = j.message; }catch(_){}
+    throw new Error(msg);
+  }
+  return res;
+}
+function onLive(){
+  const live = window.MAP_DATA;
+  if(!live || !live.text){ showStatus('加载失败，显示内置快照', false); return; }
+  LIVE_REV = live.rev || LIVE_REV;
+  const local = readLocal();
+  if(local && (local.rev||0) >= (live.rev||0)){
+    data = local;
+    showStatus('本机版 v'+local.rev+'（含未发布改动）', true);
+  } else {
+    let merged = deepCopy(live);
+    if(local) merged = mergeKeepLocal(merged, local);
+    data = merged; reindex();
+    showStatus('已同步最新发布版 v'+LIVE_REV, true);
+  }
+  data.rev = LIVE_REV;
+  saveLocal();
+  render();
+  clearSyncFlag();   // 同步成功，取消闪烁提醒
+}
+
+/* ---------- 导出（含富文本颜色/加粗，完整保留） ---------- */
+function htmlToText(html){
+  const d = document.createElement('div'); d.innerHTML = html || '';
+  return (d.textContent || '').trim();
+}
+function exportMD(){
+  let out='# 中级经济师（人力）备考思维导图\n\n';
+  function walk(node, depth){
+    const pad='  '.repeat(depth);
+    let stars = node.stars>0 ? ' ' + '★'.repeat(node.stars) : '';
+    out += pad + '- ' + node.text + stars + '\n';
+    if(node.detail) out += pad + '  - 说明：' + htmlToText(node.detail) + '\n';
+    node.children.forEach(c=>walk(c, depth+1));
+  }
+  data.children.forEach(c=>walk(c,0));
+  download('备考思维导图.md', out, 'text/markdown');
+}
+function exportJSON(){
+  download('备考思维导图.json', JSON.stringify(data,null,2), 'application/json');
+}
+function download(name, content, type){
+  const blob=new Blob([content],{type}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href);
+}
+function importJSON(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(d&&d.text){
+        if(d.isBook){ data=d; } else { const root=makeRoot(); root.children.push(d); data=root; }
+        reindex(); saveLocal(); render(); showStatus('已导入本地文件', true);
+      }
+    }catch(err){ alert('JSON 解析失败'); }
+  };
+  r.readAsText(f); e.target.value='';
+}
+
+/* ---------- 翻卡片模式（精美版） ---------- */
+let cards=[], ci=0;
+function collectCards(node, path){
+  /* 只收集有实质说明内容的叶子/节点，跳过空说明和纯容器节点 */
+  const txt = (node.detail||'').replace(/<[^>]*>/g,'').trim();
+  if(txt && txt.length > 2){
+    cards.push({ title:node.text, stars:node.stars||0, detail:node.detail||'', path:path });
+  }
+  const np = path ? path+' › '+node.text : node.text;
+  (node.children||[]).forEach(ch=>collectCards(ch, np));
+}
+function toggleCards(){
+  const cv=document.getElementById('cardView');
+  if(cv.classList.contains('on')){ cv.classList.remove('on'); return; }
+  cards=[]; collectCards(data,'');
+  if(!cards.length){ alert('还没有可做成卡片的考点说明，先去节点里添加说明吧'); return; }
+  ci=0; renderCard(); cv.classList.add('on');
+}
+
+/* 根据星级选正面渐变色 + 反面配对背景 */
+const CARD_THEMES = [
+  { grad:'linear-gradient(145deg,#667eea 0%,#764ba2 50%,#f093fb 100%)', backBg:'#f8f6ff', ink:'#1f2733', dark:false },   // 0星 紫粉→淡紫底
+  { grad:'linear-gradient(145deg,#43cea2 0%,#185a9d 100%)',           backBg:'#f0faf7', ink:'#1a3a34', dark:false },   // 1星 蓝绿→薄荷底
+  { grad:'linear-gradient(145deg,#f093fb 0%,#f5576c 50%,#f093fb 100%)', backBg:'#fff5f7', ink:'#3d1525', dark:false }, // 2星 粉红→浅玫底
+  { grad:'linear-gradient(145deg,#ff6b6b 0%,#feca57 30%,#f093fb 70%,#667eea 100%)', backBg:'#1a1a2e', ink:'#e8eaed', dark:true }, // 3星 金紫→深色底
+];
+
+function renderCard(){
+  const c=cards[ci];
+  if(!c) return;
+
+  /* ---- 主题选择 ---- */
+  const theme = CARD_THEMES[Math.min(c.stars, 3)] || CARD_THEMES[0];
+  const stage = document.querySelector('.cardstage');
+  if(stage){
+    stage.style.setProperty('--card-grad', theme.grad);
+    stage.style.setProperty('--card-back-bg', theme.backBg);
+    stage.style.setProperty('--card-ink', theme.ink);
+  }
+  const bodyWrap = document.getElementById('cBodyWrap');
+  bodyWrap.style.background = theme.backBg;
+  bodyWrap.style.color = theme.ink;
+  bodyWrap.classList.toggle('dark-theme', !!theme.dark);
+
+  /* ---- 头部：章节标签 + 标题 + 星级 ---- */
+  const starsHtml = [1,2,3].map(i =>
+    `<span class="gs ${i<=c.stars?'on':''}">★</span>`
+  ).join('');
+  const pathParts = (c.path||'').split(' › ');
+  const chapterTag = pathParts.length > 0 ? pathParts[0] : '考点';
+
+  document.getElementById('cTag').textContent = chapterTag;
+  document.getElementById('cTitle').textContent = c.title;  // 纯文本，避免富文本污染标题
+  document.getElementById('cStars').innerHTML = starsHtml;
+
+  /* ---- 内容区：直接显示完整 detail（保留所有颜色/加粗/斜体/下划线）---- */
+  document.getElementById('cPath').textContent = c.path||'';
+  document.getElementById('cChip').textContent = '★ ' + c.stars + ' 星';
+  document.getElementById('cBody').innerHTML =
+    c.detail || '<em style="color:#9aa6bb">暂无详细内容</em>';
+
+  /* 进度条 */
+  const pct = cards.length > 1 ? (ci/(cards.length-1))*100 : 100;
+  document.getElementById('cProgFill').style.width = pct + '%';
+  document.getElementById('cProg').textContent = `${ci+1} / ${cards.length}`;
+
+  /* 切换动画：轻微弹一下 */
+  const card = document.getElementById('theCard');
+  card.style.transform = 'scale(.96)';
+  requestAnimationFrame(()=>{ card.style.transform = 'scale(1)'; });
+}
+/* 剥离 HTML 标签取纯文本 */
+function stripHtml(s){
+  if(!s) return '';
+  const d=document.createElement('div'); d.innerHTML=s; return (d.textContent||'').trim();
+}
+function escHtml(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+function cardNext(){ if(ci<cards.length-1){ ci++; renderCard(); } }
+function cardPrev(){ if(ci>0){ ci--; renderCard(); } }
+document.addEventListener('keydown', e=>{
+  const cv=document.getElementById('cardView');
+  if(cv.classList.contains('on')){
+    if(e.key==='ArrowLeft') cardPrev();
+    if(e.key==='ArrowRight') cardNext();
+    if(e.key===' ') { e.preventDefault(); cardNext(); }
+    if(e.key==='Escape') toggleCards();
+  }
+});
+let _tsx=0;
+document.getElementById('cardView').addEventListener('touchstart', e=>{ _tsx=e.touches[0].clientX; }, {passive:true});
+document.getElementById('cardView').addEventListener('touchend', e=>{
+  const dx=_tsx - e.changedTouches[0].clientX;
+  if(dx>60) cardPrev(); else if(dx<-60) cardNext();
+}, {passive:true});
+
+/* ---------- 启动：先渲染内置快照，再拉最新发布版 ---------- */
+if (IS_READER) {
+  editMode = false;
+  document.body.classList.add('preview');
+  const mb = document.getElementById('modeBtn'); if (mb) mb.style.display='none';
+  document.querySelectorAll('[data-edit]').forEach(b=>b.remove());
+  const h = document.getElementById('hint');
+  if (h) h.textContent = '只读模式 · 可展开折叠 / 同步最新 · 作者分享给学习者的版本';
+}
+data = deepCopy(EMBEDDED); data.rev = EMBEDDED.rev;
+render();
+loadSBConf();                 // 读取作者已保存的 Supabase 发布配置
+syncNow(); startPolling();
+if (!IS_READER && window.matchMedia && window.matchMedia('(max-width:560px)').matches) {
+  readingMode = true;
+  document.body.classList.add('reading');
+}
+</script>
+</body>
+</html>
