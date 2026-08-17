@@ -1423,9 +1423,8 @@ function onLive(){
     data = local;
     showStatus('本机版 v'+local.rev+'（含未发布改动）', true);
   } else {
-    let merged = deepCopy(live);
-    if(local) merged = mergeKeepLocal(merged, local);
-    data = merged; reindex();
+    // 服务器版本更新：以服务器为准，不再把本地（可能为旧/损坏）数据合并回来，避免重复节点复活
+    data = deepCopy(live); reindex();
     showStatus('已同步最新发布版 v'+LIVE_REV, true);
   }
   data.rev = LIVE_REV;
