@@ -8,7 +8,7 @@
   :root{
     --bg:#eef1f8; --paper:#ffffff; --line:#cdd6e8;
     --ink:#1f2733; --sub:#5b6678; --dim:#9aa6bb;
-    --lv0:#7c6cf0; --lv1:#3b82f6; --lv2:#10b981; --lv3:#f59e0b; --lv4:#ef5b6f;
+    --lv0:#7c6cf0; --lv1:#3b82f6; --lv2:#10b981; --lv3:#f59e0b; --lv4:#8b5cf6; --lv5:#ef4444;
     --gold:#f5b301; --fact:#1f9d6b; --tip:#8b5cf6; --warn:#e8821a; --must:#ef4b5e; --key:#2f80ed;
     --shadow:0 4px 16px rgba(35,52,90,.08);
   }
@@ -54,7 +54,8 @@
   .node.lv1 > .node-head{border-left-color:var(--lv1);}
   .node.lv2 > .node-head{border-left-color:var(--lv2);}
   .node.lv3 > .node-head{border-left-color:var(--lv3);}
-  .node.lv4 > .node-head,.node.lv5 > .node-head{border-left-color:var(--lv4);}
+  .node.lv4 > .node-head{border-left-color:var(--lv4);}
+  .node.lv5 > .node-head{border-left-color:var(--lv5);}
 
   .caret{width:22px;height:22px;border-radius:50%;flex-srink:0;display:flex;align-items:center;justify-content:center;
     font-size:.62rem;color:var(--sub);background:#f1f4fb;border:1px solid #e2e8f4;cursor:pointer;transition:.2s;}
@@ -66,7 +67,8 @@
   .node.lv1 .icon{background:linear-gradient(135deg,var(--lv1),#60a5fa);}
   .node.lv2 .icon{background:linear-gradient(135deg,var(--lv2),#34d399);}
   .node.lv3 .icon{background:linear-gradient(135deg,var(--lv3),#fbbf24);}
-  .node.lv4 .icon,.node.lv5 .icon{background:linear-gradient(135deg,var(--lv4),#fca5b3);}
+  .node.lv4 .icon{background:linear-gradient(135deg,var(--lv4),#a78bfa);}
+  .node.lv5 .icon{background:linear-gradient(135deg,var(--lv5),#f87171);}
 
   .title{flex:1;min-width:0;font-weight:700;font-size:.9rem;outline:none;border-radius:6px;padding:2px 5px;cursor:text;word-break:break-word;}
   .title:focus{background:#eef4ff;box-shadow:0 0 0 2px #5b8def;}
@@ -79,6 +81,12 @@
   .mini{width:27px;height:27px;border-radius:7px;border:1px solid #e2e8f4;background:#f6f8fd;color:var(--sub);
     cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;}
   .mini:hover{background:#eef4ff;border-color:#5b8def;color:#3a6fd6;}
+  .mini.drag{cursor:grab;font-weight:700;color:#8a93a8;background:#eef1fb;}
+  .mini.drag:active{cursor:grabbing;}
+  .node.dragging{opacity:.45;}
+  .node-head.drop-before{box-shadow:inset 0 3px 0 var(--key);}
+  .node-head.drop-after{box-shadow:inset 0 -3px 0 var(--key);}
+  .node-head.drop-child{box-shadow:inset 3px 0 0 var(--key);}
   .mini.del:hover{background:#fff0f1;border-color:var(--must);color:var(--must);}
   /* 调色盘 */
   .palette{position:fixed;z-index:200;display:flex;gap:6px;background:#fff;padding:8px 9px;border-radius:12px;
@@ -1020,6 +1028,8 @@ const IS_READER = params.has('reader');           // 读者版：纯查看，无
 const SRC = params.get('src');                     // 可选：自定义数据源地址（如 Supabase Storage）
 let data = null;
 let LIVE_REV = EMBEDDED.rev;
+let byId = {};            // 节点 id -> 节点 映射（拖拽定位用）
+let draggedId = null;     // 当前被拖拽的节点 id
 
 /* ---------- 发布配置（作者自助：浏览器直传 Supabase Storage） ---------- */
 /* 作者只需在应用内点 ⚙️ 填一次项目地址+anon key+bucket，存 localStorage，之后点 📤 发布即可全网更新。
@@ -1057,16 +1067,20 @@ function liveBase(){
 const tree = document.getElementById('tree');
 let _anchorId = null;   // 指定重渲染后要"钉住"的节点，避免页面跳动找不到位置
 function render() {
+  const savedY = window.scrollY;
   let prevTop = null;
   if (_anchorId) {
     const prev = tree.querySelector('[data-id="' + _anchorId + '"]');
     if (prev) prevTop = prev.getBoundingClientRect().top;
   }
   tree.innerHTML = '';
+  byId = {}; (function i(n){ byId[n.id]=n; n.children.forEach(i); })(data);   // 重建 id 映射
   data.children.forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
   if (prevTop !== null && _anchorId) {
     const now = tree.querySelector('[data-id="' + _anchorId + '"]');
     if (now) window.scrollBy(0, now.getBoundingClientRect().top - prevTop);
+  } else {
+    window.scrollTo(0, savedY);   // 兜底：绝对恢复滚动位置，绝不跳页
   }
   _anchorId = null;
 }
@@ -1085,7 +1099,7 @@ function renderNode(node, lv) {
 
   const icon = document.createElement('span');
   icon.className = 'icon';
-  icon.textContent = lv === 0 ? '📖' : (lv === 1 ? '§' : '•');
+  icon.textContent = lv === 0 ? '📖' : ({1:'A',2:'B',3:'C',4:'D',5:'E'}[lv] || '•');
   head.appendChild(icon);
 
   const title = document.createElement('div');
@@ -1117,9 +1131,30 @@ function renderNode(node, lv) {
   const bSib = document.createElement('button'); bSib.className='mini'; bSib.title='加同级节点'; bSib.textContent='﹢';
   bSib.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; addSibling(node); saveLocal(); render(); };
   const bDel = document.createElement('button'); bDel.className='mini del'; bDel.title='删除'; bDel.textContent='🗑';
-  bDel.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; delNode(node); saveLocal(); render(); };
-  acts.append(bAdd, bSib, bDel);
+  bDel.onclick = (e)=>{ e.stopPropagation(); const p=findParent(node); _anchorId = p ? p.id : null; delNode(node); saveLocal(); render(); };
+  const bDrag = document.createElement('button'); bDrag.className='mini drag'; bDrag.title='拖动排序（移到新位置自动改层级）'; bDrag.textContent='⠿';
+  bDrag.draggable = true;
+  bDrag.addEventListener('dragstart', (e)=>{ e.stopPropagation(); draggedId = node.id; e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setDragImage(wrap, 20, 14); }catch(_){} wrap.classList.add('dragging'); });
+  bDrag.addEventListener('dragend', ()=>{ wrap.classList.remove('dragging'); clearDropHints(); });
+  acts.append(bAdd, bSib, bDel, bDrag);
   head.appendChild(acts);
+  head.addEventListener('dragover', (e)=>{
+    if(!draggedId || draggedId===node.id) return;
+    if(isDescendant(byId[draggedId], node.id)) return;   // 不能拖到自己的子孙下
+    e.preventDefault(); e.dataTransfer.dropEffect='move';
+    const r=head.getBoundingClientRect(); const y=e.clientY-r.top;
+    const pos = y < r.height/3 ? 'before' : (y > r.height*2/3 ? 'after' : 'child');
+    clearDropHints(); head.classList.add('drop-'+pos);
+  });
+  head.addEventListener('drop', (e)=>{
+    e.preventDefault(); e.stopPropagation();
+    const id=draggedId; draggedId=null;
+    head.classList.remove('drop-before','drop-after','drop-child');
+    if(!id || id===node.id) return;
+    const r=head.getBoundingClientRect(); const y=e.clientY-r.top;
+    const pos = y < r.height/3 ? 'before' : (y > r.height*2/3 ? 'after' : 'child');
+    moveNode(id, node.id, pos);
+  });
 
   wrap.appendChild(head);
 
@@ -1129,7 +1164,7 @@ function renderNode(node, lv) {
   if (node.detail == null) {
     const add = document.createElement('span');
     add.className = 'addnote'; add.textContent = '＋ 添加说明';
-    add.onclick = () => { node.detail = ''; saveLocal(); render(); };
+    add.onclick = () => { node.detail = ''; _anchorId = wrap.dataset.id; saveLocal(); render(); };
     body.appendChild(add);
   } else {
     const nwrap = document.createElement('div'); nwrap.className = 'note-wrap';
@@ -1244,6 +1279,23 @@ function flashSaved(){
 }
 function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
 function reindex(){ (function walk(n){ n.id=nid(); n.children.forEach(walk); })(data); }
+function clearDropHints(){ document.querySelectorAll('.drop-before,.drop-after,.drop-child').forEach(el=>el.classList.remove('drop-before','drop-after','drop-child')); }
+function isDescendant(node, id){ if(node.id===id) return true; return node.children.some(c=>isDescendant(c,id)); }
+function moveNode(srcId, tgtId, pos){
+  const src = byId[srcId]; if(!src) return;
+  const tgt = byId[tgtId]; if(!tgt) return;
+  if(isDescendant(src, tgtId)){ alert('不能把节点拖到它自己的子节点下面'); return; }
+  const sp = findParent(src); if(!sp){ alert('根节点不能移动'); return; }
+  const i = sp.children.indexOf(src); if(i>=0) sp.children.splice(i, 1);
+  if(pos === 'child'){ tgt.children.push(src); }
+  else {
+    const tp = findParent(tgt); let idx = tp.children.indexOf(tgt);
+    if(pos === 'after') idx++;
+    tp.children.splice(idx, 0, src);
+  }
+  _anchorId = tgtId;   // 拖拽后定位到目标节点，停留原地（不跳页）
+  reindex(); saveLocal(); render();   // render 按新位置重算 lv → 方框颜色与 A-E 字母自动更新
+}
 
 /* 合并：以线上发布版为结构基准，保留本机新增的节点（按 id 不在发布版中的子树） */
 function mergeKeepLocal(base, local){
