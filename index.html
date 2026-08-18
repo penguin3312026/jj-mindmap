@@ -361,7 +361,7 @@
 let uid = 1;
 const nid = () => 'n' + (uid++);
 function N(text, stars=0, detail=null, children=[]) {
-  return { id: nid(), text, stars, detail, children };
+  return { id: nid(), text, stars, detail, children, collapsed: false };
 }
 /* ---------- 内置兜底数据（用户彩色版，离线/同步失败时用）。
    来自用户导出的彩色 JSON，含 <font color> + <b> 富文本标注。
@@ -371,7 +371,7 @@ const EMBEDDED = {
  "id": "n125",
  "text": "中级经济师（人力）备考思维导图",
  "isBook": true,
- "rev": 21,
+ "rev": 22,
  "children": [
   {
    "id": "n701",
@@ -1612,6 +1612,8 @@ const EMBEDDED = {
   }
  ]
 };
+;
+;
 ;;
 EMBEDDED.rev = 6;
 
@@ -1688,7 +1690,7 @@ function render() {
 }
 function renderNode(node, lv) {
   const wrap = document.createElement('div');
-  wrap.className = 'node lv' + Math.min(lv,5);
+  wrap.className = 'node lv' + Math.min(lv,5) + (node.collapsed ? ' collapsed' : '');
   wrap.dataset.id = node.id;
 
   const head = document.createElement('div');
@@ -1696,7 +1698,7 @@ function renderNode(node, lv) {
 
   const caret = document.createElement('span');
   caret.className = 'caret'; caret.textContent = '▶';
-  caret.onclick = (e) => { e.stopPropagation(); wrap.classList.toggle('collapsed'); };
+  caret.onclick = (e) => { e.stopPropagation(); node.collapsed = !node.collapsed; wrap.classList.toggle('collapsed', node.collapsed); saveLocal(); };
   head.appendChild(caret);
 
   const icon = document.createElement('span');
@@ -1850,8 +1852,8 @@ function closePalette(){
 }
 
 /* ---------- 展开/折叠 ---------- */
-function expandAll(){ document.querySelectorAll('.node').forEach(n=>n.classList.remove('collapsed')); }
-function collapseAll(){ document.querySelectorAll('.node').forEach(n=>{ if(!n.classList.contains('lv0')) n.classList.add('collapsed'); }); }
+function expandAll(){ (function walk(n){ n.collapsed=false; (n.children||[]).forEach(walk); })(data); saveLocal(); render(); }
+function collapseAll(){ (function walk(n){ n.collapsed=true; (n.children||[]).forEach(walk); })(data); saveLocal(); render(); }
 
 /* ---------- 编辑 / 预览 / 阅读 ---------- */
 let editMode = true;
@@ -1883,6 +1885,7 @@ function normalizeData(root){
     n.children = n.children.filter(c => c && typeof c === 'object');
     if(!n.id) n.id = nid();
     if(typeof n.text !== 'string') n.text = String(n.text || '');
+    if(typeof n.collapsed !== 'boolean') n.collapsed = false;
     n.children.forEach(walk);
   })(root);
   return root;
