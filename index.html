@@ -81,6 +81,8 @@
   .mini{width:27px;height:27px;border-radius:7px;border:1px solid #e2e8f4;background:#f6f8fd;color:var(--sub);
     cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;transition:.15s;}
   .mini:hover{background:#eef4ff;border-color:#5b8def;color:#3a6fd6;}
+  .mini:disabled{opacity:.32;cursor:not-allowed;background:#f1f3f8;border-color:#e2e8f4;color:#9aa3b5;}
+  .mini:disabled:hover{background:#f1f3f8;border-color:#e2e8f4;color:#9aa3b5;}
   .mini.drag{cursor:grab;font-weight:700;color:#8a93a8;background:#eef1fb;}
   .mini.drag:active{cursor:grabbing;}
   .node.dragging{opacity:.45;}
@@ -1730,6 +1732,14 @@ function renderNode(node, lv) {
 
   const acts = document.createElement('span');
   acts.className = 'acts';
+  const fp = findParent(node);
+  const sibIdx = fp ? fp.children.indexOf(node) : -1;
+  const canPromote = !!(fp && fp !== data);
+  const canDemote = sibIdx > 0;
+  const bUp = document.createElement('button'); bUp.className='mini'; bUp.title='升级（层级上移，子类随行）'; bUp.textContent='⬆'; bUp.disabled = !canPromote;
+  bUp.onclick = (e)=>{ e.stopPropagation(); promoteNode(node); };
+  const bDown = document.createElement('button'); bDown.className='mini'; bDown.title='降级（层级下移，子类随行）'; bDown.textContent='⬇'; bDown.disabled = !canDemote;
+  bDown.onclick = (e)=>{ e.stopPropagation(); demoteNode(node); };
   const bAdd = document.createElement('button'); bAdd.className='mini'; bAdd.title='加子节点'; bAdd.textContent='＋';
   bAdd.onclick = (e)=>{ e.stopPropagation(); _anchorId = wrap.dataset.id; node.children.push(N('新节点')); saveLocal(); render(); };
   const bSib = document.createElement('button'); bSib.className='mini'; bSib.title='加同级节点'; bSib.textContent='﹢';
@@ -1740,7 +1750,7 @@ function renderNode(node, lv) {
   bDrag.draggable = true;
   bDrag.addEventListener('dragstart', (e)=>{ e.stopPropagation(); draggedId = node.id; e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setDragImage(wrap, 20, 14); }catch(_){} wrap.classList.add('dragging'); });
   bDrag.addEventListener('dragend', ()=>{ wrap.classList.remove('dragging'); clearDropHints(); });
-  acts.append(bAdd, bSib, bDel, bDrag);
+  acts.append(bUp, bDown, bAdd, bSib, bDel, bDrag);
   head.appendChild(acts);
   head.addEventListener('dragover', (e)=>{
     if(!draggedId || draggedId===node.id) return;
@@ -1821,6 +1831,35 @@ function addChapter() {
   const n = N('新章节（双击改名）');
   data.children.push(n);
   _anchorId = n.id;          // 新增后滚动到该章，便于立即编辑
+  saveLocal(); render();
+}
+
+/* 升降级：仅改变节点在树中的深度（大纲式 promote/demote），整棵子树随父节点一起移动。
+   严禁调用 reindex() —— 会重生成全部 id，破坏 patch_node.py 的按 id 精准定位。 */
+function promoteNode(node){          // 升级（层级上移）：成为父节点的兄弟
+  if(node === data) return;
+  const p = findParent(node);
+  if(!p || p === data) return;      // lv0 章不可升级
+  const gp = findParent(p);
+  if(!gp) return;
+  const ip = p.children.indexOf(node);
+  if(ip < 0) return;
+  p.children.splice(ip, 1);
+  const ipParent = gp.children.indexOf(p);
+  gp.children.splice(ipParent + 1, 0, node);
+  _anchorId = node.id;              // id 不变（不调 reindex），滚动定位到自身
+  saveLocal(); render();
+}
+function demoteNode(node){           // 降级（层级下移）：成为前一个同级的子节点
+  if(node === data) return;
+  const p = findParent(node);
+  if(!p) return;
+  const i = p.children.indexOf(node);
+  if(i <= 0) return;                // 第一个同级无前兄，不可降级
+  const prev = p.children[i-1];
+  p.children.splice(i, 1);
+  (prev.children = prev.children || []).push(node);
+  _anchorId = node.id;
   saveLocal(); render();
 }
 
