@@ -367,920 +367,1222 @@ function N(text, stars=0, detail=null, children=[]) {
    来自用户导出的彩色 JSON，含 <font color> + <b> 富文本标注。
    线上 data.js 同步成功后会被更新版本覆盖。 */
 
-const EMBEDDED = {
-  "id": "n1",
-  "text": "中级经济师（人力）备考思维导图",
-  "isBook": true,
-  "rev": 16,
-  "children": [
+const EMBEDDED = const EMBEDDED = {
+ "id": "n125",
+ "text": "中级经济师（人力）备考思维导图",
+ "isBook": true,
+ "rev": 18,
+ "children": [
+  {
+   "id": "n701",
+   "text": "第七章 绩效管理（平均分值 11 分）",
+   "stars": 3,
+   "detail": "<font color='#2f80ed'>绩效管理</font>是人力资源管理的核心职能之一，贯穿<b>计划—监控—评价—反馈改进—结果应用</b>全过程。本章 5 节可按三主题理解：①绩效管理是什么 ②二三四节讲<b>绩效管理过程</b> ③第五节讲特殊群体考核。",
+   "children": [
     {
-      "id": "n501",
-      "text": "第五章 人力资源规划（平均分值 10 分）",
-      "stars": 3,
-      "detail": "<b><font color=\"#1f9d6b\">性价比高：内容相对少、好理解、分值10分，务必拿稳。</font></b>",
-      "children": [
+     "id": "n702",
+     "text": "第一节 绩效管理概述",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n703",
+       "text": "一、绩效管理的概念与作用",
+       "stars": 1,
+       "detail": "",
+       "children": [
         {
-          "id": "n502",
-          "text": "第一节 人力资源规划及其供求预测",
-          "stars": 3,
-          "detail": "",
-          "children": [
-            {
-              "id": "n503",
-              "text": "一、人力资源规划概述",
-              "stars": 1,
-              "detail": "<b><font color=\"#2f80ed\">【学习思路】内涵 → 因素 → 方法（内容、因素、方法）</font></b>",
-              "children": [
-                {
-                  "id": "n504",
-                  "text": "概念：广义 vs 狭义",
-                  "stars": 0,
-                  "detail": "广义：与人力资源管理问题有关的一切，都叫人力资源规划。<br>狭义：专指人员供求规划，也叫<font color=\"#2f80ed\">雇用规划</font>（本章重点研究狭义）。",
-                  "children": []
-                },
-                {
-                  "id": "n505",
-                  "text": "基本步骤顺序（必考）",
-                  "stars": 0,
-                  "detail": "<font color=\"#ef4b5e\">顺序不能错：① 需求预测 → ② 供给预测 → ③ 平衡分析 → ④ 实施计划。</font><div>先有需求（为满足需求才获取供给），再做二者平衡，最后按计划实施。</div>",
-                  "children": []
-                },
-                {
-                  "id": "n506",
-                  "text": "起点：从明确组织战略规划开始",
-                  "stars": 0,
-                  "detail": "<font color=\"#ef4b5e\">人力资源规划是在组织战略规划已明确之后才开始的</font>（第四章：HRM 要为战略实现服务）。高频考点。",
-                  "children": []
-                },
-                {
-                  "id": "n507",
-                  "text": "意义和作用（三句话）",
-                  "stars": 0,
-                  "detail": "① 有助于实现组织战略目标；<br>② 有利于 HR 管理系统稳定一致有效、组织健康可持续发展；<br>③ 有助于合理控制人工成本（精简时公平、增加时科学）。",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "id": "n508",
-              "text": "二、人力资源需求预测",
-              "stars": 1,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n509",
-                  "text": "内涵（三人组）",
-                  "stars": 0,
-                  "detail": "预测<font color=\"#ef4b5e\">未来需要</font>的员工数量、质量、结构（三人组：数量+质量+结构，缺一不可）。<div><font color=\"#1f9d6b\">不考虑组织内部现有供给。</font></div>",
-                  "children": []
-                },
-                {
-                  "id": "n510",
-                  "text": "影响因素（4个：产结战术）",
-                  "stars": 0,
-                  "detail": "<b>口诀「产结战术」：</b><br>① <font color=\"#2f80ed\">产</font>=产品和服务变化；② <font color=\"#2f80ed\">结</font>=组织结构调整/流程再造；③ <font color=\"#2f80ed\">战</font>=组织战略定位与调整（内部成长/收缩）；④ <font color=\"#2f80ed\">术</font>=技术变革（AI 替代等）。<br><font color=\"#ef4b5e\">考试灵活，常结合现实热点（数字化、AI）。</font>",
-                  "children": []
-                },
-                {
-                  "id": "n511",
-                  "text": "方法（5个：2主观+3定量）",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n512",
-                      "text": "① 经验判断法（定性·主观）",
-                      "stars": 0,
-                      "detail": "<font color=\"#1f9d6b\">最简单。</font>靠中高层管理者凭经验与直觉判断。<br><b>适用：</b><font color=\"#ef4b5e\">时间短、规模小、环境稳定、人员流动不高（口诀「短小稳定」）。</font>要求管理者经验丰富。",
-                      "children": []
-                    },
-                    {
-                      "id": "n513",
-                      "text": "② 德尔菲法 / 专家预测（定性·主观）",
-                      "stars": 0,
-                      "detail": "<font color=\"#ef4b5e\">背对背、不见面、不开会、匿名、多轮进行</font>（不是集体讨论）。<br>专家数量<font color=\"#ef4b5e\">至少 20~30 人</font>且有代表性；主持人准备问题与资料。<br>优点：避免从众、省去开会麻烦、多轮更准确。美国兰德公司首创。",
-                      "children": []
-                    },
-                    {
-                      "id": "n514",
-                      "text": "③ 比率分析法（定量）",
-                      "stars": 0,
-                      "detail": "基于关键经营指标与需求量之间的<font color=\"#2f80ed\">固定比率</font>（如师生比）。<br><font color=\"#ef4b5e\">假定：人均生产率保持不变。</font>（口诀「率率相对」）",
-                      "children": []
-                    },
-                    {
-                      "id": "n515",
-                      "text": "④ 趋势预测法（定量）",
-                      "stars": 0,
-                      "detail": "简单的<font color=\"#2f80ed\">时间序列</font>分析（用过去几年数据预测未来）。<br>适用性强但较粗放、准确性有折扣。<br><font color=\"#ef4b5e\">假定：组织的技术等因素不会发生重大变化。</font>",
-                      "children": []
-                    },
-                    {
-                      "id": "n516",
-                      "text": "⑤ 回归分析法（定量）",
-                      "stars": 0,
-                      "detail": "研究<font color=\"#2f80ed\">人力资源需求数量</font>与<font color=\"#2f80ed\">影响因素</font>之间的函数关系（Y = AX + B）。<br>按自变量数量分：<font color=\"#ef4b5e\">一元回归 / 多元回归（多元更准）</font>；按形式分：线性/非线性（实践中常用线性）。<br><font color=\"#8b5cf6\">注意：分类依据是「自变量数量」，不是线性/非线性。</font>",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "n517",
-              "text": "三、人力资源供给预测",
-              "stars": 1,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n518",
-                  "text": "内涵（三人组）",
-                  "stars": 0,
-                  "detail": "预测<font color=\"#ef4b5e\">未来能够获得</font>的人员数量、质量、结构（同样是三人组：数量+质量+结构）。与需求预测区别：一个是「未来需要」，一个是「未来获得」。",
-                  "children": []
-                },
-                {
-                  "id": "n519",
-                  "text": "影响因素（分内外两类）",
-                  "stars": 0,
-                  "detail": "<b>外部：</b>① 全国性劳动力市场（国家经济趋势、教育发展状况）；② 地区性劳动力市场（地区经济、人口、吸引力等）。<br><b>外部五来源：</b>各类学校毕业生、失业人员、退役军人、<font color=\"#ef4b5e\">其他组织准备离职换工作的人（非本组织！）</font>、<font color=\"#ef4b5e\">获得政策支持的外国人</font>。<br><b>内部：</b>员工技能数据库（满足本公司独特需要，有独特性）。",
-                  "children": []
-                },
-                {
-                  "id": "n520",
-                  "text": "方法（2个）",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n521",
-                      "text": "① 人员替换分析法",
-                      "stars": 0,
-                      "detail": "工具：<font color=\"#2f80ed\">人员替换关系图</font>。针对特定职位找合格候选人（看绩效+潜力）。<br>特点：<font color=\"#1f9d6b\">内部晋升</font>。优点：提高士气、降低招聘成本、提前做好准备。",
-                      "children": []
-                    },
-                    {
-                      "id": "n522",
-                      "text": "② 马尔科夫分析法",
-                      "stars": 0,
-                      "detail": "工具：<font color=\"#2f80ed\">转移矩阵</font>（显示不同时间、不同职位类型的人员比例）。<br>每行 = 人「到哪里去」（反映职业发展通道）；每列 = 人「从哪里来」（反映员工来源）。<br><font color=\"#8b5cf6\">难度高于需求预测的2个方法，近年（2023）考过案例 8 分。</font>",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+         "id": "n704",
+         "text": "绩效管理的概念",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>绩效管理</font>是管理者与员工就目标设定、任务达成、能力提升持续沟通的过程；目的是<b>确保组织目标与个人目标一致</b>。"
         },
         {
-          "id": "n523",
-          "text": "第二节 人力资源供求平衡的基本对策与方法",
-          "stars": 3,
-          "detail": "",
-          "children": [
-            {
-              "id": "n524",
-              "text": "一、基本对策（三种情形）",
-              "stars": 1,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n525",
-                  "text": "情形1：需求大于供给（人太少）",
-                  "stars": 0,
-                  "detail": "<font color=\"#ef4b5e\">口诀「人时效率有外包」：</font>① 先关门（降低员工流失率，留住人）；② 时 = 加班延长工时（短期/阶段用）；③ 招人（劳动合同/返聘退休人员/小时工，灵活招）；④ 技术 = 改进生产技术、优化流程、培训提效；⑤ 外包 = 非核心业务外包。",
-                  "children": []
-                },
-                {
-                  "id": "n526",
-                  "text": "情形2：需求小于供给（人太多）",
-                  "stars": 0,
-                  "detail": "<font color=\"#ef4b5e\">口诀「人时培训」：</font>① 人 = 关门（冻结雇用、自然减员、鼓励提前退休、临时/永久裁员）；② 时 = 缩短工时（职位分享/工作分享，避免解雇）；③ 培训 = 对冗余人员培训、开展新业务。",
-                  "children": []
-                },
-                {
-                  "id": "n527",
-                  "text": "情形3：结构不匹配（数量OK，技能不符）",
-                  "stars": 0,
-                  "detail": "<font color=\"#ef4b5e\">口诀「培训配置」：该走的走，该换的换。</font>① 优先培训开发（适应未来工作）；② 学不会/无希望的离开（自然退休、终止合同）；③ 外部招更合适的新员工；④ 扩张期把不合适的人替换到辅助岗位，核心岗位留给新招的有能力者。",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "id": "n528",
-              "text": "二、人力资源供求平衡的方法（两个汇总表）",
-              "stars": 1,
-              "detail": "<b>重点把握两个汇总表，具体方法偶尔考。</b>",
-              "children": [
-                {
-                  "id": "n529",
-                  "text": "汇总表1：减少未来人员过剩（9种，分3类）",
-                  "stars": 0,
-                  "detail": "按「速度 + 员工受伤害程度」分类：<br>① <font color=\"#ef4b5e\">快+伤害高</font>：裁员、降薪、降职；<br>② <font color=\"#ef4b5e\">快+伤害中</font>：职位调动、工作分享；<br>③ <font color=\"#1f9d6b\">慢+伤害低</font>：冻结雇用、自然减员、鼓励提前退休、重新培训。",
-                  "children": []
-                },
-                {
-                  "id": "n530",
-                  "text": "汇总表2：避免未来人员短缺（7种，分4类）",
-                  "stars": 0,
-                  "detail": "按「速度 + 可撤回程度」分类：<br>① <font color=\"#ef4b5e\">快+高</font>：加班加点、雇用临时工、外包；<br>② <font color=\"#8b5cf6\">慢+高</font>（高配）：再培训后换岗；<br>③ <font color=\"#ef4b5e\">慢+中</font>（中流底住）：降低流动率；<br>④ <font color=\"#1f9d6b\">慢+低</font>（低新）：雇用新员工、技术创新。",
-                  "children": []
-                },
-                {
-                  "id": "n531",
-                  "text": "具体方法（了解）",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n532",
-                      "text": "裁员",
-                      "stars": 0,
-                      "detail": "企业强化竞争力、有计划、大量裁减。人员过剩的<font color=\"#ef4b5e\">典型反应</font>。<br>对员工伤害大（短期痛苦+长期心理创伤）；对企业也有负面影响：人才流失、破坏团队社会网络、剩余员工心存芥蒂/忠诚度降、企业形象受损。<br><font color=\"#1f9d6b\">应采用「手术式裁员」而非一刀切；提供合理解释、保证公平、人性化。</font>",
-                      "children": []
-                    },
-                    {
-                      "id": "n533",
-                      "text": "提前退休计划",
-                      "stars": 0,
-                      "detail": "针对老员工（经验丰富、稳定性高，但成本高、阻碍新员工晋升）。<br><font color=\"#ef4b5e\">成功与否很大程度上取决于预测的准确性。</font>",
-                      "children": []
-                    },
-                    {
-                      "id": "n534",
-                      "text": "雇用临时工 / 劳务派遣",
-                      "stars": 0,
-                      "detail": "<font color=\"#1f9d6b\">优点：</font>灵活、管理/财务负担低、小公司适用、培训成本低、局外人客观视角、多组织经验。<br><font color=\"#ef4b5e\">不利：</font>组织承诺与忠诚度低、与正式员工关系紧张合作低。<br>处理关键：裁员与雇临时工之间留较长缓冲时间；安抚正式员工（工作内容区分、让其感到被重视）；不形成低人一等印象。",
-                      "children": []
-                    },
-                    {
-                      "id": "n535",
-                      "text": "业务外包与离岸经营",
-                      "stars": 0,
-                      "detail": "<font color=\"#1f9d6b\">外包好处：</font>控制直接雇用数量、提升 HR 管理价值、把 HR 从日常事务解放出来做战略。<br><font color=\"#ef4b5e\">离岸经营 = 跨国外包</font>（岗位从一国转移到另一国）；最初是简单窄岗位（生产、呼叫中心），现已延伸到高技能（证券分析、技术研发）。<br>成功关键：选靠谱外包商（规模大、历史久）、不涉及专利/安全保障、模块化独立工作、从小开始密切监督。",
-                      "children": []
-                    },
-                    {
-                      "id": "n536",
-                      "text": "调整薪酬和工作时长",
-                      "stars": 0,
-                      "detail": "短缺 → 安排加班，给加班费（增加工时费用）；<br>过剩 → 缩短工时降薪（工作分享/职位分享，保持单位时间薪酬不变减少时间），或<font color=\"#8b5cf6\">非带薪休假</font>（降成本、避免解雇，但只解决短期问题、本身有争议）。",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+         "id": "n705",
+         "text": "绩效管理的作用",
+         "stars": 0,
+         "detail": "对组织：<font color='#1f9d6b'>战略落地、识别优劣、分配依据</font>；对员工：<font color='#1f9d6b'>明确期望、获得反馈、促进成长</font>。<br><font color='#8b5cf6'>注意：</font>绩效管理≠绩效考核，考核只是其中一环。"
         }
-      ]
+       ]
+      },
+      {
+       "id": "n706",
+       "text": "二、战略性绩效管理",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n707",
+         "text": "适用于不同竞争优势战略",
+         "stars": 0,
+         "detail": "① <font color='#2f80ed'>成本领先战略</font>：强调<b>效率、低成本</b>，考核偏重结果；<br>② <font color='#2f80ed'>差异化战略</font>：强调<b>创新、灵活性</b>，考核偏重行为。"
+        },
+        {
+         "id": "n708",
+         "text": "适用于不同竞争态势",
+         "stars": 0,
+         "detail": "① <font color='#2f80ed'>防御者战略</font>（稳定市场）：重内部效率；<br>② <font color='#2f80ed'>探索者战略</font>（开拓市场）：重创新速度；<br>③ <font color='#2f80ed'>分析者战略</font>（二者兼顾）：平衡效率与创新。"
+        }
+       ]
+      }
+     ]
     },
     {
-      "id": "n2",
-      "text": "第六章 人员甄选（平均分值 12 分）",
-      "stars": 3,
-      "detail": "",
-      "children": [
+     "id": "n709",
+     "text": "第二节 绩效计划与绩效监控",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n710",
+       "text": "一、绩效计划",
+       "stars": 1,
+       "detail": "",
+       "children": [
         {
-          "id": "n3",
-          "text": "第一节 甄选及其有效性",
-          "stars": 3,
-          "detail": "",
-          "children": [
-            {
-              "id": "n4",
-              "text": "一、甄选的概念及其意义",
-              "stars": 1,
-              "detail": "<b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">1、目的：人职最优匹配。</font></b><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">2、复杂性：短时间、信息不对等情况下判断求职者未来达到优良绩效。</font></b></div><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">3、甄选是员工招募过程的后续阶段（招聘：1招募、2甄选、3录用、4评估）</font></b></div>",
-              "children": [
-                {
-                  "id": "n5",
-                  "text": "基本概念",
-                  "stars": 0,
-                  "detail": "甄选即雇佣和选择之意，也称筛选或选拔。指通过工具和手段对招募到的求职者进行观察和筛选。",
-                  "children": []
-                },
-                {
-                  "id": "n6",
-                  "text": "具体条件三要素",
-                  "stars": 0,
-                  "detail": "① 符合组织需要，是最恰当的职业空缺填补者；② 甄选过程复杂，决策本身总有风险；③ 目的在于谋求职位需求与求职者最优匹配。",
-                  "children": []
-                },
-                {
-                  "id": "n7",
-                  "text": "内涵要点",
-                  "stars": 0,
-                  "detail": "<font color=\"#2f80ed\">【</font><b><font color=\"#2f80ed\">重点】</font><font color=\"#ef4b5e\">不要把注意力过多放在对求职者的主观判断上，</font><font color=\"#1f9d6b\">要重点关注求职者条件和空缺岗位需要达到的各客观标准。</font></b>",
-                  "children": [
-                    {
-                      "id": "n8",
-                      "text": "【事实层】教材定义/原文",
-                      "stars": 0,
-                      "detail": "",
-                      "children": []
-                    }
-                  ]
-                }
-              ],
-              "color": ""
-            },
-            {
-              "id": "n9",
-              "text": "二、甄选的价值与意义",
-              "stars": 1,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n10",
-                  "text": "1、企业",
-                  "stars": 0,
-                  "detail": "1、符合企业需要的优秀员工是<font color=\"#ef4b5e\"><b>确保</b></font>组织战略<font color=\"#ef4b5e\"><b>目标实现</b></font>的<font color=\"#1f9d6b\"><b>最根本保障</b></font><div>了解：选择了正确的人，实际上就等于奠定了培养和开发的基础</div>",
-                  "children": []
-                },
-                {
-                  "id": "n11",
-                  "text": "2、企业",
-                  "stars": 0,
-                  "detail": "2、弥补甄选决策<font color=\"#ef4b5e\"><b>失误</b></font>的<font color=\"#ef4b5e\"><b>代价可能极高</b></font><div>决策失误代价高：<b><font color=\"#ef4b5e\" style=\"\">直接成本</font>（培训/岗位调整/重新雇用/劳动纠纷）+ <font color=\"#ef4b5e\" style=\"\">机会成本</font>（丧失良机甚至毁灭打击）</b>。</div>",
-                  "children": []
-                },
-                {
-                  "id": "n12",
-                  "text": "3、员工",
-                  "stars": 0,
-                  "detail": "<div>3、甄选决策<b><font color=\"#ef4b5e\">失误</font></b>可能会对<font color=\"#ef4b5e\"><b>员工</b></font>本人<b><font color=\"#ef4b5e\">造成伤害</font></b><br></div>了解：慎重正确的甄选决策是对求职者负责，属于组织勇于承担社会责任的表现。",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "id": "n13",
-              "text": "三、甄选的可靠性与有效性（信度 & 效度）",
-              "stars": 3,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n14",
-                  "text": "核心关系（必考）",
-                  "stars": 0,
-                  "detail": "信度是效度的必要条件，但不是充分条件。信度不好→效度一定差；效度好→信度一定较高；但信度高≠效度高。",
-                  "children": [
-                    {
-                      "id": "n15",
-                      "text": "【易混点】最高频",
-                      "stars": 0,
-                      "detail": "区分必要条件与充分条件。",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "id": "n16",
-                  "text": "信度（可靠性）：测试结果的一致性和稳定性",
-                  "stars": 0,
-                  "detail": "<font color=\"#e8821a\">信度：1不受随机误差干扰、2反复同一等值测试分数的一致性。</font><font color=\"#f5b301\">它是任何测试工具最基本的要求。</font><font color=\"#2f80ed\">不低于0.7视为信度较好。</font>",
-                  "children": [
-                    {
-                      "id": "n17",
-                      "text": "重测信度（再测信度）时间",
-                      "stars": 0,
-                      "detail": "同一测试不同时间对同一群体施测的结果一致性。<font color=\"#2f80ed\">半月到半年比较合适</font>",
-                      "children": []
-                    },
-                    {
-                      "id": "n18",
-                      "text": "复本信度   AB卷",
-                      "stars": 0,
-                      "detail": "两个等值但内容不同的测验版本结果一致性。",
-                      "children": []
-                    },
-                    {
-                      "id": "n19",
-                      "text": "内部一致性信度",
-                      "stars": 0,
-                      "detail": "同一测验内部各题目之间的一致性程度。很好的测试工具必须有很好的内部一致性。",
-                      "children": [
-                        {
-                          "id": "n20",
-                          "text": "半分信度",
-                          "stars": 0,
-                          "detail": "同一测试奇偶数题划分",
-                          "children": []
-                        },
-                        {
-                          "id": "n21",
-                          "text": "同质性信度  克伦巴赫α系数",
-                          "stars": 0,
-                          "detail": "所有题目考查同一内容",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n22",
-                      "text": "评价者信度",
-                      "stars": 0,
-                      "detail": "不同评价者对同一对象评分的一致性。",
-                      "children": []
-                    },
-                    {
-                      "id": "n23",
-                      "text": "高信度五个注意事项",
-                      "stars": 0,
-                      "detail": "1、过程标准化<div>2、样品代表性</div><div>3、良好的环境（心理和物理）</div><div>4、难度和长度</div><div>5、条目不宜多</div>",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "id": "n24",
-                  "text": "效度（有效性）：测量内容的准确程度",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n25",
-                      "text": "内容效度（内容与目标相关）",
-                      "stars": 0,
-                      "detail": "<div><b><font color=\"#e8821a\">好的内容效度：1范围内、2有代表性。</font></b></div><div><b><font color=\"#f5b301\">专家判断法。</font></b></div><div><b><font color=\"#2f80ed\">不适合：智力、领导力、诚实。</font></b></div><div><b><font color=\"#8b5cf6\">局限性：1基本假设已具备、2主观判断。</font></b></div>",
-                      "children": []
-                    },
-                    {
-                      "id": "n26",
-                      "text": "效标效度（效标关联效度）",
-                      "stars": 0,
-                      "detail": "测验分数与外部效标的相关程度，分同时效度和预测效度。",
-                      "children": [
-                        {
-                          "id": "n27",
-                          "text": "预测效度",
-                          "stars": 0,
-                          "detail": "<b>之前和之后的分数。<font color=\"#ef4b5e\">缺点：等待时间长</font></b>",
-                          "children": []
-                        },
-                        {
-                          "id": "n28",
-                          "text": "同时效度（同步效度）",
-                          "stars": 0,
-                          "detail": "<b>在岗两次</b>",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n29",
-                      "text": "构想效度（结构效度）",
-                      "stars": 0,
-                      "detail": "测验是否测量了理论构想的特质。<div>影响因素：1代表性不足、2代表性过宽。</div>",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "id": "n30",
-                  "text": "【口诀】信度四兄弟 / 效度三剑客",
-                  "stars": 0,
-                  "detail": "信度：重测、复本、内部一致、评价者→\"重复内评\"；效度：内容、效标(关联)、构想(结构)→\"内关结\"。",
-                  "children": []
-                }
-              ]
-            }
-          ]
+         "id": "n711",
+         "text": "绩效计划的概念",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>绩效计划</font>是绩效管理过程的<font color='#ef4b5e'>首要环节</font>，是<b>确定组织对员工的绩效期望并得到员工认可的过程</b>。"
         },
         {
-          "id": "n31",
-          "text": "第二节 甄选的主要方法",
-          "stars": 3,
-          "detail": "",
-          "children": [
-            {
-              "id": "n32",
-              "text": "一、心理测验",
-              "stars": 3,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n33",
-                  "text": "能力测试",
-                  "stars": 0,
-                  "detail": "一般能力（智力）测试 + 特殊能力（倾向）测试。",
-                  "children": [
-                    {
-                      "id": "n34",
-                      "text": "认知能力测试（脑力）前测试 必须有较高的预测试效度",
-                      "stars": 0,
-                      "detail": "最关注：语言理解、数学、推理。",
-                      "children": [
-                        {
-                          "id": "n35",
-                          "text": "一般认知能力测试（一般心理、智力、智商）",
-                          "stars": 0,
-                          "detail": "同时<b><font color=\"#1f9d6b\">多种</font></b>内容：记忆+口头表达+数学。",
-                          "children": []
-                        },
-                        {
-                          "id": "n36",
-                          "text": "特殊认知能力测试（特定新浪、能力倾向测试、职业能力倾向测试）",
-                          "stars": 0,
-                          "detail": "<b><font color=\"#1f9d6b\">特定</font></b>内容：归纳演绎、语言理解、空间关系、创造力、记忆力等。",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n37",
-                      "text": "运动和身体能力测试（体力）",
-                      "stars": 0,
-                      "detail": null,
-                      "children": [
-                        {
-                          "id": "n38",
-                          "text": "心理运动能力测试（心灵手巧）",
-                          "stars": 0,
-                          "detail": null,
-                          "children": []
-                        },
-                        {
-                          "id": "n39",
-                          "text": "身体运动能力测试（运动员）",
-                          "stars": 0,
-                          "detail": null,
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "n40",
-                  "text": "人格测试",
-                  "stars": 0,
-                  "detail": "<b><font color=\"#1f9d6b\">广义</font></b>人格<font color=\"#1f9d6b\"><b>有能力</b></font>及<font color=\"#1f9d6b\"><b>其他</b></font>、<b><font color=\"#ef4b5e\">狭义</font></b>人格只有<font color=\"#ef4b5e\"><b>其他</b></font><div><b style=\"\"><font color=\"#8b5cf6\">整体性、动态性、稳定性</font></b></div><div><b style=\"\"><font color=\"#2f80ed\">人格在很大程度上决定着一个人的行为方式，可判断能否胜任未来的职位。</font></b></div>",
-                  "children": [
-                    {
-                      "id": "n41",
-                      "text": "自陈量表法（自评）、评价量表发（他评）、投射法（自由）",
-                      "stars": 0,
-                      "detail": null,
-                      "children": []
-                    },
-                    {
-                      "id": "n42",
-                      "text": "MBTI人格类型测试",
-                      "stars": 0,
-                      "detail": "<b><font color=\"#ef4b5e\">内外</font></b>（内倾-外倾）&nbsp; &nbsp; &nbsp; &nbsp; （内部世界-外部世界）<b><font color=\"#ef4b5e\">有方向</font></b>（注意力集中方向）<div><font color=\"#ef4b5e\"><b>&nbsp; &nbsp; &nbsp; &nbsp;（<span style=\"font-family: inherit; font-size: 0.85rem;\">感觉-直觉</span></b></font><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\"><b>）</b></font><font color=\"rgba(0, 0, 0, 0)\">&nbsp; &nbsp; &nbsp; &nbsp;</font>（感觉经验-想象抽象）<b style=\"\"><font color=\"#ef4b5e\">获取信息</font></b>（获取信息方式）</span></div><div><span style=\"font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">（</font></b></span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">情</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">感-</span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">理</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">性（现：</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#1f9d6b\"><b>思考</b></font></span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">）</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">）</font></b>（</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">逻辑关系-价值重要</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"rgba(0, 0, 0, 0)\">）</font><b style=\"color: rgb(239, 75, 94);\">之中处理决策</b>（处理信息和做出决策的方式）</span></div><div><b><font color=\"#ef4b5e\"><span style=\"font-family: inherit; font-size: 0.85rem;\">（</span><span style=\"font-family: inherit; font-size: 0.85rem;\">判断-知觉</span></font></b><span style=\"font-family: inherit; font-size: 0.85rem;\"><b style=\"\"><font color=\"#ef4b5e\">）</font></b>（判断、计划、有目标-灵活、好奇、易冲动、适应强）</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\" style=\"font-weight: bold;\">对待外界 </font><font style=\"\">（表现对外界的方式）</font></span></div>",
-                      "children": []
-                    },
-                    {
-                      "id": "n43",
-                      "text": "“大五”人格理论",
-                      "stars": 0,
-                      "detail": "外向性、愉悦性、公正严谨性、神经质性和开放性（<b><font color=\"#ef4b5e\">雨神禁外放</font></b>）",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "id": "n44",
-                  "text": "职业兴趣测试 · 霍兰德六角形（【口诀】\"现实社会很残忍、企业转型需研究\"）",
-                  "stars": 3,
-                  "detail": "约翰·霍兰德提出六种基本职业兴趣类型，六角形中位置相邻相似、不相邻差异大。",
-                  "children": [
-                    {
-                      "id": "n45",
-                      "text": "R 现实型 / I 研究型 / A 艺术型",
-                      "stars": 0,
-                      "detail": "现实型：物体（技能性和技术性职业）<div>研究型：研究（研究类和工程设计职业）</div><div>艺术型：自由（文学艺术职业）</div>",
-                      "children": [
-                        {
-                          "id": "n46",
-                          "text": "工作样本测试",
-                          "stars": 0,
-                          "detail": "让候选人完成实际工作任务样本，直接观察工作表现。",
-                          "children": []
-                        },
-                        {
-                          "id": "n47",
-                          "text": "【关键区分】",
-                          "stars": 0,
-                          "detail": "工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。",
-                          "children": [
-                            {
-                              "id": "n48",
-                              "text": "【易混点】",
-                              "stars": 0,
-                              "detail": "实际 vs 模拟，常考对比。",
-                              "children": []
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n49",
-                      "text": "S 社会型 / E 企业型 / C 常规型",
-                      "stars": 0,
-                      "detail": "社会型：培训（教育咨询职业）<div>企业型：领导（企业领导和行政管理）</div><div>常规型：办事（办公室事务、图书管理、会计、统计）职业</div>",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "n50",
-              "text": "二、成绩测试",
-              "stars": 2,
-              "detail": "认知性测试&nbsp;&nbsp;<span style=\"font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\"><font color=\"#ef4b5e\">（熟练性测试 学绩测试）后测试 注重内容效度</font></span>",
-              "children": [
-                {
-                  "id": "n51",
-                  "text": "知识测试  笔试",
-                  "stars": 0,
-                  "detail": "测量候选人对特定领域知识的掌握程度（笔试为主）。<div><font color=\"#ef4b5e\"><b>从事任何类型的工作都需要具备一定的知识</b></font></div><div>综合知识测试、专业知识测试、外语测试。</div><div><b>并非所有的笔试都属于知识测试。（行政能力测试、申论）</b></div>",
-                  "children": []
-                },
-                {
-                  "id": "n52",
-                  "text": "工作样本测试  实际 实地 具体 动手",
-                  "stars": 0,
-                  "detail": "让候选人完成实际工作任务样本，直接观察工作表现。<div><b>效度高于认知能力测试和人格测试</b></div><div><font color=\"#1f9d6b\"><b>优点：效度最高</b></font></div><div><b style=\"\"><font color=\"#8b5cf6\">缺点：1适用性很低、2开发成本高。</font></b></div>",
-                  "children": []
-                },
-                {
-                  "id": "n53",
-                  "text": "【关键区分】",
-                  "stars": 0,
-                  "detail": "<b><font color=\"#ef4b5e\">工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。</font></b>",
-                  "children": [
-                    {
-                      "id": "n54",
-                      "text": "【易混点】",
-                      "stars": 0,
-                      "detail": "<b>实际 vs 模拟，常考对比。</b>",
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "n55",
-              "text": "三、评价中心技术",
-              "stars": 3,
-              "detail": "<span style=\"color: rgb(239, 75, 94); font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\">管理和团队、不是并列综合多种、校标效度很高&nbsp;&nbsp;</span><span style=\"font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\">模拟</span>",
-              "children": [
-                {
-                  "id": "n56",
-                  "text": "含义",
-                  "stars": 0,
-                  "detail": "也称管理评价中心技术，由多位评价者对于求职者在一系列练习中的表现进行评价。",
-                  "children": []
-                },
-                {
-                  "id": "n57",
-                  "text": "主要形式",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n58",
-                      "text": "公文筐测试（文件筐）最常用 最核心  无 3人际交往能力、5压力承受能力。",
-                      "stars": 0,
-                      "detail": "模拟管理者处理日常文书，考察计划/组织/分析/决策/书面沟通。最常考形式。<div><font color=\"#1f9d6b\"><b>优点：1高内容效度和效标效度、2场地要求不高、3表面效度高</b></font></div><div><font color=\"#8b5cf6\"><b>缺点：1编制成本高、平分困难、2无法人际交往、团队能力测试</b></font></div>",
-                      "children": []
-                    },
-                    {
-                      "id": "n59",
-                      "text": "无领导小组讨论（LGD）经常使用",
-                      "stars": 3,
-                      "detail": "<div><font color=\"#2f80ed\">集体讨论观察言行</font></div>一组候选人自由讨论无指定领导，考察沟通/影响力/团队合作/领导潜质。<div><b><font color=\"#ef4b5e\">五种形式：</font></b></div><div><b><font color=\"#ef4b5e\">1、开放式问题：全面性和针对性&nbsp; 考查思路 （什么样的领导是好领导？）</font></b></div><div><font color=\"#ef4b5e\"><b>2、两难性问题：两种互有利弊&nbsp; &nbsp; &nbsp;考查分析能力、语言表达能力、说服力（重视工作的领导好，还是重视人的领导好？）</b></font></div><div><font color=\"#ef4b5e\"><b>3、多项选择问题：重要性排序&nbsp; &nbsp; &nbsp;考查</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">抓&nbsp;</b><font color=\"#ef4b5e\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>本质能力&nbsp;</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">（多-本）</b></div><div><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">4、操作性问题：参与合作</b></div><div><b style=\"\"><font color=\"#ef4b5e\">5、资源争夺性问题：</font><font color=\"#2f80ed\">指定角色 </font><font color=\"#ef4b5e\">分析问题分析问题、逻辑思维、语言表达、辩论、说服、反应灵活性。</font></b></div><div><div><font color=\"#1f9d6b\"><b>优点（</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">全优</b><font color=\"#1f9d6b\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>）</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">：1领导能力、2问题解决能力、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#e8821a\">3人际交往能力</font></b><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#f5b301\">4行政管理能力、</font></b><b style=\"font-family: inherit; font-size: 0.85rem;\">5压力承受能力。</b></div><div><font color=\"#8b5cf6\"><b>缺点：1测试题目要求高、2评价者评分技术要求高、3被测试者有意识变现和掩饰自己</b></font></div></div>",
-                      "children": []
-                    },
-                    {
-                      "id": "n60",
-                      "text": "角色扮演 无 4行政管理能力",
-                      "stars": 0,
-                      "detail": "候选人在模拟情境扮演特定角色，考察应变/人际敏感度/问题解决。",
-                      "children": []
-                    },
-                    {
-                      "id": "n61",
-                      "text": "（二）改善面试效果的方法",
-                      "stars": 0,
-                      "detail": "",
-                      "children": [
-                        {
-                          "id": "n62",
-                          "text": "① 采用情境化结构面试",
-                          "stars": 0,
-                          "detail": "提前设计标准化问题和评分标准。",
-                          "children": []
-                        },
-                        {
-                          "id": "n63",
-                          "text": "② 面试前做好充分准备",
-                          "stars": 0,
-                          "detail": "审阅简历、明确考察要点。",
-                          "children": []
-                        },
-                        {
-                          "id": "n64",
-                          "text": "③ 系统培训面试考官",
-                          "stars": 0,
-                          "detail": "减少评价偏差。",
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "n65",
-              "text": "四、面试",
-              "stars": 3,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n66",
-                  "text": "（一）基本概念及类型",
-                  "stars": 0,
-                  "detail": "面试是迄今为止实践中运用<b><font color=\"#ef4b5e\">最广泛</font></b>的人员甄选方法，通过<font color=\"#ef4b5e\"><b>面对面</b></font>观察与问答评估候选人资格条件。",
-                  "children": [
-                    {
-                      "id": "n67",
-                      "text": "根据面试结构划分的面试类型",
-                      "stars": 3,
-                      "detail": "",
-                      "children": [
-                        {
-                          "id": "n68",
-                          "text": "非结构化面试 随性",
-                          "stars": 0,
-                          "detail": "<b><font color=\"#1f9d6b\">优点：自然顺畅、逻辑关系清晰、深入讨论</font></b><div><b><font color=\"#8b5cf6\">缺点：难确保公平、难确保都能被问到、考官个人影响、信度和效度比结构化低</font></b></div>",
-                          "children": []
-                        },
-                        {
-                          "id": "n69",
-                          "text": "结构化面试 标准",
-                          "stars": 0,
-                          "detail": "<b><font color=\"#ef4b5e\">和上面相反</font></b>",
-                          "children": []
-                        },
-                        {
-                          "id": "n70",
-                          "text": "半结构化面试 相结合",
-                          "stars": 0,
-                          "detail": "<b><font color=\"#ef4b5e\">结合了以上的优点</font></b>",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n71",
-                      "text": "根据面试组织形式划分的面试类型",
-                      "stars": 0,
-                      "detail": null,
-                      "children": [
-                        {
-                          "id": "n72",
-                          "text": "单独面试 1V1",
-                          "stars": 0,
-                          "detail": "",
-                          "children": []
-                        },
-                        {
-                          "id": "n73",
-                          "text": "系列面试 顺序",
-                          "stars": 0,
-                          "detail": "",
-                          "children": []
-                        },
-                        {
-                          "id": "n74",
-                          "text": "小组面试 多V1",
-                          "stars": 0,
-                          "detail": "",
-                          "children": []
-                        },
-                        {
-                          "id": "n75",
-                          "text": "集体面试 1V多 或 多V多",
-                          "stars": 0,
-                          "detail": "",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n76",
-                      "text": "特殊的面试形式",
-                      "stars": 0,
-                      "detail": null,
-                      "children": [
-                        {
-                          "id": "n77",
-                          "text": "压力面试",
-                          "stars": 0,
-                          "detail": null,
-                          "children": []
-                        },
-                        {
-                          "id": "n78",
-                          "text": "电话和网络视频面试",
-                          "stars": 0,
-                          "detail": null,
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "n79",
-                  "text": "（二）改善面试效果的方法",
-                  "stars": 0,
-                  "detail": "",
-                  "children": [
-                    {
-                      "id": "n80",
-                      "text": "① 采用情境化结构面试",
-                      "stars": 0,
-                      "detail": "提前设计标准化问题和评分标准。",
-                      "children": []
-                    },
-                    {
-                      "id": "n81",
-                      "text": "② 面试前做好充分准备",
-                      "stars": 0,
-                      "detail": "审阅简历、明确考察要点。",
-                      "children": [
-                        {
-                          "id": "n82",
-                          "text": "注意",
-                          "stars": 0,
-                          "detail": "预测效度通常较低，需与其他方法结合使用。",
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "id": "n83",
-                      "text": "③ 系统培训面试考官",
-                      "stars": 0,
-                      "detail": "减少评价偏差。",
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "id": "n84",
-                  "text": "【黄金结论】最佳甄选组合",
-                  "stars": 0,
-                  "detail": "研究表明：工作样本测试 + 高度结构化面试 + 认知能力测试 的综合组合，双度系数（效度）超过 0.6。",
-                  "children": []
-                }
-              ]
-            },
-            {
-              "id": "n85",
-              "text": "五、履历分析",
-              "stars": 1,
-              "detail": "",
-              "children": [
-                {
-                  "id": "n86",
-                  "text": "三要素",
-                  "stars": 0,
-                  "detail": "履历信息的收集、加权、计分。",
-                  "children": []
-                },
-                {
-                  "id": "n87",
-                  "text": "最新发展",
-                  "stars": 0,
-                  "detail": "大数据履历分析、AI 辅助筛选。",
-                  "children": []
-                },
-                {
-                  "id": "n88",
-                  "text": "注意",
-                  "stars": 0,
-                  "detail": "预测效度通常较低，需与其他方法结合使用。",
-                  "children": []
-                }
-              ]
-            }
-          ]
+         "id": "n712",
+         "text": "绩效计划的内容（三方面期望）",
+         "stars": 0,
+         "detail": "① 对员工<font color='#2f80ed'>工作成果</font>的期望；<br>② 对员工<font color='#2f80ed'>工作行为</font>的期望；<br>③ 对员工<font color='#2f80ed'>自身发展</font>的期望。"
         }
-      ]
+       ]
+      },
+      {
+       "id": "n713",
+       "text": "二、绩效监控与辅导",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n714",
+         "text": "绩效监控",
+         "stars": 0,
+         "detail": "管理者在过程中<b>持续追踪</b>员工进展，分直接介入与旁观两种角色。"
+        },
+        {
+         "id": "n715",
+         "text": "绩效辅导",
+         "stars": 0,
+         "detail": "管理者为员工提供<b>资源、建议、纠偏</b>，帮助达成目标；<font color='#1f9d6b'>辅导是监控的核心价值</font>。"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "n716",
+     "text": "第三节 绩效评价与绩效管理工具（本章核心·易出题）",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n717",
+       "text": "一、绩效评价技术（8 种·分 3 类）",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n718",
+         "text": "比较法（4 种）",
+         "stars": 0,
+         "detail": "① <font color='#2f80ed'>排序法</font>：从高到低排；<br>② <font color='#2f80ed'>交替排序法</font>：先挑最好/最差，交替排；<br>③ <font color='#2f80ed'>配对比较法</font>：两两相比；<br>④ <font color='#2f80ed'>强制分布法</font>：按比例分等（如 271）。"
+        },
+        {
+         "id": "n719",
+         "text": "量表法（3 种）",
+         "stars": 0,
+         "detail": "① <font color='#2f80ed'>图尺度评价法</font>（等级评价法）：<font color='#ef4b5e'>最简单最常用</font>，但易与战略偏离、受主观影响；<br>② <font color='#2f80ed'>行为锚定等级评价法</font>：行为量化、较准；<br>③ <font color='#2f80ed'>行为观察量表法</font>：计行为频次。"
+        },
+        {
+         "id": "n720",
+         "text": "描述法（1 种）",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>关键事件法</font>：记录特别好/特别坏的关键行为；<br>相关：<font color='#2f80ed'>不良事故评估法</font>（记差错）。"
+        },
+        {
+         "id": "n721",
+         "text": "绩效评价主体",
+         "stars": 0,
+         "detail": "评价者来源：<font color='#1f9d6b'>上级、下级、同事、本人、客户</font>。<br><font color='#8b5cf6'>注意：</font>多源评价可互补，但也更耗时。"
+        },
+        {
+         "id": "n722",
+         "text": "绩效评价常见误区（主观偏差）",
+         "stars": 0,
+         "detail": "<font color='#ef4b5e'>必考避坑：</font>晕轮效应、趋中倾向、过宽/过严倾向、刻板印象、首因效应、近因效应、类己效应、对比效应。"
+        }
+       ]
+      },
+      {
+       "id": "n723",
+       "text": "二、绩效管理工具（4 种）",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n724",
+         "text": "目标管理法 MBO",
+         "stars": 0,
+         "detail": "上下级共定目标，<font color='#2f80ed'>适合战略相对稳定期</font>；本质是目标分解与自我控制。"
+        },
+        {
+         "id": "n725",
+         "text": "标杆超越法",
+         "stars": 0,
+         "detail": "对照行业/<font color='#2f80ed'>标杆</font>找差距改进；<font color='#1f9d6b'>适合跟随者战略</font>。"
+        },
+        {
+         "id": "n726",
+         "text": "关键绩效指标法 KPI",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>关键绩效指标</font>：抓少数核心指标，<font color='#8b5cf6'>贯彻战略重点、而非面面俱到</font>。"
+        },
+        {
+         "id": "n727",
+         "text": "平衡计分卡法 BSC",
+         "stars": 0,
+         "detail": "从<font color='#8b5cf6'>四个角度</font>看企业：<font color='#2f80ed'>财务、客户、内部流程、学习与成长</font>。<br>四角度逻辑：要财务→靠客户→靠内部流程→靠学习成长。"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "n728",
+     "text": "第四节 绩效反馈面谈、绩效改进和结果分析应用",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n729",
+       "text": "一、绩效反馈面谈",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n730",
+         "text": "目的与原则",
+         "stars": 0,
+         "detail": "原则：<font color='#1f9d6b'>建立并维护信任、直接具体、双向交流、谈行为不谈个性</font>。"
+        },
+        {
+         "id": "n731",
+         "text": "技巧与误区",
+         "stars": 0,
+         "detail": "<font color='#ef4b5e'>误区：</font>单向灌输、避重就轻、翻旧账、对人不对事。应聚焦未来改进。"
+        }
+       ]
+      },
+      {
+       "id": "n732",
+       "text": "二、绩效改进",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n733",
+         "text": "概念",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>绩效改进</font>是<b>找差距、定计划</b>，制定实施针对性计划提高员工绩效。"
+        },
+        {
+         "id": "n734",
+         "text": "程序（5 步）",
+         "stars": 0,
+         "detail": "① 绩效诊断与分析；② 组建绩效改进部门；③ 选择改进方法；④ 实施改进；⑤ 评估效果。"
+        },
+        {
+         "id": "n735",
+         "text": "方法（4 种）",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>卓越绩效标准、六西格玛管理、ISO 质量管理体系、标杆超越</font>。"
+        }
+       ]
+      },
+      {
+       "id": "n736",
+       "text": "三、绩效考核结果的分析与应用",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n737",
+         "text": "结果分析矩阵（能力 × 态度 → 4 类）",
+         "stars": 0,
+         "detail": "① <font color='#1f9d6b'>贡献型</font>（能力强·态度好）：组织宝贵财富；<br>② <font color='#1f9d6b'>安分型</font>（能力弱·态度好）：培训锻炼提能力；<br>③ <font color='#ef4b5e'>冲锋型</font>（能力强·态度差）：危险信号，多沟通；<br>④ <font color='#ef4b5e'>刻苦型</font>（能力弱·态度差）：严管或淘汰。"
+        },
+        {
+         "id": "n738",
+         "text": "结果的应用",
+         "stars": 0,
+         "detail": "用于<font color='#1f9d6b'>招聘、培训、薪酬、晋升、人力资源规划</font>等环节。"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "n739",
+     "text": "第五节 特殊群体的绩效考核",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n740",
+       "text": "一、团队绩效考核",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n741",
+         "text": "团队的概念",
+         "stars": 0,
+         "detail": "<font color='#2f80ed'>团队</font>：两人以上、知识技能互补、有共同目标与可测量绩效目标的群体。"
+        },
+        {
+         "id": "n742",
+         "text": "知识型团队考核",
+         "stars": 0,
+         "detail": "指标四类：<font color='#2f80ed'>效益型、效率型、递延型、风险型</font>；重创新与长期产出。"
+        },
+        {
+         "id": "n743",
+         "text": "跨部门团队考核",
+         "stars": 0,
+         "detail": "多个部门协作，考核需<b>统一标准、跨职能评价</b>。"
+        }
+       ]
+      },
+      {
+       "id": "n744",
+       "text": "二、国际人力资源的绩效考核",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n745",
+         "text": "三大来源",
+         "stars": 0,
+         "detail": "评价来源：<font color='#2f80ed'>母公司、子公司、当地市场</font>。"
+        },
+        {
+         "id": "n746",
+         "text": "两大挑战",
+         "stars": 0,
+         "detail": "文化差异、海外环境不确定性。"
+        },
+        {
+         "id": "n747",
+         "text": "四大特点",
+         "stars": 0,
+         "detail": "更重结果、更长周期、多源评价、文化适配。"
+        }
+       ]
+      }
+     ]
     }
-  ]
-};;
+   ]
+  },
+  {
+   "id": "n126",
+   "text": "第五章 人力资源规划（平均分值 10 分）",
+   "stars": 3,
+   "detail": "<b><font color=\"#1f9d6b\">性价比高：内容相对少、好理解、分值10分，务必拿稳。</font></b>",
+   "children": [
+    {
+     "id": "n127",
+     "text": "第一节 人力资源规划及其供求预测",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n128",
+       "text": "一、人力资源规划概述",
+       "stars": 1,
+       "detail": "<b><font color=\"#2f80ed\">【学习思路】内涵 → 因素 → 方法（内容、因素、方法）</font></b>",
+       "children": [
+        {
+         "id": "n129",
+         "text": "概念：广义 vs 狭义",
+         "stars": 0,
+         "detail": "<b>广义：与人力资源管理问题有关的一切，都叫人力资源规划。<br>狭义：专指人员供求规划，也叫<font color=\"#2f80ed\">雇用规划</font>（本章重点研究狭义）。</b>",
+         "children": []
+        },
+        {
+         "id": "n130",
+         "text": "基本步骤顺序（必考）",
+         "stars": 0,
+         "detail": "<font color=\"#ef4b5e\"><b>顺序不能错：① 需求预测 → ② 供给预测 → ③ 平衡分析 → ④ 实施计划。</b></font><div>先有需求（为满足需求才获取供给），再做二者平衡，最后按计划实施。</div>",
+         "children": []
+        },
+        {
+         "id": "n131",
+         "text": "起点：从明确组织战略规划开始",
+         "stars": 0,
+         "detail": "<font color=\"#ef4b5e\"><b>人力资源规划是在组织战略规划已明确之后才开始的</b></font>（第四章：HRM 要为战略实现服务）。高频考点。",
+         "children": []
+        },
+        {
+         "id": "n132",
+         "text": "意义和作用（三句话）",
+         "stars": 0,
+         "detail": "<b>① 有助于实现组织战略目标；<br>② 有利于 HR 管理系统稳定一致有效、组织健康可持续发展；<br>③ 有助于合理控制人工成本（精简时公平、增加时科学）。</b>",
+         "children": []
+        }
+       ]
+      },
+      {
+       "id": "n133",
+       "text": "二、人力资源需求预测",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n134",
+         "text": "内涵（三人组）",
+         "stars": 0,
+         "detail": "<b>预测<font color=\"#ef4b5e\">未来需要</font>的员工数量、质量、结构（三人组：数量+质量+结构，缺一不可）。</b><div><font color=\"#1f9d6b\"><b>不考虑组织内部现有供给。</b></font></div>",
+         "children": []
+        },
+        {
+         "id": "n135",
+         "text": "影响因素（4个：产结战术）",
+         "stars": 0,
+         "detail": "<b>口诀「产结战术」：</b><br>① <font color=\"#2f80ed\">产</font>=产品和服务变化；② <font color=\"#2f80ed\">结</font>=组织结构调整/流程再造；③ <font color=\"#2f80ed\">战</font>=组织战略定位与调整（内部成长/收缩）；④ <font color=\"#2f80ed\">术</font>=技术变革（AI 替代等）。<br><font color=\"#ef4b5e\">考试灵活，常结合现实热点（数字化、AI）。</font>",
+         "children": []
+        },
+        {
+         "id": "n136",
+         "text": "方法（5个：2主观+3定量）",
+         "stars": 0,
+         "detail": "",
+         "children": [
+          {
+           "id": "n137",
+           "text": "① 经验判断法（定性·主观）",
+           "stars": 0,
+           "detail": "<font color=\"#1f9d6b\">最简单。</font>靠中高层管理者凭经验与直觉判断。<br><b>适用：</b><font color=\"#ef4b5e\">时间短、规模小、环境稳定、人员流动不高（口诀「短小稳定」）。</font>要求管理者经验丰富。",
+           "children": []
+          },
+          {
+           "id": "n138",
+           "text": "② 德尔菲法 / 专家预测（定性·主观）",
+           "stars": 0,
+           "detail": "<font color=\"#ef4b5e\">背对背、不见面、不开会、匿名、多轮进行</font>（不是集体讨论）。<br>专家数量<font color=\"#ef4b5e\">至少 20~30 人</font>且有代表性；主持人准备问题与资料。<br>优点：避免从众、省去开会麻烦、多轮更准确。美国兰德公司首创。",
+           "children": []
+          },
+          {
+           "id": "n139",
+           "text": "③ 比率分析法（定量）",
+           "stars": 0,
+           "detail": "基于关键经营指标与需求量之间的<font color=\"#2f80ed\">固定比率</font>（如师生比）。<br><font color=\"#ef4b5e\">假定：人均生产率保持不变。</font>（口诀「率率相对」）",
+           "children": []
+          },
+          {
+           "id": "n140",
+           "text": "④ 趋势预测法（定量）",
+           "stars": 0,
+           "detail": "简单的<font color=\"#2f80ed\">时间序列</font>分析（用过去几年数据预测未来）。<br>适用性强但较粗放、准确性有折扣。<br><font color=\"#ef4b5e\">假定：组织的技术等因素不会发生重大变化。</font>",
+           "children": []
+          },
+          {
+           "id": "n141",
+           "text": "⑤ 回归分析法（定量）",
+           "stars": 0,
+           "detail": "研究<font color=\"#2f80ed\">人力资源需求数量</font>与<font color=\"#2f80ed\">影响因素</font>之间的函数关系（Y = AX + B）。<br>按自变量数量分：<font color=\"#ef4b5e\">一元回归 / 多元回归（多元更准）</font>；按形式分：线性/非线性（实践中常用线性）。<br><font color=\"#8b5cf6\">注意：分类依据是「自变量数量」，不是线性/非线性。</font>",
+           "children": []
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "n142",
+       "text": "三、人力资源供给预测",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n143",
+         "text": "内涵（三人组）",
+         "stars": 0,
+         "detail": "预测<font color=\"#ef4b5e\">未来能够获得</font>的人员数量、质量、结构（同样是三人组：数量+质量+结构）。与需求预测区别：一个是「未来需要」，一个是「未来获得」。",
+         "children": []
+        },
+        {
+         "id": "n144",
+         "text": "影响因素（分内外两类）",
+         "stars": 0,
+         "detail": "<b>外部：</b>① 全国性劳动力市场（国家经济趋势、教育发展状况）；② 地区性劳动力市场（地区经济、人口、吸引力等）。<br><b>外部五来源：</b>各类学校毕业生、失业人员、退役军人、<font color=\"#ef4b5e\">其他组织准备离职换工作的人（非本组织！）</font>、<font color=\"#ef4b5e\">获得政策支持的外国人</font>。<br><b>内部：</b>员工技能数据库（满足本公司独特需要，有独特性）。",
+         "children": []
+        },
+        {
+         "id": "n145",
+         "text": "方法（2个）",
+         "stars": 0,
+         "detail": "",
+         "children": [
+          {
+           "id": "n146",
+           "text": "① 人员替换分析法",
+           "stars": 0,
+           "detail": "工具：<font color=\"#2f80ed\">人员替换关系图</font>。针对特定职位找合格候选人（看绩效+潜力）。<br>特点：<font color=\"#1f9d6b\">内部晋升</font>。优点：提高士气、降低招聘成本、提前做好准备。",
+           "children": []
+          },
+          {
+           "id": "n147",
+           "text": "② 马尔科夫分析法",
+           "stars": 0,
+           "detail": "工具：<font color=\"#2f80ed\">转移矩阵</font>（显示不同时间、不同职位类型的人员比例）。<br>每行 = 人「到哪里去」（反映职业发展通道）；每列 = 人「从哪里来」（反映员工来源）。<br><font color=\"#8b5cf6\">难度高于需求预测的2个方法，近年（2023）考过案例 8 分。</font>",
+           "children": []
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "n148",
+     "text": "第二节 人力资源供求平衡的基本对策与方法",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n149",
+       "text": "一、基本对策（三种情形）",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n150",
+         "text": "情形1：需求大于供给（人太少）",
+         "stars": 0,
+         "detail": "<font color=\"#ef4b5e\">口诀「人时效率有外包」：</font>① 先关门（降低员工流失率，留住人）；② 时 = 加班延长工时（短期/阶段用）；③ 招人（劳动合同/返聘退休人员/小时工，灵活招）；④ 技术 = 改进生产技术、优化流程、培训提效；⑤ 外包 = 非核心业务外包。",
+         "children": []
+        },
+        {
+         "id": "n151",
+         "text": "情形2：需求小于供给（人太多）",
+         "stars": 0,
+         "detail": "<font color=\"#ef4b5e\">口诀「人时培训」：</font>① 人 = 关门（冻结雇用、自然减员、鼓励提前退休、临时/永久裁员）；② 时 = 缩短工时（职位分享/工作分享，避免解雇）；③ 培训 = 对冗余人员培训、开展新业务。",
+         "children": []
+        },
+        {
+         "id": "n152",
+         "text": "情形3：结构不匹配（数量OK，技能不符）",
+         "stars": 0,
+         "detail": "<font color=\"#ef4b5e\">口诀「培训配置」：该走的走，该换的换。</font>① 优先培训开发（适应未来工作）；② 学不会/无希望的离开（自然退休、终止合同）；③ 外部招更合适的新员工；④ 扩张期把不合适的人替换到辅助岗位，核心岗位留给新招的有能力者。",
+         "children": []
+        }
+       ]
+      },
+      {
+       "id": "n153",
+       "text": "二、人力资源供求平衡的方法（两个汇总表）",
+       "stars": 1,
+       "detail": "<b>重点把握两个汇总表，具体方法偶尔考。</b>",
+       "children": [
+        {
+         "id": "n154",
+         "text": "汇总表1：减少未来人员过剩（9种，分3类）",
+         "stars": 0,
+         "detail": "按「速度 + 员工受伤害程度」分类：<br>① <font color=\"#ef4b5e\">快+伤害高</font>：裁员、降薪、降职；<br>② <font color=\"#ef4b5e\">快+伤害中</font>：职位调动、工作分享；<br>③ <font color=\"#1f9d6b\">慢+伤害低</font>：冻结雇用、自然减员、鼓励提前退休、重新培训。",
+         "children": []
+        },
+        {
+         "id": "n155",
+         "text": "汇总表2：避免未来人员短缺（7种，分4类）",
+         "stars": 0,
+         "detail": "按「速度 + 可撤回程度」分类：<br>① <font color=\"#ef4b5e\">快+高</font>：加班加点、雇用临时工、外包；<br>② <font color=\"#8b5cf6\">慢+高</font>（高配）：再培训后换岗；<br>③ <font color=\"#ef4b5e\">慢+中</font>（中流底住）：降低流动率；<br>④ <font color=\"#1f9d6b\">慢+低</font>（低新）：雇用新员工、技术创新。",
+         "children": []
+        },
+        {
+         "id": "n156",
+         "text": "具体方法（了解）",
+         "stars": 0,
+         "detail": "",
+         "children": [
+          {
+           "id": "n157",
+           "text": "裁员",
+           "stars": 0,
+           "detail": "企业强化竞争力、有计划、大量裁减。人员过剩的<font color=\"#ef4b5e\">典型反应</font>。<br>对员工伤害大（短期痛苦+长期心理创伤）；对企业也有负面影响：人才流失、破坏团队社会网络、剩余员工心存芥蒂/忠诚度降、企业形象受损。<br><font color=\"#1f9d6b\">应采用「手术式裁员」而非一刀切；提供合理解释、保证公平、人性化。</font>",
+           "children": []
+          },
+          {
+           "id": "n158",
+           "text": "提前退休计划",
+           "stars": 0,
+           "detail": "针对老员工（经验丰富、稳定性高，但成本高、阻碍新员工晋升）。<br><font color=\"#ef4b5e\">成功与否很大程度上取决于预测的准确性。</font>",
+           "children": []
+          },
+          {
+           "id": "n159",
+           "text": "雇用临时工 / 劳务派遣",
+           "stars": 0,
+           "detail": "<font color=\"#1f9d6b\">优点：</font>灵活、管理/财务负担低、小公司适用、培训成本低、局外人客观视角、多组织经验。<br><font color=\"#ef4b5e\">不利：</font>组织承诺与忠诚度低、与正式员工关系紧张合作低。<br>处理关键：裁员与雇临时工之间留较长缓冲时间；安抚正式员工（工作内容区分、让其感到被重视）；不形成低人一等印象。",
+           "children": []
+          },
+          {
+           "id": "n160",
+           "text": "业务外包与离岸经营",
+           "stars": 0,
+           "detail": "<font color=\"#1f9d6b\">外包好处：</font>控制直接雇用数量、提升 HR 管理价值、把 HR 从日常事务解放出来做战略。<br><font color=\"#ef4b5e\">离岸经营 = 跨国外包</font>（岗位从一国转移到另一国）；最初是简单窄岗位（生产、呼叫中心），现已延伸到高技能（证券分析、技术研发）。<br>成功关键：选靠谱外包商（规模大、历史久）、不涉及专利/安全保障、模块化独立工作、从小开始密切监督。",
+           "children": []
+          },
+          {
+           "id": "n161",
+           "text": "调整薪酬和工作时长",
+           "stars": 0,
+           "detail": "短缺 → 安排加班，给加班费（增加工时费用）；<br>过剩 → 缩短工时降薪（工作分享/职位分享，保持单位时间薪酬不变减少时间），或<font color=\"#8b5cf6\">非带薪休假</font>（降成本、避免解雇，但只解决短期问题、本身有争议）。",
+           "children": []
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "n162",
+   "text": "第六章 人员甄选（平均分值 12 分）",
+   "stars": 3,
+   "detail": "",
+   "children": [
+    {
+     "id": "n163",
+     "text": "第一节 甄选及其有效性",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n164",
+       "text": "一、甄选的概念及其意义",
+       "stars": 1,
+       "detail": "<b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">1、目的：人职最优匹配。</font></b><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">2、复杂性：短时间、信息不对等情况下判断求职者未来达到优良绩效。</font></b></div><div><b style=\"font-size: 14.4px;\"><font color=\"#8b5cf6\">3、甄选是员工招募过程的后续阶段（招聘：1招募、2甄选、3录用、4评估）</font></b></div>",
+       "children": [
+        {
+         "id": "n165",
+         "text": "基本概念",
+         "stars": 0,
+         "detail": "甄选即雇佣和选择之意，也称筛选或选拔。指通过工具和手段对招募到的求职者进行观察和筛选。",
+         "children": []
+        },
+        {
+         "id": "n166",
+         "text": "具体条件三要素",
+         "stars": 0,
+         "detail": "① 符合组织需要，是最恰当的职业空缺填补者；② 甄选过程复杂，决策本身总有风险；③ 目的在于谋求职位需求与求职者最优匹配。",
+         "children": []
+        },
+        {
+         "id": "n167",
+         "text": "内涵要点",
+         "stars": 0,
+         "detail": "<font color=\"#2f80ed\">【</font><b><font color=\"#2f80ed\">重点】</font><font color=\"#ef4b5e\">不要把注意力过多放在对求职者的主观判断上，</font><font color=\"#1f9d6b\">要重点关注求职者条件和空缺岗位需要达到的各客观标准。</font></b>",
+         "children": [
+          {
+           "id": "n168",
+           "text": "【事实层】教材定义/原文",
+           "stars": 0,
+           "detail": "",
+           "children": []
+          }
+         ]
+        }
+       ],
+       "color": ""
+      },
+      {
+       "id": "n169",
+       "text": "二、甄选的价值与意义",
+       "stars": 1,
+       "detail": "",
+       "children": [
+        {
+         "id": "n170",
+         "text": "1、企业",
+         "stars": 0,
+         "detail": "1、符合企业需要的优秀员工是<font color=\"#ef4b5e\"><b>确保</b></font>组织战略<font color=\"#ef4b5e\"><b>目标实现</b></font>的<font color=\"#1f9d6b\"><b>最根本保障</b></font><div>了解：选择了正确的人，实际上就等于奠定了培养和开发的基础</div>",
+         "children": []
+        },
+        {
+         "id": "n171",
+         "text": "2、企业",
+         "stars": 0,
+         "detail": "2、弥补甄选决策<font color=\"#ef4b5e\"><b>失误</b></font>的<font color=\"#ef4b5e\"><b>代价可能极高</b></font><div>决策失误代价高：<b><font color=\"#ef4b5e\" style=\"\">直接成本</font>（培训/岗位调整/重新雇用/劳动纠纷）+ <font color=\"#ef4b5e\" style=\"\">机会成本</font>（丧失良机甚至毁灭打击）</b>。</div>",
+         "children": []
+        },
+        {
+         "id": "n172",
+         "text": "3、员工",
+         "stars": 0,
+         "detail": "<div>3、甄选决策<b><font color=\"#ef4b5e\">失误</font></b>可能会对<font color=\"#ef4b5e\"><b>员工</b></font>本人<b><font color=\"#ef4b5e\">造成伤害</font></b><br></div>了解：慎重正确的甄选决策是对求职者负责，属于组织勇于承担社会责任的表现。",
+         "children": []
+        }
+       ]
+      },
+      {
+       "id": "n173",
+       "text": "三、甄选的可靠性与有效性（信度 & 效度）",
+       "stars": 3,
+       "detail": "",
+       "children": [
+        {
+         "id": "n174",
+         "text": "核心关系（必考）",
+         "stars": 0,
+         "detail": "信度是效度的必要条件，但不是充分条件。信度不好→效度一定差；效度好→信度一定较高；但信度高≠效度高。",
+         "children": [
+          {
+           "id": "n175",
+           "text": "【易混点】最高频",
+           "stars": 0,
+           "detail": "区分必要条件与充分条件。",
+           "children": []
+          }
+         ]
+        },
+        {
+         "id": "n176",
+         "text": "信度（可靠性）：测试结果的一致性和稳定性",
+         "stars": 0,
+         "detail": "<font color=\"#e8821a\">信度：1不受随机误差干扰、2反复同一等值测试分数的一致性。</font><font color=\"#f5b301\">它是任何测试工具最基本的要求。</font><font color=\"#2f80ed\">不低于0.7视为信度较好。</font>",
+         "children": [
+          {
+           "id": "n177",
+           "text": "重测信度（再测信度）时间",
+           "stars": 0,
+           "detail": "同一测试不同时间对同一群体施测的结果一致性。<font color=\"#2f80ed\">半月到半年比较合适</font>",
+           "children": []
+          },
+          {
+           "id": "n178",
+           "text": "复本信度   AB卷",
+           "stars": 0,
+           "detail": "两个等值但内容不同的测验版本结果一致性。",
+           "children": []
+          },
+          {
+           "id": "n179",
+           "text": "内部一致性信度",
+           "stars": 0,
+           "detail": "同一测验内部各题目之间的一致性程度。很好的测试工具必须有很好的内部一致性。",
+           "children": [
+            {
+             "id": "n180",
+             "text": "半分信度",
+             "stars": 0,
+             "detail": "同一测试奇偶数题划分",
+             "children": []
+            },
+            {
+             "id": "n181",
+             "text": "同质性信度  克伦巴赫α系数",
+             "stars": 0,
+             "detail": "所有题目考查同一内容",
+             "children": []
+            }
+           ]
+          },
+          {
+           "id": "n182",
+           "text": "评价者信度",
+           "stars": 0,
+           "detail": "不同评价者对同一对象评分的一致性。",
+           "children": []
+          },
+          {
+           "id": "n183",
+           "text": "高信度五个注意事项",
+           "stars": 0,
+           "detail": "1、过程标准化<div>2、样品代表性</div><div>3、良好的环境（心理和物理）</div><div>4、难度和长度</div><div>5、条目不宜多</div>",
+           "children": []
+          }
+         ]
+        },
+        {
+         "id": "n184",
+         "text": "效度（有效性）：测量内容的准确程度",
+         "stars": 0,
+         "detail": "",
+         "children": [
+          {
+           "id": "n185",
+           "text": "内容效度（内容与目标相关）",
+           "stars": 0,
+           "detail": "<div><b><font color=\"#e8821a\">好的内容效度：1范围内、2有代表性。</font></b></div><div><b><font color=\"#f5b301\">专家判断法。</font></b></div><div><b><font color=\"#2f80ed\">不适合：智力、领导力、诚实。</font></b></div><div><b><font color=\"#8b5cf6\">局限性：1基本假设已具备、2主观判断。</font></b></div>",
+           "children": []
+          },
+          {
+           "id": "n186",
+           "text": "效标效度（效标关联效度）",
+           "stars": 0,
+           "detail": "测验分数与外部效标的相关程度，分同时效度和预测效度。",
+           "children": [
+            {
+             "id": "n187",
+             "text": "预测效度",
+             "stars": 0,
+             "detail": "<b>之前和之后的分数。<font color=\"#ef4b5e\">缺点：等待时间长</font></b>",
+             "children": []
+            },
+            {
+             "id": "n188",
+             "text": "同时效度（同步效度）",
+             "stars": 0,
+             "detail": "<b>在岗两次</b>",
+             "children": []
+            }
+           ]
+          },
+          {
+           "id": "n189",
+           "text": "构想效度（结构效度）",
+           "stars": 0,
+           "detail": "测验是否测量了理论构想的特质。<div>影响因素：1代表性不足、2代表性过宽。</div>",
+           "children": []
+          }
+         ]
+        },
+        {
+         "id": "n190",
+         "text": "【口诀】信度四兄弟 / 效度三剑客",
+         "stars": 0,
+         "detail": "信度：重测、复本、内部一致、评价者→\"重复内评\"；效度：内容、效标(关联)、构想(结构)→\"内关结\"。",
+         "children": []
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "n191",
+     "text": "第二节 甄选的主要方法",
+     "stars": 3,
+     "detail": "",
+     "children": [
+      {
+       "id": "n192",
+       "text": "一、心理测验",
+       "stars": 3,
+       "detail": "",
+       "children": [
+        {
+         "id": "n193",
+         "text": "能力测试",
+         "stars": 0,
+         "detail": "一般能力（智力）测试 + 特殊能力（倾向）测试。",
+         "children": [
+          {
+           "id": "n194",
+           "text": "认知能力测试（脑力）前测试 必须有较高的预测试效度",
+           "stars": 0,
+           "detail": "最关注：语言理解、数学、推理。",
+           "children": [
+            {
+             "id": "n195",
+             "text": "一般认知能力测试（一般心理、智力、智商）",
+             "stars": 0,
+             "detail": "同时<b><font color=\"#1f9d6b\">多种</font></b>内容：记忆+口头表达+数学。",
+             "children": []
+            },
+            {
+             "id": "n196",
+             "text": "特殊认知能力测试（特定新浪、能力倾向测试、职业能力倾向测试）",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">特定</font></b>内容：归纳演绎、语言理解、空间关系、创造力、记忆力等。",
+             "children": []
+            }
+           ]
+          },
+          {
+           "id": "n197",
+           "text": "运动和身体能力测试（体力）",
+           "stars": 0,
+           "detail": null,
+           "children": [
+            {
+             "id": "n198",
+             "text": "心理运动能力测试（心灵手巧）",
+             "stars": 0,
+             "detail": null,
+             "children": []
+            },
+            {
+             "id": "n199",
+             "text": "身体运动能力测试（运动员）",
+             "stars": 0,
+             "detail": null,
+             "children": []
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "n200",
+         "text": "人格测试",
+         "stars": 0,
+         "detail": "<b><font color=\"#1f9d6b\">广义</font></b>人格<font color=\"#1f9d6b\"><b>有能力</b></font>及<font color=\"#1f9d6b\"><b>其他</b></font>、<b><font color=\"#ef4b5e\">狭义</font></b>人格只有<font color=\"#ef4b5e\"><b>其他</b></font><div><b style=\"\"><font color=\"#8b5cf6\">整体性、动态性、稳定性</font></b></div><div><b style=\"\"><font color=\"#2f80ed\">人格在很大程度上决定着一个人的行为方式，可判断能否胜任未来的职位。</font></b></div>",
+         "children": [
+          {
+           "id": "n201",
+           "text": "自陈量表法（自评）、评价量表发（他评）、投射法（自由）",
+           "stars": 0,
+           "detail": null,
+           "children": []
+          },
+          {
+           "id": "n202",
+           "text": "MBTI人格类型测试",
+           "stars": 0,
+           "detail": "<b><font color=\"#ef4b5e\">内外</font></b>（内倾-外倾）&nbsp; &nbsp; &nbsp; &nbsp; （内部世界-外部世界）<b><font color=\"#ef4b5e\">有方向</font></b>（注意力集中方向）<div><font color=\"#ef4b5e\"><b>&nbsp; &nbsp; &nbsp; &nbsp;（<span style=\"font-family: inherit; font-size: 0.85rem;\">感觉-直觉</span></b></font><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\"><b>）</b></font><font color=\"rgba(0, 0, 0, 0)\">&nbsp; &nbsp; &nbsp; &nbsp;</font>（感觉经验-想象抽象）<b style=\"\"><font color=\"#ef4b5e\">获取信息</font></b>（获取信息方式）</span></div><div><span style=\"font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">（</font></b></span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">情</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">感-</span><b style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\">理</font></b><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">性（现：</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#1f9d6b\"><b>思考</b></font></span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">）</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><b><font color=\"#ef4b5e\">）</font></b>（</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\">逻辑关系-价值重要</span><span style=\"color: var(--ink); font-family: inherit; font-size: 0.85rem;\"><font color=\"rgba(0, 0, 0, 0)\">）</font><b style=\"color: rgb(239, 75, 94);\">之中处理决策</b>（处理信息和做出决策的方式）</span></div><div><b><font color=\"#ef4b5e\"><span style=\"font-family: inherit; font-size: 0.85rem;\">（</span><span style=\"font-family: inherit; font-size: 0.85rem;\">判断-知觉</span></font></b><span style=\"font-family: inherit; font-size: 0.85rem;\"><b style=\"\"><font color=\"#ef4b5e\">）</font></b>（判断、计划、有目标-灵活、好奇、易冲动、适应强）</span><span style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#ef4b5e\" style=\"font-weight: bold;\">对待外界 </font><font style=\"\">（表现对外界的方式）</font></span></div>",
+           "children": []
+          },
+          {
+           "id": "n203",
+           "text": "“大五”人格理论",
+           "stars": 0,
+           "detail": "外向性、愉悦性、公正严谨性、神经质性和开放性（<b><font color=\"#ef4b5e\">雨神禁外放</font></b>）",
+           "children": []
+          }
+         ]
+        },
+        {
+         "id": "n204",
+         "text": "职业兴趣测试 · 霍兰德六角形（【口诀】\"现实社会很残忍、企业转型需研究\"）",
+         "stars": 3,
+         "detail": "约翰·霍兰德提出六种基本职业兴趣类型，六角形中位置相邻相似、不相邻差异大。",
+         "children": [
+          {
+           "id": "n205",
+           "text": "R 现实型 / I 研究型 / A 艺术型",
+           "stars": 0,
+           "detail": "现实型：物体（技能性和技术性职业）<div>研究型：研究（研究类和工程设计职业）</div><div>艺术型：自由（文学艺术职业）</div>",
+           "children": [
+            {
+             "id": "n206",
+             "text": "工作样本测试",
+             "stars": 0,
+             "detail": "让候选人完成实际工作任务样本，直接观察工作表现。",
+             "children": []
+            },
+            {
+             "id": "n207",
+             "text": "【关键区分】",
+             "stars": 0,
+             "detail": "工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。",
+             "children": [
+              {
+               "id": "n208",
+               "text": "【易混点】",
+               "stars": 0,
+               "detail": "实际 vs 模拟，常考对比。",
+               "children": []
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "id": "n209",
+           "text": "S 社会型 / E 企业型 / C 常规型",
+           "stars": 0,
+           "detail": "社会型：培训（教育咨询职业）<div>企业型：领导（企业领导和行政管理）</div><div>常规型：办事（办公室事务、图书管理、会计、统计）职业</div>",
+           "children": []
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "n210",
+       "text": "二、成绩测试",
+       "stars": 2,
+       "detail": "认知性测试&nbsp;&nbsp;<span style=\"font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\"><font color=\"#ef4b5e\">（熟练性测试 学绩测试）后测试 注重内容效度</font></span>",
+       "children": [
+        {
+         "id": "n211",
+         "text": "知识测试  笔试",
+         "stars": 0,
+         "detail": "测量候选人对特定领域知识的掌握程度（笔试为主）。<div><font color=\"#ef4b5e\"><b>从事任何类型的工作都需要具备一定的知识</b></font></div><div>综合知识测试、专业知识测试、外语测试。</div><div><b>并非所有的笔试都属于知识测试。（行政能力测试、申论）</b></div>",
+         "children": []
+        },
+        {
+         "id": "n212",
+         "text": "工作样本测试  实际 实地 具体 动手",
+         "stars": 0,
+         "detail": "让候选人完成实际工作任务样本，直接观察工作表现。<div><b>效度高于认知能力测试和人格测试</b></div><div><font color=\"#1f9d6b\"><b>优点：效度最高</b></font></div><div><b style=\"\"><font color=\"#8b5cf6\">缺点：1适用性很低、2开发成本高。</font></b></div>",
+         "children": []
+        },
+        {
+         "id": "n213",
+         "text": "【关键区分】",
+         "stars": 0,
+         "detail": "<b><font color=\"#ef4b5e\">工作样本=实际工作任务；评价中心=模拟工作任务。评价中心的重要基石是工作样本测试。</font></b>",
+         "children": [
+          {
+           "id": "n214",
+           "text": "【易混点】",
+           "stars": 0,
+           "detail": "<b>实际 vs 模拟，常考对比。</b>",
+           "children": []
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "n215",
+       "text": "三、评价中心技术",
+       "stars": 3,
+       "detail": "<span style=\"color: rgb(239, 75, 94); font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\">管理和团队、不是并列综合多种、校标效度很高&nbsp;&nbsp;</span><span style=\"font-size: 14.4px; font-weight: 700; background-color: rgb(238, 244, 255);\">模拟</span>",
+       "children": [
+        {
+         "id": "n216",
+         "text": "含义",
+         "stars": 0,
+         "detail": "也称管理评价中心技术，由多位评价者对于求职者在一系列练习中的表现进行评价。",
+         "children": []
+        },
+        {
+         "id": "n217",
+         "text": "主要形式",
+         "stars": 0,
+         "detail": "",
+         "children": [
+          {
+           "id": "n218",
+           "text": "公文筐测试（文件筐）最常用 最核心  无 3人际交往能力、5压力承受能力。",
+           "stars": 0,
+           "detail": "模拟管理者处理日常文书，考察计划/组织/分析/决策/书面沟通。最常考形式。<div><font color=\"#1f9d6b\"><b>优点：1高内容效度和效标效度、2场地要求不高、3表面效度高</b></font></div><div><font color=\"#8b5cf6\"><b>缺点：1编制成本高、平分困难、2无法人际交往、团队能力测试</b></font></div>",
+           "children": []
+          },
+          {
+           "id": "n219",
+           "text": "无领导小组讨论（LGD）经常使用",
+           "stars": 3,
+           "detail": "<div><font color=\"#2f80ed\">集体讨论观察言行</font></div>一组候选人自由讨论无指定领导，考察沟通/影响力/团队合作/领导潜质。<div><b><font color=\"#ef4b5e\">五种形式：</font></b></div><div><b><font color=\"#ef4b5e\">1、开放式问题：全面性和针对性&nbsp; 考查思路 （什么样的领导是好领导？）</font></b></div><div><font color=\"#ef4b5e\"><b>2、两难性问题：两种互有利弊&nbsp; &nbsp; &nbsp;考查分析能力、语言表达能力、说服力（重视工作的领导好，还是重视人的领导好？）</b></font></div><div><font color=\"#ef4b5e\"><b>3、多项选择问题：重要性排序&nbsp; &nbsp; &nbsp;考查</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">抓&nbsp;</b><font color=\"#ef4b5e\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>本质能力&nbsp;</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">（多-本）</b></div><div><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(239, 75, 94);\">4、操作性问题：参与合作</b></div><div><b style=\"\"><font color=\"#ef4b5e\">5、资源争夺性问题：</font><font color=\"#2f80ed\">指定角色 </font><font color=\"#ef4b5e\">分析问题分析问题、逻辑思维、语言表达、辩论、说服、反应灵活性。</font></b></div><div><div><font color=\"#1f9d6b\"><b>优点（</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">全优</b><font color=\"#1f9d6b\" style=\"font-family: inherit; font-size: 0.85rem;\"><b>）</b></font><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">：1领导能力、2问题解决能力、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#e8821a\">3人际交往能力</font></b><b style=\"font-family: inherit; font-size: 0.85rem; color: rgb(31, 157, 107);\">、</b><b style=\"font-family: inherit; font-size: 0.85rem;\"><font color=\"#f5b301\">4行政管理能力、</font></b><b style=\"font-family: inherit; font-size: 0.85rem;\">5压力承受能力。</b></div><div><font color=\"#8b5cf6\"><b>缺点：1测试题目要求高、2评价者评分技术要求高、3被测试者有意识变现和掩饰自己</b></font></div></div>",
+           "children": []
+          },
+          {
+           "id": "n220",
+           "text": "角色扮演 无 4行政管理能力",
+           "stars": 0,
+           "detail": "候选人在模拟情境扮演特定角色，考察应变/人际敏感度/问题解决。",
+           "children": []
+          },
+          {
+           "id": "n221",
+           "text": "（二）改善面试效果的方法",
+           "stars": 0,
+           "detail": "",
+           "children": [
+            {
+             "id": "n222",
+             "text": "① 采用情境化结构面试",
+             "stars": 0,
+             "detail": "提前设计标准化问题和评分标准。",
+             "children": []
+            },
+            {
+             "id": "n223",
+             "text": "② 面试前做好充分准备",
+             "stars": 0,
+             "detail": "审阅简历、明确考察要点。",
+             "children": []
+            },
+            {
+             "id": "n224",
+             "text": "③ 系统培训面试考官",
+             "stars": 0,
+             "detail": "减少评价偏差。",
+             "children": []
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "id": "n225",
+       "text": "四、面试",
+       "stars": 3,
+       "detail": "",
+       "children": [
+        {
+         "id": "n226",
+         "text": "（一）基本概念及类型",
+         "stars": 0,
+         "detail": "面试是迄今为止实践中运用<b><font color=\"#ef4b5e\">最广泛</font></b>的人员甄选方法，通过<font color=\"#ef4b5e\"><b>面对面</b></font>观察与问答评估候选人资格条件。",
+         "children": [
+          {
+           "id": "n227",
+           "text": "根据面试结构划分的面试类型",
+           "stars": 3,
+           "detail": "",
+           "children": [
+            {
+             "id": "n228",
+             "text": "非结构化面试 随性",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">优点：自然顺畅、逻辑关系清晰、深入讨论</font></b><div><b><font color=\"#8b5cf6\">缺点：难确保公平、难确保都能被问到、考官个人影响、信度和效度比结构化低</font></b></div>",
+             "children": []
+            },
+            {
+             "id": "n229",
+             "text": "结构化面试 标准",
+             "stars": 0,
+             "detail": "<b><font color=\"#ef4b5e\">和上面相反</font></b>",
+             "children": []
+            },
+            {
+             "id": "n230",
+             "text": "半结构化面试 相结合",
+             "stars": 0,
+             "detail": "<b><font color=\"#ef4b5e\">结合了以上的优点</font></b>",
+             "children": []
+            }
+           ]
+          },
+          {
+           "id": "n231",
+           "text": "根据面试组织形式划分的面试类型",
+           "stars": 0,
+           "detail": null,
+           "children": [
+            {
+             "id": "n232",
+             "text": "单独面试 1V1 比较常见",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">优点:注意力集中、连续逻辑好。</font></b><div><b><font color=\"#ef4b5e\">缺点：进展不顺手、决策的准确性。</font></b></div>",
+             "children": []
+            },
+            {
+             "id": "n233",
+             "text": "系列面试 顺序多轮",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">优点：确保有效性、避免误差</font></b><div><b><font color=\"#ef4b5e\">缺点：人员多，时间长</font></b></div>",
+             "children": []
+            },
+            {
+             "id": "n234",
+             "text": "小组面试 多V1",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">优点：相互补充、问题全面、深入</font></b><div><b><font color=\"#ef4b5e\">缺点：反复回答、问题相同、压力大、紧张拘谨</font></b></div>",
+             "children": []
+            },
+            {
+             "id": "n235",
+             "text": "集体面试 1V多 或 多V多",
+             "stars": 0,
+             "detail": "<b><font color=\"#1f9d6b\">优点：考查群体中思维、行为，考查人际关系、语言表达</font></b><div><b><font color=\"#ef4b5e\">缺点：对其他被面试者产生影响</font></b></div>",
+             "children": []
+            }
+           ]
+          },
+          {
+           "id": "n236",
+           "text": "特殊的面试形式",
+           "stars": 0,
+           "detail": null,
+           "children": [
+            {
+             "id": "n237",
+             "text": "压力面试",
+             "stars": 0,
+             "detail": "<b><font color=\"#ef4b5e\">掌控不好，不要执行。</font><font color=\"#1f9d6b\">如需执行，先培训。</font></b>",
+             "children": []
+            },
+            {
+             "id": "n238",
+             "text": "电话和网络视频面试",
+             "stars": 0,
+             "detail": null,
+             "children": []
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "id": "n239",
+         "text": "（二）改善面试效果的方法",
+         "stars": 0,
+         "detail": "<br>",
+         "children": [
+          {
+           "id": "n240",
+           "text": "① 采用情境化结构面试 行为事件面试技术",
+           "stars": 0,
+           "detail": "<b>结果话面试的一种</b><div><b>预测效度较高</b></div><div>原则：<font color=\"#1f9d6b\"><b>STAR</b></font>(<b><font color=\"#1f9d6b\">S</font></b>ituation=<b>环境</b>、<font color=\"#1f9d6b\"><b>T</b></font>ask=<b>任务</b>、<b><font color=\"#1f9d6b\">A</font></b>ction=<b>行动</b>、<b><font color=\"#1f9d6b\">R</font></b>esult=<b>结果</b>)</div><div>类型：过去导向型、未来导向型 <b>过去调度&gt;未来效度</b></div>",
+           "children": []
+          },
+          {
+           "id": "n241",
+           "text": "② 面试前做好充分准备",
+           "stars": 0,
+           "detail": "<b>1时间场地资料、2准备问题、来源简历和职位说明书。</b>",
+           "children": []
+          },
+          {
+           "id": "n242",
+           "text": "③ 系统培训面试考官",
+           "stars": 0,
+           "detail": "面试易错：1话多、2问题不一致、收集信息不一样、3提问无关职责、4能力过于自信、5受到被面者干扰、6前一位影响后一位。",
+           "children": []
+          }
+         ]
+        },
+        {
+         "id": "n243",
+         "text": "【黄金结论】最佳甄选组合",
+         "stars": 0,
+         "detail": "研究表明：工作样本测试 + 高度结构化面试 + 认知能力测试 的综合组合，双度系数（效度）超过 0.6。",
+         "children": []
+        }
+       ]
+      },
+      {
+       "id": "n244",
+       "text": "五、履历分析",
+       "stars": 1,
+       "detail": "<b>最基本假设是一个人的行为具有一致性。 又称资历分析或评价技术</b>",
+       "children": [
+        {
+         "id": "n245",
+         "text": "三要素",
+         "stars": 0,
+         "detail": "<b>履历信息的真实、全面、相关</b>",
+         "children": []
+        },
+        {
+         "id": "n246",
+         "text": "最新发展",
+         "stars": 0,
+         "detail": "<b>目标履历分析法：行为和兴趣方面分析</b>",
+         "children": []
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+};
+;;
 EMBEDDED.rev = 6;
 
 /* ---------- 数据源 / 模式 ---------- */
