@@ -367,11 +367,11 @@ function N(text, stars=0, detail=null, children=[]) {
    来自用户导出的彩色 JSON，含 <font color> + <b> 富文本标注。
    线上 data.js 同步成功后会被更新版本覆盖。 */
 
-const EMBEDDED = const EMBEDDED = {
+const EMBEDDED = {
  "id": "n125",
  "text": "中级经济师（人力）备考思维导图",
  "isBook": true,
- "rev": 18,
+ "rev": 20,
  "children": [
   {
    "id": "n701",
@@ -1632,22 +1632,29 @@ function liveBase(){
 const tree = document.getElementById('tree');
 let _anchorId = null;   // 指定重渲染后要"钉住"的节点，避免页面跳动找不到位置
 function render() {
-  const savedY = window.scrollY;
-  let prevTop = null;
-  if (_anchorId) {
-    const prev = tree.querySelector('[data-id="' + _anchorId + '"]');
-    if (prev) prevTop = prev.getBoundingClientRect().top;
+  try {
+    const savedY = window.scrollY;
+    let prevTop = null;
+    if (_anchorId) {
+      const prev = tree.querySelector('[data-id="' + _anchorId + '"]');
+      if (prev) prevTop = prev.getBoundingClientRect().top;
+    }
+    tree.innerHTML = '';
+    if(!data || !Array.isArray(data.children)){ throw new Error('data 无效，无法渲染'); }
+    byId = {}; (function i(n){ byId[n.id]=n; n.children.forEach(i); })(data);   // 重建 id 映射
+    data.children.forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
+    if (prevTop !== null && _anchorId) {
+      const now = tree.querySelector('[data-id="' + _anchorId + '"]');
+      if (now) window.scrollBy(0, now.getBoundingClientRect().top - prevTop);
+    } else {
+      window.scrollTo(0, savedY);   // 兜底：绝对恢复滚动位置，绝不跳页
+    }
+    _anchorId = null;
+  } catch(e) {
+    console.error('[mindmap] render 失败', e);
+    tree.innerHTML = '<div style="padding:20px;color:#ef4b5e;font-size:1rem;line-height:1.6">⚠️ 渲染出错：' + ((e && e.message) || '未知错误') + '<br>建议：先点「导出 JSON」备份 → 再点「同步更新」或按 F5 刷新。<br>如仍空白，请清除浏览器缓存后重开。</div>';
+    showStatus('渲染出错，已显示提示', false);
   }
-  tree.innerHTML = '';
-  byId = {}; (function i(n){ byId[n.id]=n; n.children.forEach(i); })(data);   // 重建 id 映射
-  data.children.forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
-  if (prevTop !== null && _anchorId) {
-    const now = tree.querySelector('[data-id="' + _anchorId + '"]');
-    if (now) window.scrollBy(0, now.getBoundingClientRect().top - prevTop);
-  } else {
-    window.scrollTo(0, savedY);   // 兜底：绝对恢复滚动位置，绝不跳页
-  }
-  _anchorId = null;
 }
 function renderNode(node, lv) {
   const wrap = document.createElement('div');
@@ -1837,7 +1844,20 @@ function toggleReading(){
 /* ---------- 持久化（本机工作副本） ---------- */
 const KEY = 'jj_mindmap_shared';
 function saveLocal(){ if(!data) return; localStorage.setItem(KEY, JSON.stringify(data)); flashSaved(); }
-function readLocal(){ try{ const s=localStorage.getItem(KEY); if(s){ const d=JSON.parse(s); if(d&&d.text){ if(!d.isBook) return null; return d; } } }catch(e){} return null; }
+function readLocal(){
+  try{
+    const s = localStorage.getItem(KEY);
+    if(!s) return null;
+    const d = JSON.parse(s);
+    // 严格校验：必须是根对象，防止单节点/损坏数据覆盖导致白屏
+    if(d && typeof d === 'object' && d.isBook === true && Array.isArray(d.children) && typeof d.text === 'string' && typeof d.rev === 'number'){
+      return d;
+    }
+    console.warn('[mindmap] localStorage 数据格式异常，已自动清除，避免白屏');
+    localStorage.removeItem(KEY);
+  }catch(e){ console.warn('[mindmap] localStorage 读取失败', e); }
+  return null;
+}
 function flashSaved(){
   const h=document.querySelector('.banner h1'); const old=h.innerHTML;
   h.innerHTML='✓ 已保存到本机'; setTimeout(()=>h.innerHTML=old,900);
@@ -1981,7 +2001,14 @@ async function uploadSB(path, content){
 }
 function onLive(){
   const live = window.MAP_DATA;
-  if(!live || !live.text){ showStatus('加载失败，显示内置快照', false); return; }
+  if(!live || !live.text || !Array.isArray(live.children)){
+    console.warn('[mindmap] 线上数据无效，回退到内置快照');
+    data = deepCopy(EMBEDDED); data.rev = EMBEDDED.rev;
+    saveLocal();
+    render();
+    showStatus('线上数据异常，已显示内置快照 v'+EMBEDDED.rev, false);
+    return;
+  }
   LIVE_REV = live.rev || LIVE_REV;
   const local = readLocal();
   const localRev = local ? (local.rev||0) : 0;
