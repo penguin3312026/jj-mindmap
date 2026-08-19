@@ -19,6 +19,10 @@
 
   /* ---------- 顶栏 banner ---------- */
   .banner{position:sticky;top:0;z-index:60;
+  .bare .banner{display:none;}
+  body.bare{background:#fff;}
+  .bare .canvas{margin:0;padding:8px 6px;}
+  .mm-ph{padding:28px 12px;color:#64748b;font-size:.95rem;text-align:center;}
     background:linear-gradient(120deg,#6d5dd3 0%,#5b8def 55%,#3aa0c9 100%);
     color:#fff;padding:14px 18px 12px;box-shadow:0 6px 20px rgba(80,90,160,.22);}
   .banner h1{font-size:1.12rem;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
@@ -1623,7 +1627,8 @@ EMBEDDED.rev = 6;
 const HOST = 'https://penguin3312026.github.io/jj-mindmap/';
 const IS_LOCAL = location.protocol === 'file:';
 const params = new URLSearchParams(location.search);
-const IS_READER = params.has('reader');           // 读者版：纯查看，无编辑控件
+const IS_READER = params.has('reader') || params.has('chapter');  // chapter 嵌入态也强制只读
+const IS_BARE   = params.has('bare')   || params.has('chapter');  // 嵌入 iframe 时隐藏顶栏
 const SRC = params.get('src');                     // 可选：自定义数据源地址（如 Supabase Storage）
 let data = null;
 let LIVE_REV = EMBEDDED.rev;
@@ -1665,6 +1670,8 @@ function liveBase(){
 /* ---------- 渲染 ---------- */
 const tree = document.getElementById('tree');
 let _anchorId = null;   // 指定重渲染后要"钉住"的节点，避免页面跳动找不到位置
+function parseChapterNo(t){ if(!t) return -1; const m=String(t).match(/第\s*(\d+)\s*章/); return m?parseInt(m[1],10):-1; }
+function postHeight(){ try{ if(window.parent && window.parent!==window){ window.parent.postMessage({type:'mindmap-resize', ch: (params.get('chapter')||''), height: document.documentElement.scrollHeight}, '*'); } }catch(_){} }
 function render() {
   try {
     const savedY = window.scrollY;
@@ -1675,8 +1682,16 @@ function render() {
     }
     tree.innerHTML = '';
     if(!data || !Array.isArray(data.children)){ throw new Error('data 无效，无法渲染'); }
+    let roots = data.children;
+    const _cp = params.get('chapter');
+    if (_cp) {
+      const _k = parseInt(_cp, 10);
+      const _hit = (roots||[]).filter(ch => parseChapterNo(ch.text) === _k);
+      if (_hit.length) roots = _hit;
+      else { tree.innerHTML = '<div class="mm-ph">本章思维导图暂未整理（作者还在整理中，敬请期待）</div>'; postHeight(); return; }
+    }
     byId = {}; (function i(n){ byId[n.id]=n; (n.children||[]).forEach(i); })(data);   // 重建 id 映射
-    (data.children||[]).forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
+    (roots||[]).forEach(ch => tree.appendChild(renderNode(ch, 0)));   // 多章：每章都是顶层节点
     if (prevTop !== null && _anchorId) {
       const now = tree.querySelector('[data-id="' + _anchorId + '"]');
       if (now) window.scrollBy(0, now.getBoundingClientRect().top - prevTop);
@@ -1689,6 +1704,7 @@ function render() {
     tree.innerHTML = '<div style="padding:20px;color:#ef4b5e;font-size:1rem;line-height:1.6">⚠️ 渲染出错：' + ((e && e.message) || '未知错误') + '<br>建议：先点「导出 JSON」备份 → 再点「同步更新」或按 F5 刷新。<br>如仍空白，请清除浏览器缓存后重开。</div>';
     showStatus('渲染出错，已显示提示', false);
   }
+  postHeight();
 }
 function renderNode(node, lv) {
   const wrap = document.createElement('div');
@@ -2255,6 +2271,7 @@ document.getElementById('cardView').addEventListener('touchend', e=>{
 if (IS_READER) {
   editMode = false;
   document.body.classList.add('preview');
+  if (IS_BARE) document.body.classList.add('bare');
   const mb = document.getElementById('modeBtn'); if (mb) mb.style.display='none';
   document.querySelectorAll('[data-edit]').forEach(b=>b.remove());
   const h = document.getElementById('hint');
