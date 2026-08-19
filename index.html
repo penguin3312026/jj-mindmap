@@ -1670,7 +1670,29 @@ function liveBase(){
 /* ---------- 渲染 ---------- */
 const tree = document.getElementById('tree');
 let _anchorId = null;   // 指定重渲染后要"钉住"的节点，避免页面跳动找不到位置
-function parseChapterNo(t){ if(!t) return -1; const m=String(t).match(/第\s*(\d+)\s*章/); return m?parseInt(m[1],10):-1; }
+function parseChapterNo(t){
+  if(!t) return -1;
+  const s=String(t);
+  // 优先阿拉伯数字：第一章、第1章
+  const m=s.match(/第\s*(\d+)\s*章/);
+  if(m) return parseInt(m[1],10);
+  // 支持中文数字：第六章、第十六章、第二十六章
+  const m2=s.match(/第\s*([一二三四五六七八九十]+)\s*章/);
+  if(!m2) return -1;
+  const map={一:1,二:2,三:3,四:4,五:5,六:6,七:7,八:8,九:9,十:10};
+  const cns=m2[1];
+  let total=0, pending=0;
+  for(let i=0;i<cns.length;i++){
+    const v=map[cns[i]];
+    if(v===10){
+      if(pending>0){ total+=pending*10; pending=0; }
+      else { total+=10; }
+    } else {
+      pending+=v;
+    }
+  }
+  return total+pending;
+}
 function postHeight(){ try{ if(window.parent && window.parent!==window){ window.parent.postMessage({type:'mindmap-resize', ch: (params.get('chapter')||''), height: document.documentElement.scrollHeight}, '*'); } }catch(_){} }
 function render() {
   try {
