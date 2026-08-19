@@ -2106,29 +2106,36 @@ function onLive(){
   if(!live || !live.text || !Array.isArray(live.children)){
     console.warn('[mindmap] 线上数据无效，回退到内置快照');
     data = normalizeData(deepCopy(EMBEDDED)); data.rev = EMBEDDED.rev;
-    saveLocal();
+    if(!IS_READER) saveLocal();
     render();
     showStatus('线上数据异常，已显示内置快照 v'+EMBEDDED.rev, false);
     return;
   }
   LIVE_REV = live.rev || LIVE_REV;
-  const local = readLocal();
-  const localRev = local ? (local.rev||0) : 0;
-  const embeddedRev = (EMBEDDED && EMBEDDED.rev) || 0;
-  const baseRev = Math.max(localRev, embeddedRev);
-  if(baseRev >= (live.rev||0)){
-    // 优先本地未发布改动；其次用内置草稿（EMBEDDED），便于发布前在网页内预览草稿
-    data = normalizeData((local && localRev >= embeddedRev) ? local : deepCopy(EMBEDDED));
-    data.rev = baseRev;
-    showStatus('本机版 v'+baseRev+'（含未发布改动）', true);
-  } else {
-    // 服务器版本更新：以服务器为准，不再把本地（可能为旧/损坏）数据合并回来，避免重复节点复活
-    data = normalizeData(deepCopy(live)); reindex();
+  if(IS_READER){
+    // 只读/嵌入模式：以线上发布版为准，绝不使用读者浏览器里的本地缓存（可能为旧/损坏/单章草稿）
+    data = normalizeData(deepCopy(live));
     data.rev = LIVE_REV;
     showStatus('已同步最新发布版 v'+LIVE_REV, true);
+  } else {
+    const local = readLocal();
+    const localRev = local ? (local.rev||0) : 0;
+    const embeddedRev = (EMBEDDED && EMBEDDED.rev) || 0;
+    const baseRev = Math.max(localRev, embeddedRev);
+    if(baseRev >= (live.rev||0)){
+      // 优先本地未发布改动；其次用内置草稿（EMBEDDED），便于发布前在网页内预览草稿
+      data = normalizeData((local && localRev >= embeddedRev) ? local : deepCopy(EMBEDDED));
+      data.rev = baseRev;
+      showStatus('本机版 v'+baseRev+'（含未发布改动）', true);
+    } else {
+      // 服务器版本更新：以服务器为准，不再把本地（可能为旧/损坏）数据合并回来，避免重复节点复活
+      data = normalizeData(deepCopy(live)); reindex();
+      data.rev = LIVE_REV;
+      showStatus('已同步最新发布版 v'+LIVE_REV, true);
+    }
   }
   data.rev = LIVE_REV;
-  saveLocal();
+  if(!IS_READER) saveLocal();
   render();
   clearSyncFlag();   // 同步成功，取消闪烁提醒
 }
