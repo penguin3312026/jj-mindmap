@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用说明</title>
+<style>
+  body { margin: 0; background: #0f1117; color: #e6edf3; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.7; padding: 36px; }
+  h1 { font-size: 22px; margin: 0 0 16px; }
+  h2 { font-size: 16px; margin: 24px 0 8px; color: #9aa4b2; }
+  code { background: #1f232c; padding: 2px 6px; border-radius: 6px; font-size: 13px; }
+  ul { padding-left: 20px; }
+  li { margin: 6px 0; }
+  .hint { color: #9aa4b2; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>工作台使用说明</h1>
+  <p class="hint">这是一个示例静态模块，展示"静态模块"该放在哪、长什么样。你可以直接替换或删除它。</p>
+
+  <h2>模块有三种类型</h2>
+  <ul>
+    <li><b>static（静态）</b>：纯 HTML/JS 工具，放进 <code>modules/&lt;id&gt;/</code> 文件夹，由本 Shell 直接提供。</li>
+    <li><b>iframe（嵌入）</b>：已有的后端服务（比如你在 Railway 上跑的 Flask 服务），用 iframe 嵌进来，原服务不动。</li>
+    <li><b>link（外链）</b>：第三方页面或文档入口，点击新标签页打开。</li>
+  </ul>
+
+  <h2>怎么新增一个模块</h2>
+  <ul>
+    <li>开发完模块后，运行整合 Skill：<code>workbench-integrator</code>。</li>
+    <li>它会校验模块、放进 <code>modules/</code>（静态类），并写入 <code>manifest.json</code>。</li>
+    <li>重新部署（<code>railway up</code> 或推送 Git）即可在首页看到新卡片。</li>
+  </ul>
+
+  <h2>公网访问</h2>
+  <p>所有模块共用这一个 Railway 提供的公网 URL，完全公开、无需登录。</p>
+</body>
+</html>
