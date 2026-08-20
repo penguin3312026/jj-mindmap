@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理方格测评 · 主持大屏 | 人力资本战略工作室</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* 本页深色大屏主题：body 直接深蓝 + 白字，杜绝「深底深字」看不见 */
+    body { background: var(--hc-navy); color: var(--hc-white); }
+    a { color: var(--info); }
+
+    .hero-mini {
+      max-width: 1080px;
+      margin: 24px auto 0;
+      padding: 0 20px;
+      color: var(--hc-white);
+    }
+    .hero-mini h1 { font-size: 24px; margin: 0 0 6px; }
+    .hero-mini p { color: var(--sub); font-size: 14px; margin: 0; }
+
+    .host-layout {
+      max-width: 1080px;
+      margin: 22px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 880px) { .host-layout { grid-template-columns: 1fr; } }
+
+    /* 题目区（大屏可投屏） */
+    .quiz-col .quiz-card {
+      background: var(--panel); color: var(--hc-white);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+    .host-banner {
+      background: rgba(212,168,75,.10); border: 1px solid var(--hc-gold);
+      color: var(--hc-gold-light); border-radius: 10px; padding: 12px 14px;
+      font-size: 14px; font-weight: 600; margin-bottom: 14px; line-height: 1.5;
+    }
+    .quiz-col .qhead { margin-bottom: 10px; }
+    .quiz-col .qnum {
+      display: inline-block; background: var(--accent); color: var(--hc-navy);
+      font-weight: 800; border-radius: 6px; padding: 2px 9px; margin-right: 8px; font-size: 13px;
+    }
+    .quiz-col .qtitle { font-weight: 600; font-size: 15px; color: var(--hc-white); }
+    .quiz-col .opt {
+      display: block; padding: 9px 12px; margin: 6px 0; border-radius: 8px; color: var(--hc-white);
+      border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03);
+      cursor: pointer; font-size: 14px; transition: .15s;
+    }
+    .quiz-col .opt:hover { background: rgba(255,255,255,.07); }
+    .quiz-col .opt input { margin-right: 9px; vertical-align: middle; accent-color: var(--accent); }
+
+    /* 右侧栏：二维码 + 实时看板入口 */
+    .side-col { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .qr-card, .ctrl-card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .qr-card h3 { margin: 0 0 4px; font-size: 15px; }
+    .qr-card .tip { font-size: 12px; margin: 0 0 10px; }
+    .qr-card #qrBig { text-align: center; }
+    .qr-card #qrBig img { border-radius: 10px; padding: 10px; background: #fff; max-width: 220px; }
+    .qr-card .scan-link { display:block; word-break: break-all; font-size: 12px; color: var(--info); text-decoration: underline; margin-top: 8px; }
+
+    .ctrl-card h3 { margin: 0 0 10px; font-size: 15px; }
+    .ctrl-card input[type=password] {
+      width: 100%; padding: 9px 11px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.2); color: #fff; font-size: 14px;
+      box-sizing: border-box;
+    }
+    .ctrl-card .btn { width: 100%; margin-top: 10px; }
+    .ctrl-card .btn-danger { margin-top: 8px; }
+    .live-count { font-size: 13px; color: var(--sub); margin-top: 10px; }
+    .live-count b { color: var(--accent); font-size: 16px; }
+
+    /* 分析看板（弹层） */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(7,11,18,.88);
+      display: none; overflow-y: auto; z-index: 50; padding: 28px 16px;
+    }
+    .overlay.show { display: block; }
+    .overlay-inner { max-width: 980px; margin: 0 auto; background: var(--bg); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 24px; }
+    .overlay .ov-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .overlay .ov-head h2 { margin: 0; font-size: 20px; }
+    .overlay .ov-close { background: none; border: 1px solid rgba(255,255,255,.2); color: #fff; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+
+    .dist-bar { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .dist-name { width: 150px; font-size: 13px; flex-shrink: 0; }
+    .dist-track { flex: 1; height: 12px; border-radius: 6px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .dist-fill { height: 100%; border-radius: 6px; }
+    .dist-count { width: 52px; text-align: right; font-size: 13px; color: var(--sub); }
+
+    .mini-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+    .mini-table th, .mini-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,.08); text-align: left; }
+    .mini-table th { color: var(--sub); font-weight: 600; }
+
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(255,255,255,.15); }
+    .b-high { background: rgba(63,185,80,.15); color: var(--success); border-color: rgba(63,185,80,.3); }
+    .b-med  { background: rgba(188,140,255,.15); color: var(--mid); border-color: rgba(188,140,255,.3); }
+    .b-low  { background: rgba(248,81,73,.15); color: var(--danger); border-color: rgba(248,81,73,.3); }
+
+    .msg { padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; }
+    .msg.ok { background: rgba(63,185,80,.12); color: var(--success); border: 1px solid rgba(63,185,80,.25); }
+    .msg.err { background: rgba(248,81,73,.12); color: var(--danger); border: 1px solid rgba(248,81,73,.25); }
+    .msg.info { background: rgba(88,166,255,.10); color: var(--info); border: 1px solid rgba(88,166,255,.25); }
+
+    .btn {
+      display: inline-block; padding: 10px 16px; border-radius: 9px; cursor: pointer;
+      border: 1px solid transparent; font-size: 14px; font-weight: 600; text-decoration: none;
+    }
+    .btn-primary { background: var(--accent); color: var(--hc-navy); }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-outline { background: transparent; border-color: rgba(255,255,255,.18); color: #fff; }
+    .btn-outline:hover { background: rgba(255,255,255,.06); }
+    .btn-danger { background: rgba(248,81,73,.12); color: var(--danger); border-color: rgba(248,81,73,.35); }
+    .btn-danger:hover { background: rgba(248,81,73,.2); }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<div class="hero-mini">
+  <h1>管理方格 · 领导力风格情境测评</h1>
+  <p>主持人用此大屏投屏题目并展示二维码；参会者手机扫码即可答题，提交后当场看到自己的分析；主持人点击「查看实时分析」口令进入看板。</p>
+</div>
+
+<div class="host-layout">
+  <!-- 左：可投屏的 10 道题 -->
+  <div class="quiz-col">
+    <div id="liveMsg"></div>
+    <div class="host-banner">📺 本区域仅用于<b>大屏投屏展示题目</b>，不可在此作答。请让参会者扫右侧二维码，在手机上填写姓名并答题。</div>
+    <div id="quizScreen"></div>
+  </div>
+
+  <!-- 右：二维码 + 看板入口 -->
+  <div class="side-col">
+    <div class="qr-card">
+      <h3>📱 手机扫码答题</h3>
+      <p class="tip">把此二维码投在会场或发到群里，参会者扫码即在自己手机上作答。</p>
+      <div id="qrBig"></div>
+      <a class="scan-link" id="scanLink" href="#" target="_blank">答题链接</a>
+    </div>
+
+    <div class="ctrl-card">
+      <h3>🔒 主持人分析看板</h3>
+      <input type="password" id="passcode" placeholder="输入主持人口令" onkeydown="if(event.key==='Enter')openBoard()">
+      <button class="btn btn-primary" onclick="openBoard()">查看实时分析</button>
+      <button class="btn btn-danger btn-sm" onclick="clearAll()">🧹 清空全部数据</button>
+      <div class="live-count">当前已收答卷：<b id="liveTotal">0</b> 份（看板内自动刷新）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 分析看板弹层 -->
+<div class="overlay" id="boardOverlay">
+  <div class="overlay-inner">
+    <div class="ov-head">
+      <h2>团队实时分析</h2>
+      <button class="ov-close" onclick="closeBoard()">关闭</button>
+    </div>
+    <div id="boardMsg"></div>
+    <div id="boardBody"></div>
+  </div>
+</div>
+
+<!-- 使用说明 -->
+<div class="hero-mini" style="padding-bottom:40px">
+  <div class="qr-card" style="margin-top:18px">
+    <h3>使用流程</h3>
+    <ol style="margin:6px 0 0;padding-left:20px;line-height:1.8;font-size:14px;color:var(--sub)">
+      <li>主持人打开本页（大屏投屏）：左边是 10 道题目，右边是扫码答题二维码。</li>
+      <li>参会者用手机扫码 → 在自己手机上作答并提交 → 手机上<b>立刻看到自己的分析</b>和专属二维码（可保存回看）。</li>
+      <li>主持人点「查看实时分析」输口令 → 看到实时风格分布、平均 P/H、逐人明细，看板每 8 秒自动刷新。</li>
+      <li>每场活动开始前点「清空全部数据」，确保系统干净。</li>
+    </ol>
+  </div>
+</div>
+
+<script src="../../assets/js/grid-core.js"></script>
+<script src="../../assets/js/qrcode.js"></script>
+<script src="../../assets/js/app.js"></script>
+<script src="quiz-config.js"></script>
+<script src="quiz-store.js"></script>
+<script>
+/* ---------- 状态 ---------- */
+let displayOrder = [];  // 每题选项展示顺序（original index 数组）
+
+/* ---------- 初始化 ---------- */
+document.addEventListener('DOMContentLoaded', async () => {
+  renderQuiz();
+  buildScanQR();
+  await refreshTotal();
+});
+
+/* ---------- 题目渲染（大屏，可投屏） ---------- */
+function shuffleOptions() {
+  displayOrder = GridCore.QUESTIONS.map(q => {
+    const arr = q.options.map((_, j) => j);
+    for (let k = arr.length - 1; k > 0; k--) {
+      const r = Math.floor(Math.random() * (k + 1));
+      [arr[k], arr[r]] = [arr[r], arr[k]];
+    }
+    return arr;
+  });
+}
+
+function renderQuiz() {
+  shuffleOptions();
+  const wrap = document.getElementById('quizScreen');
+  wrap.innerHTML = '';
+  // 广告语
+  const tip = document.createElement('div');
+  tip.className = 'tool-card';
+  tip.style.cssText = 'padding:12px 16px;margin-bottom:14px';
+  tip.innerHTML = '<p class="tip" style="margin:0">⚠️ 选项顺序已随机打乱，每次刷新都会变化，请勿记忆选项位置。每题只有一个答案。</p>';
+  wrap.appendChild(tip);
+
+  GridCore.QUESTIONS.forEach((q, i) => {
+    const card = document.createElement('div'); card.className = 'quiz-card';
+    const head = document.createElement('div'); head.className = 'qhead';
+    head.innerHTML = `<span class="qnum">Q${i+1}</span><span class="qtitle">${escapeHtml(q.q)}</span>`;
+    card.appendChild(head);
+    const order = displayOrder[i];
+    order.forEach((origIdx, pos) => {
+      const o = q.options[origIdx];
+      const letter = String.fromCharCode(65 + pos);
+      const dispText = o.text.replace(/^[A-E]\.\s*/, letter + '. ');
+      const lab = document.createElement('label'); lab.className = 'opt';
+      lab.innerHTML = `<input type="radio" name="q${i}" value="${origIdx}">${escapeHtml(dispText)}`;
+      card.appendChild(lab);
+    });
+    wrap.appendChild(card);
+  });
+}
+
+/* ---------- 右侧扫码二维码（指向手机答题页 answer.html） ---------- */
+function buildScanQR() {
+  // 当前页是 index.html，手机答题页是同目录的 answer.html
+  const u = new URL(location.href);
+  u.pathname = u.pathname.replace(/index\.html$/, 'answer.html');
+  u.search = '';
+  const link = u.toString();
+  document.getElementById('scanLink').href = link;
+  document.getElementById('scanLink').textContent = link;
+  const c = document.getElementById('qrBig');
+  c.innerHTML = '';
+  try {
+    const qr = qrcode(0, 'M');
+    qr.addData(link);
+    qr.make();
+    const img = document.createElement('img');
+    img.src = qr.createDataURL(7, 10);
+    img.alt = '扫码答题二维码';
+    c.appendChild(img);
+  } catch (e) {
+    c.textContent = '二维码生成失败';
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ---------- 已收答卷数 ---------- */
+async function refreshTotal() {
+  try {
+    document.getElementById('liveTotal').textContent = await QuizStore.getTotal();
+  } catch (e) {}
+}
+
+/* ---------- 看板 ---------- */
+let boardTimer = null;
+async function openBoard() {
+  const pc = document.getElementById('passcode').value.trim();
+  if (!pc) { alert('请输入主持人口令'); return; }
+  const ov = document.getElementById('boardOverlay');
+  const body = document.getElementById('boardBody');
+  const msg = document.getElementById('boardMsg');
+  msg.innerHTML = '<div class="msg info">校验口令中…</div>';
+  ov.classList.add('show');
+  try {
+    const d = await QuizStore.getHostData(pc);
+    msg.innerHTML = '<div class="msg ok">已连接 · 看板每 8 秒自动刷新</div>';
+    renderBoard(d);
+    if (boardTimer) clearInterval(boardTimer);
+    boardTimer = setInterval(async () => {
+      try {
+        const d2 = await QuizStore.getHostData(pc);
+        renderBoard(d2);
+      } catch (e) {}
+    }, 8000);
+  } catch (e) {
+    msg.innerHTML = '<div class="msg err">无法打开看板：' + escapeHtml(e.message) + '</div>';
+    body.innerHTML = '';
+  }
+}
+
+function closeBoard() {
+  document.getElementById('boardOverlay').classList.remove('show');
+  if (boardTimer) { clearInterval(boardTimer); boardTimer = null; }
+}
+
+function renderBoard(data) {
+  const entries = Object.entries(data.dist || {}).sort((a,b) => b[1] - a[1]);
+  const max = Math.max(...entries.map(e => e[1]), 1);
+  const styleColor = name => {
+    if (name.includes('9,9')) return 'var(--success)';
+    if (name.includes('9,1')) return 'var(--danger)';
+    if (name.includes('1,9')) return 'var(--info)';
+    if (name.includes('5,5')) return 'var(--mid)';
+    if (name.includes('1,1')) return 'var(--poor)';
+    return 'var(--accent)';
+  };
+  const distHtml = entries.length ? entries.map(([k,v]) => `
+    <div class="dist-bar">
+      <div class="dist-name">${escapeHtml(k)}</div>
+      <div class="dist-track"><div class="dist-fill" style="width:${v/max*100}%;background:${styleColor(k)}"></div></div>
+      <div class="dist-count">${v} 人</div>
+    </div>`).join('') : '<p class="tip">暂无数据</p>';
+
+  const rowsHtml = (data.rows || []).map((r,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${r.name ? escapeHtml(r.name) : '—'}${r.dept ? '<span class="tip"> · ' + escapeHtml(r.dept) + '</span>' : ''}</td>
+      <td>${r.P}</td><td>${r.H}</td>
+      <td>(${r.pc.toFixed(1)}, ${r.hc.toFixed(1)})</td>
+      <td>${escapeHtml(r.type)}</td>
+      <td>${r.created_at ? r.created_at.slice(0,16) : ''}</td>
+    </tr>`).join('');
+
+  document.getElementById('boardBody').innerHTML = `
+    <div class="score-row" style="display:flex;gap:16px;flex-wrap:wrap">
+      <div class="score-box" style="flex:1;min-width:120px;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px"><div class="lab">有效答卷</div><div class="val" style="font-size:26px;font-weight:800">${data.total}</div></div>
+      <div class="score-box" style="flex:1;min-width:120px;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px"><div class="lab">平均 生产导向 P</div><div class="val" style="font-size:26px;font-weight:800">${data.avgP}</div></div>
+      <div class="score-box" style="flex:1;min-width:120px;background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px"><div class="lab">平均 人本导向 H</div><div class="val" style="font-size:26px;font-weight:800">${data.avgH}</div></div>
+    </div>
+    <h4 style="margin-top:22px">风格分布</h4>
+    <p class="tip">人数最多的风格即团队整体偏向，可引导讨论。</p>
+    ${distHtml}
+    <h4 style="margin-top:24px">逐人明细</h4>
+    <div style="overflow-x:auto">
+      <table class="mini-table">
+        <thead><tr><th>#</th><th>姓名</th><th>P</th><th>H</th><th>坐标</th><th>风格</th><th>提交时间</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn btn-outline btn-sm" onclick="downloadHostCSV()">导出汇总 CSV</button>
+    </div>
+  `;
+  window._hostData = data;
+  document.getElementById('liveTotal').textContent = data.total;
+}
+
+function downloadHostCSV() {
+  const data = window._hostData;
+  if (!data) return;
+  const lines = [['指标','值'],['总答卷',data.total],['平均P',data.avgP],['平均H',data.avgH]];
+  lines.push([]); lines.push(['风格','人数']);
+  Object.entries(data.dist || {}).sort((a,b)=>b[1]-a[1]).forEach(([k,v]) => lines.push([k,v]));
+  lines.push([]); lines.push(['姓名','部门','P','H','坐标P','坐标H','风格','提交时间']);
+  data.rows.forEach(r => lines.push([r.name||'', r.dept||'', r.P, r.H, r.pc.toFixed(1), r.hc.toFixed(1), r.type, r.created_at||'']));
+  const csv = '﻿' + lines.map(row => row.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '管理方格_团队汇总.csv';
+  a.click();
+}
+
+/* ---------- 清空数据 ---------- */
+async function clearAll() {
+  const pc = document.getElementById('passcode').value.trim();
+  if (!pc) { alert('请先在下方输入主持人口令，再清空数据'); return; }
+  if (!confirm('确定清空全部答卷数据？此操作不可恢复（每场活动开始前执行）。')) return;
+  const msg = document.getElementById('boardMsg');
+  try {
+    await QuizStore.clearAll(pc);
+    await refreshTotal();
+    // 若看板开着则同步刷新
+    if (document.getElementById('boardOverlay').classList.contains('show')) {
+      document.getElementById('boardBody').innerHTML = '<p class="tip">暂无数据</p>';
+      document.getElementById('boardMsg').innerHTML = '<div class="msg ok">已清空，系统干净 ✅</div>';
+    } else {
+      alert('已清空全部数据，系统现在干净 ✅');
+    }
+  } catch (e) {
+    alert('清空失败：' + e.message);
+  }
+}
+</script>
+
+</body>
+</html>
