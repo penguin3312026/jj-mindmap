@@ -68,7 +68,7 @@
   // 按 token 回看个人结果
   async function getResultByToken(token) {
     const sel = 'token,name,p,h,pc,hc,pt,ht,type,weak,advice,created_at';
-    const r = await fetch(URL + '/rest/v1/quiz_submissions?token=eq.' + encodeURIComponent(token) + '&select=' + sel);
+    const r = await fetch(URL + '/rest/v1/quiz_submissions?token=eq.' + encodeURIComponent(token) + '&select=' + sel, { headers: headers() });
     if (!r.ok) throw new Error('查询结果失败');
     const rows = await r.json();
     if (!rows.length) throw new Error('未找到该结果，链接可能已失效');
@@ -84,7 +84,7 @@
   // 已收份数（无需口令，仅计数）
   async function getTotal() {
     try {
-      const r = await fetch(URL + '/rest/v1/quiz_submissions?select=name&order=created_at.desc');
+      const r = await fetch(URL + '/rest/v1/quiz_submissions?select=name&order=created_at.desc', { headers: headers() });
       if (!r.ok) return 0;
       const rows = await r.json();
       return rows.length;
@@ -95,7 +95,7 @@
   async function getHostData(passcode) {
     if (passcode !== C.HOST_PASSCODE) throw new Error('口令不正确');
     const sel = 'name,p,h,pc,hc,type,created_at';
-    const r = await fetch(URL + '/rest/v1/quiz_submissions?select=' + sel + '&order=created_at.desc');
+    const r = await fetch(URL + '/rest/v1/quiz_submissions?select=' + sel + '&order=created_at.desc', { headers: headers() });
     if (!r.ok) throw new Error('拉取汇总失败');
     const rows = await r.json();
     const total = rows.length;
