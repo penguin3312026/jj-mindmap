@@ -1,0 +1,49 @@
+{
+  "site": {
+    "name": "人力资本战略工作室",
+    "nameEn": "HUMAN CAPITAL STRATEGY STUDIO",
+    "tagline": "让 HR 成为业务增长的战略引擎"
+  },
+  "nav": [
+    { "id": "home", "label": "首页", "url": "../../index.html", "icon": "⌂" },
+    { "id": "competency-matrix", "label": "能力矩阵", "url": "../../modules/competency-matrix/index.html", "icon": "◫" },
+    { "id": "strategic-objectives", "label": "战略目标分析器", "url": "../../modules/strategic-objectives/index.html", "icon": "◎" },
+    { "id": "hr-system", "label": "HR 体系", "url": "../../modules/hr-system/index.html", "icon": "▣" },
+    { "id": "managerial-grid", "label": "管理方格测评", "url": "../../modules/managerial-grid/index.html", "icon": "▦" }
+  ],
+  "modules": [
+    {
+      "id": "strategic-objectives",
+      "label": "战略目标分析器",
+      "subtitle": "用系统化方法论，把战略目标确定这件事做得专业又可信",
+      "desc": "基于平衡计分卡(BSC)、SWOT、PESTEL、VRIO 与战略地图方法论，输入项目信息，自动生成一份结构严谨、判断有据的战略目标分析报告。",
+      "stats": [{"n":"8","t":"系统化分析流程"},{"n":"6","t":"战略方法论"},{"n":"4","t":"BSC 平衡计分卡"},{"n":"100%","t":"关键判断附依据"}],
+      "tags": ["BSC", "SWOT", "PESTEL", "VRIO", "战略地图"],
+      "status": "placeholder"
+    },
+    {
+      "id": "competency-matrix",
+      "label": "能力矩阵",
+      "subtitle": "人岗匹配与人才梯队的能力地图",
+      "desc": "构建岗位胜任力模型，评估团队能力差距，形成可视化的人才发展矩阵。",
+      "tags": ["胜任力", "人才盘点", "梯队建设"],
+      "status": "placeholder"
+    },
+    {
+      "id": "hr-system",
+      "label": "HR 体系",
+      "subtitle": "从组织到人才的全景 HR 架构",
+      "desc": "梳理招聘、绩效、薪酬、培训、文化等模块，形成系统化的人力资源管理体系视图。",
+      "tags": ["组织", "绩效", "薪酬", "培训", "文化"],
+      "status": "placeholder"
+    },
+    {
+      "id": "managerial-grid",
+      "label": "管理方格测评",
+      "subtitle": "布莱克-莫顿领导力风格诊断",
+      "desc": "通过 10 道管理情境题，测量生产导向(P)与人本导向(H)双维度，定位方格坐标并给出改善建议。支持在线自测、问卷星 CSV 批量分析与原始问卷链接。",
+      "tags": ["领导力", "管理风格", "团队诊断"],
+      "status": "ready"
+    }
+  ]
+}
