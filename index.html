@@ -255,7 +255,7 @@
     modules: [
       { id:"welcome", title:"使用说明", desc:"如何把新项目/模块接入这个工作台", type:"static", path:"welcome/index.html", color:"#378ADD", icon:"?", group:"工作台", tags:["指南","接入"] },
       { id:"hcss", title:"人力资本战略工作室", type:"static", path:"hcss/index.html", icon:"◈", desc:"HR 战略能力体系：战略目标分析、能力矩阵、HR 体系、管理方格测评", color:"#d4a84b", group:"人力资本战略", tags:["HR","战略","人才盘点","领导力"] },
-      { id:"mindmap", title:"备考思维导图", desc:"中级经济师（人力）备考思维导图 · 可编辑 · 持续更新", type:"link", url:"mindmap.html", color:"#7c6cf0", icon:"✦", group:"备考中心", tags:["备考","经济师","思维导图"] },
+      { id:"mindmap", title:"备考思维导图", desc:"中级经济师（人力）备考思维导图 · 可编辑 · 持续更新", type:"link", url:"mindmap.html", color:"#7c6cf0", icon:"✦", group:"备考中心", tags:["备考","经济师","思维导图"], hidden:true },
       { id:"study", title:"双科冲刺备考站", desc:"中级经济师 人力 + 经济基础 双科冲刺备考", type:"link", url:"study.html", color:"#4f46e5", icon:"✎", group:"备考中心", tags:["备考","刷题","经济师"] }
     ]
   };
@@ -324,7 +324,7 @@
     document.getElementById('wb-subtitle').textContent = m.subtitle || '';
     const main = document.getElementById('main');
     const groups = m.groups || [];
-    const mods = m.modules || [];
+    const mods = (m.modules || []).filter(mod => !mod.hidden);
     document.getElementById('modCount').textContent = mods.length + ' 个模块';
     main.innerHTML = '';
     if (!mods.length) {
