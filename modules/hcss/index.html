@@ -3,10 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>人力资本战略工作室 | Human Capital Strategy Studio</title>
+  <title>管理方格测评 | 人力资本战略工作室</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .hero { padding-bottom: 52px; }
+    .hero h1 { font-size: 2.4rem; line-height: 1.2; margin: 0 0 16px; font-weight: 800; }
+    .hero p.lead { font-size: 1.05rem; color: var(--sub); max-width: 680px; margin: 0 0 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 34px; }
+    .hero-grid-preview {
+      display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px;
+      max-width: 340px; margin-top: 16px;
+    }
+    .hero-grid-preview .cell {
+      aspect-ratio: 1; border-radius: 4px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hero-grid-preview .cell.on { background: var(--hc-gold); box-shadow: 0 0 8px rgba(212,168,75,.35); }
+
+    .howto { background: var(--hc-offwhite); padding: 56px 24px; }
+    .howto-inner { max-width: var(--maxw); margin: 0 auto; }
+    .howto h2 { font-size: 1.4rem; margin: 0 0 8px; color: var(--hc-navy); }
+    .howto .sub { color: var(--hc-text-soft); margin: 0 0 28px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+    .step {
+      background: #fff; border: 1px solid var(--hc-border); border-radius: var(--radius);
+      padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    }
+    .step .num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--hc-navy); color: var(--hc-gold);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; margin-bottom: 12px;
+    }
+    .step h3 { font-size: 1rem; margin: 0 0 8px; color: var(--hc-navy); }
+    .step p { font-size: .9rem; color: var(--hc-text-soft); margin: 0; }
+
+    .feature-bar {
+      background: var(--hc-navy); color: var(--hc-white); padding: 42px 24px;
+      border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .feature-bar-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; }
+    .feature { flex: 1 1 220px; }
+    .feature .n { font-size: 1.8rem; font-weight: 800; color: var(--hc-gold); }
+    .feature .t { font-size: .9rem; color: var(--sub); }
+
+    .single-nav .nav a { display: none; }
+    .single-nav .nav a.active { display: inline-block; }
+  </style>
 </head>
-<body>
+<body class="single-nav">
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -18,97 +63,74 @@
       </div>
     </a>
     <nav class="nav">
-      <a href="index.html" class="active">首页</a>
-      <a href="modules/competency-matrix/index.html">能力矩阵</a>
-      <a href="modules/strategic-objectives/index.html">战略目标分析器</a>
-      <a href="modules/hr-system/index.html">HR 体系</a>
-      <a href="modules/managerial-grid/index.html">管理方格测评</a>
+      <a href="modules/managerial-grid/index.html" class="active">管理方格测评</a>
     </nav>
-    <a href="modules/strategic-objectives/index.html" class="btn btn-primary btn-sm">开始分析 →</a>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-inner">
-    <p class="hero-kicker">Strategic HR · 让 HR 成为业务增长的战略引擎</p>
-    <h1>用系统化方法论，把战略目标<br>确定这件事做得专业又可信</h1>
-    <p>基于平衡计分卡(BSC)、SWOT、PESTEL、VRIO 与战略地图方法论，输入项目信息，自动生成一份结构严谨、判断有据的战略目标分析报告。</p>
+    <p class="hero-kicker"><span>Blake-Mouton Managerial Grid</span></p>
+    <h1>布莱克-莫顿管理方格测评</h1>
+    <p class="lead">10 道管理情境题，测量生产导向（P）与人本导向（H）两个维度，定位你的领导力风格坐标，并给出团队诊断与改善建议。适合管理培训、晋升评估与团队复盘。</p>
     <div class="hero-actions">
-      <a href="modules/strategic-objectives/index.html" class="btn btn-primary">🚀 开始战略分析</a>
-      <a href="#capabilities" class="btn btn-outline">先看完整示例</a>
+      <a href="modules/managerial-grid/index.html" class="btn btn-primary">🖥️ 打开主持大屏</a>
+      <a href="modules/managerial-grid/answer.html" class="btn btn-outline">📱 手机答题入口</a>
     </div>
-    <div class="hero-stats">
-      <div class="stat-item"><div class="num">8</div><div class="txt">系统化分析流程</div></div>
-      <div class="stat-item"><div class="num">6</div><div class="txt">战略方法论</div></div>
-      <div class="stat-item"><div class="num">4</div><div class="txt">BSC 平衡计分卡</div></div>
-      <div class="stat-item"><div class="num">100%</div><div class="txt">关键判断附依据</div></div>
-    </div>
+    <div class="hero-grid-preview" id="gridPreview" aria-hidden="true"></div>
   </div>
 </section>
 
-<section class="section" id="capabilities">
-  <div class="section-inner">
-    <h2 class="section-title">HR 战略能力体系</h2>
-    <p class="section-sub">以「战略规划」为起点，构建完整的人力资源战略闭环。以下模块将持续扩展，点击即可进入。</p>
-    <div class="cards" id="capabilityCards">
-      <!-- 由脚本动态渲染，若本地打开无法 fetch 则使用下方硬编码兜底 -->
+<section class="feature-bar">
+  <div class="feature-bar-inner">
+    <div class="feature"><div class="n">10</div><div class="t">情境选择题</div></div>
+    <div class="feature"><div class="n">2</div><div class="t">测评维度（P / H）</div></div>
+    <div class="feature"><div class="n">5</div><div class="t">典型管理风格</div></div>
+    <div class="feature"><div class="n">1</div><div class="t">实时团队汇总</div></div>
+  </div>
+</section>
+
+<section class="howto">
+  <div class="howto-inner">
+    <h2>使用流程</h2>
+    <p class="sub">培训或会议现场，三步完成团队诊断</p>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>大屏投屏</h3>
+        <p>点击「打开主持大屏」，将页面投到会议室屏幕或分享给主持人。</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>扫码答题</h3>
+        <p>参与者用手机扫大屏上的二维码，填写姓名后完成 10 道题。</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>实时看汇总</h3>
+        <p>主持人输入口令，即可查看团队风格分布、平均分与逐人明细，可导出 CSV。</p>
+      </div>
     </div>
   </div>
 </section>
 
 <footer class="footer">
-  © 2026 人力资本战略工作室 · 面向 HR 与业务管理者的系统化工具集
+  人力资本战略工作室 · 管理方格测评
 </footer>
 
 <script src="assets/js/app.js"></script>
 <script>
-  // 能力卡片数据（与 modules.json 保持一致；若 JSON 加载成功则优先使用 JSON）
-  const fallbackModules = [
-    {
-      id: "strategic-objectives", label: "战略目标分析器",
-      subtitle: "用系统化方法论，把战略目标确定这件事做得专业又可信",
-      desc: "基于平衡计分卡(BSC)、SWOT、PESTEL、VRIO 与战略地图方法论，输入项目信息，自动生成一份结构严谨、判断有据的战略目标分析报告。",
-      tags: ["BSC", "SWOT", "PESTEL", "VRIO", "战略地图"], status: "placeholder"
-    },
-    {
-      id: "competency-matrix", label: "能力矩阵",
-      subtitle: "人岗匹配与人才梯队的能力地图",
-      desc: "构建岗位胜任力模型，评估团队能力差距，形成可视化的人才发展矩阵。",
-      tags: ["胜任力", "人才盘点", "梯队建设"], status: "placeholder"
-    },
-    {
-      id: "hr-system", label: "HR 体系",
-      subtitle: "从组织到人才的全景 HR 架构",
-      desc: "梳理招聘、绩效、薪酬、培训、文化等模块，形成系统化的人力资源管理体系视图。",
-      tags: ["组织", "绩效", "薪酬", "培训", "文化"], status: "placeholder"
-    },
-    {
-      id: "managerial-grid", label: "管理方格测评",
-      subtitle: "布莱克-莫顿领导力风格诊断",
-      desc: "通过 10 道管理情境题，测量生产导向(P)与人本导向(H)双维度，定位方格坐标并给出改善建议。",
-      tags: ["领导力", "管理风格", "团队诊断"], status: "ready"
+  // 装饰性 9×9 方格高亮（9,9 区域）
+  const box = document.getElementById('gridPreview');
+  if (box) {
+    for (let r = 1; r <= 9; r++) {
+      for (let c = 1; c <= 9; c++) {
+        const d = document.createElement('div');
+        d.className = 'cell' + ((r >= 7 && c >= 7) ? ' on' : '');
+        box.appendChild(d);
+      }
     }
-  ];
-
-  function renderCards(modules) {
-    const box = document.getElementById('capabilityCards');
-    box.innerHTML = modules.map(m => `
-      <a href="modules/${m.id}/index.html" class="card" style="text-decoration:none;color:inherit">
-        <div class="card-icon">${m.id === 'strategic-objectives' ? '◎' : m.id === 'competency-matrix' ? '◫' : m.id === 'hr-system' ? '▣' : '▦'}</div>
-        <h3>${m.label}</h3>
-        <p>${m.subtitle}</p>
-        <div class="card-tags">
-          ${m.tags.map(t => `<span class="tag ${m.status === 'ready' ? 'gold' : ''}">${t}</span>`).join('')}
-        </div>
-        <span class="card-status ${m.status === 'ready' ? 'status-ready' : 'status-placeholder'}">${m.status === 'ready' ? '已上线' : '待开发'}</span>
-      </a>
-    `).join('');
   }
-
-  fetch('assets/data/modules.json')
-    .then(r => r.json())
-    .then(d => renderCards(d.modules))
-    .catch(() => renderCards(fallbackModules));
 </script>
 
 </body>
