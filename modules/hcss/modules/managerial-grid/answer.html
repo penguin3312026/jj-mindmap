@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>管理方格测评 · 答题</title>
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* 深色大屏主题：body 直接定为深蓝，所有文字默认白色，杜绝「深底深字」看不见 */
+    body { background: var(--hc-navy); color: var(--hc-white); padding-bottom: 92px; }
+    .ans-wrap { max-width: 640px; margin: 0 auto; padding: 14px 14px 0; }
+    .ans-head { text-align: center; padding: 10px 0 6px; }
+    .ans-head h2 { margin: 0; font-size: 19px; color: var(--hc-gold); }
+    .ans-head p { margin: 4px 0 0; font-size: 12px; color: var(--sub); }
+
+    /* 姓名必填输入框（深色卡片 + 白字） */
+    .name-box { background: var(--panel); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 14px; margin: 12px 0 14px; }
+    .name-box label { display: block; font-weight: 600; font-size: 15px; margin-bottom: 8px; color: var(--hc-white); }
+    .name-box .req { color: var(--danger); margin-left: 2px; }
+    .name-box input {
+      width: 100%; padding: 12px 13px; border-radius: 9px;
+      border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.28);
+      color: var(--hc-white); font-size: 15px; box-sizing: border-box;
+    }
+    .name-box input::placeholder { color: var(--sub); }
+    .name-box input:focus { outline: none; border-color: var(--hc-gold); box-shadow: 0 0 0 2px rgba(212,168,75,.25); }
+
+    .quiz-card {
+      background: var(--panel); border: 1px solid rgba(255,255,255,.08); color: var(--hc-white);
+      border-radius: 12px; padding: 14px; margin-bottom: 12px;
+    }
+    .qhead { margin-bottom: 10px; }
+    .qnum { display:inline-block; background: var(--hc-gold); color: var(--hc-navy); font-weight:800; border-radius:6px; padding:2px 9px; margin-right:8px; font-size:13px; }
+    .qtitle { font-weight:600; font-size:15px; color: var(--hc-white); }
+    .opt {
+      display:flex; align-items:flex-start; padding:10px 12px; margin:7px 0; border-radius:9px;
+      border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); cursor:pointer;
+      font-size:14px; line-height:1.5; color: var(--hc-white);
+    }
+    .opt:hover { background: rgba(255,255,255,.07); }
+    .opt.sel { border-color: var(--hc-gold); background: rgba(212,168,75,.10); }
+    .opt input { margin: 3px 10px 0 0; flex-shrink:0; accent-color: var(--hc-gold); }
+
+    .submit-bar {
+      position: fixed; left:0; right:0; bottom:0; background: var(--bg);
+      border-top: 1px solid rgba(255,255,255,.1); padding: 12px 14px; z-index: 20;
+    }
+    .submit-bar .btn { width: 100%; padding: 14px; font-size: 16px; }
+
+    .msg { padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 14px; }
+    .msg.ok { background: rgba(63,185,80,.12); color: var(--success); border:1px solid rgba(63,185,80,.25); }
+    .msg.err { background: rgba(248,81,73,.12); color: var(--danger); border:1px solid rgba(248,81,73,.25); }
+
+    .score-row { display:flex; gap:12px; flex-wrap:wrap; }
+    .score-box { flex:1; min-width:140px; background: var(--panel2); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:14px; }
+    .score-box .lab { font-size:12px; color: var(--sub); }
+    .score-box .val { font-size:26px; font-weight:800; margin:4px 0; }
+    .progress { height:8px; border-radius:4px; background: rgba(255,255,255,.08); overflow:hidden; }
+    .progress i { display:block; height:100%; border-radius:4px; }
+
+    .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:12px; border:1px solid rgba(255,255,255,.15); }
+    .b-high { background: rgba(63,185,80,.15); color: var(--success); border-color: rgba(63,185,80,.3); }
+    .b-med  { background: rgba(188,140,255,.15); color: var(--mid); border-color: rgba(188,140,255,.3); }
+    .b-low  { background: rgba(248,81,73,.15); color: var(--danger); border-color: rgba(248,81,73,.3); }
+
+    .qr-wrap { text-align:center; margin:16px 0; }
+    .qr-wrap img { border-radius:10px; padding:10px; background:#fff; max-width:200px; }
+    .share-link { display:inline-block; word-break:break-all; font-size:12px; color: var(--info); text-decoration:underline; }
+
+    .advice-box { background: var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:14px; margin-top:14px; }
+    .advice-box h4 { margin:0 0 8px; color: var(--hc-gold); font-size:15px; }
+    .advice-box ol { margin:0; padding-left:20px; line-height:1.7; font-size:14px; }
+  </style>
+</head>
+<body>
+
+<div class="ans-wrap">
+  <div class="ans-head">
+    <h2>管理方格 · 领导力风格测评</h2>
+    <p>10 道情境题，凭第一直觉作答，提交后立即看你的分析</p>
+  </div>
+
+  <div id="msgBox"></div>
+
+  <!-- token 直接看结果 -->
+  <section id="resultView" style="display:none"></section>
+
+  <!-- 答题 -->
+  <section id="quizView">
+    <div class="name-box">
+      <label for="participantName">姓名<span class="req">*</span></label>
+      <input type="text" id="participantName" maxlength="20" placeholder="请输入你的姓名（必填）" autocomplete="name">
+    </div>
+    <div id="quiz"></div>
+  </section>
+
+  <!-- 结果 -->
+  <section id="quizResult" style="display:none">
+    <div class="tool-card">
+      <h3>你的测评结果</h3>
+      <div class="score-row">
+        <div class="score-box">
+          <div class="lab">生产导向 P 总分（满分 90）</div>
+          <div class="val" id="pVal">—</div>
+          <div class="progress"><i id="pBar" style="background:var(--danger);width:0%"></i></div>
+          <div style="margin-top:8px">档次 <span class="badge" id="pTier">—</span></div>
+        </div>
+        <div class="score-box">
+          <div class="lab">人本导向 H 总分（满分 90）</div>
+          <div class="val" id="hVal">—</div>
+          <div class="progress"><i id="hBar" style="background:var(--info);width:0%"></i></div>
+          <div style="margin-top:8px">档次 <span class="badge" id="hTier">—</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:20px 0">
+        <div id="svgWrap"></div>
+        <div>
+          <p style="font-size:21px;font-weight:800;margin:0" id="typeName">—</p>
+          <p class="tip" id="coordTxt">方格坐标：—</p>
+          <p class="tip" id="typeDesc" style="max-width:320px"></p>
+        </div>
+      </div>
+      <div class="advice-box">
+        <h4 id="adviceTitle">针对你偏弱维度的改善建议</h4>
+        <div id="adviceBody"></div>
+      </div>
+    </div>
+
+    <div class="tool-card" style="margin-top:14px">
+      <h3>保存我的结果</h3>
+      <p class="tip">截图保存下方二维码，或复制链接。稍后可扫码回看本次结果，无需登录。</p>
+      <div class="qr-wrap" id="qrWrap"></div>
+      <div style="text-align:center"><a id="shareLink" class="share-link" href="#" target="_blank"></a></div>
+    </div>
+  </section>
+</div>
+
+<div class="submit-bar" id="submitBar">
+  <button class="btn btn-primary" onclick="submitQuiz()">提交并查看结果</button>
+</div>
+
+<script src="../../assets/js/grid-core.js"></script>
+<script src="../../assets/js/qrcode.js"></script>
+<script src="quiz-config.js"></script>
+<script src="quiz-store.js"></script>
+<script src="answer.js"></script>
+</body>
+</html>
