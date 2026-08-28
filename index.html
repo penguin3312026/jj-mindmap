@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <title>我的工作台</title>
 <style>
   :root {
@@ -379,7 +382,7 @@
     document.getElementById('noResult').style.display = visible ? 'none' : 'block';
   });
 
-  fetch('manifest.json')
+  fetch('manifest.json?cb=' + Date.now(), {cache:'no-store'})
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(m => { window.__WB_VER = Date.now(); render(m); })
     .catch(() => render(FALLBACK));
