@@ -48,6 +48,17 @@
       "icon": "✎",
       "group": "备考中心",
       "tags": ["备考", "刷题", "经济师"]
+    },
+    {
+      "id": "perf",
+      "title": "绩效考核系统",
+      "desc": "全行业绩效考核：36 行业真实架构 + 岗位 KPI/MBO + 加减分 + 否定项（暖色打印版）",
+      "type": "link",
+      "url": "modules/perf/index.html",
+      "color": "#c2410c",
+      "icon": "📊",
+      "group": "人力资本战略",
+      "tags": ["绩效", "考核", "薪酬", "HR"]
     }
   ]
 }
