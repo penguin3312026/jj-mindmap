@@ -316,7 +316,7 @@
     const tags = (mod.tags || []).map(t => '<span class="tag">' + esc(t) + '</span>').join('');
     const hay = (mod.title + ' ' + (mod.desc||'') + ' ' + (mod.tags||[]).join(' ')).toLowerCase();
     return '<div class="card" style="--mc:' + color + '; animation-delay:' + (idx*60) + 'ms" ' +
-           'data-idx="' + idx + '" data-hay="' + esc(hay) + '" tabindex="0" role="button" aria-label="' + esc(mod.title) + '">' +
+           'data-idx="' + mod._i + '" data-hay="' + esc(hay) + '" tabindex="0" role="button" aria-label="' + esc(mod.title) + '">' +
       '<div class="icon">' + esc(initial) + '</div>' +
       '<div class="card-body">' +
         '<div class="card-title">' + esc(mod.title) + '<span class="badge">' + typeBadge(mod.type) + '</span></div>' +
@@ -332,6 +332,7 @@
     const main = document.getElementById('main');
     const groups = m.groups || [];
     const mods = (m.modules || []).filter(mod => !mod.hidden);
+    mods.forEach((mod, i) => { mod._i = i; }); // 记录真实索引，避免分组重排导致点击错位
     document.getElementById('modCount').textContent = mods.length + ' 个模块';
     main.innerHTML = '';
     if (!mods.length) {
