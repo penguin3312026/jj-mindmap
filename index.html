@@ -287,7 +287,11 @@
 
   function openModule(mod) {
     if (mod.type === 'link') {
-      window.open(mod.url, '_blank');
+      // 防缓存：新窗口链接加 ?v=<manifest-ver>
+      const sep = mod.url.indexOf('?') >= 0 ? '&' : '?';
+      const url = mod.url + sep + 'v=' + (window.__WB_VER || Date.now());
+      console.log('[workbench] open link:', mod.id, '->', url);
+      window.open(url, '_blank');
     } else if (mod.type === 'iframe') {
       openFrame(mod.url, mod.title);
     } else {
@@ -377,7 +381,7 @@
 
   fetch('manifest.json')
     .then(r => r.ok ? r.json() : Promise.reject())
-    .then(render)
+    .then(m => { window.__WB_VER = Date.now(); render(m); })
     .catch(() => render(FALLBACK));
 </script>
 </body>
