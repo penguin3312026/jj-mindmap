@@ -3,9 +3,6 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
 <title>我的工作台</title>
 <style>
   :root {
@@ -290,11 +287,7 @@
 
   function openModule(mod) {
     if (mod.type === 'link') {
-      // 防缓存：新窗口链接加 ?v=<manifest-ver>
-      const sep = mod.url.indexOf('?') >= 0 ? '&' : '?';
-      const url = mod.url + sep + 'v=' + (window.__WB_VER || Date.now());
-      console.log('[workbench] open link:', mod.id, '->', url);
-      window.open(url, '_blank');
+      window.open(mod.url, '_blank');
     } else if (mod.type === 'iframe') {
       openFrame(mod.url, mod.title);
     } else {
@@ -383,9 +376,9 @@
     document.getElementById('noResult').style.display = visible ? 'none' : 'block';
   });
 
-  fetch('manifest.json?cb=' + Date.now(), {cache:'no-store'})
+  fetch('manifest.json')
     .then(r => r.ok ? r.json() : Promise.reject())
-    .then(m => { window.__WB_VER = Date.now(); render(m); })
+    .then(render)
     .catch(() => render(FALLBACK));
 </script>
 </body>
