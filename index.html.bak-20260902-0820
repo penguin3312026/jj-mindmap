@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>我的工作台</title>
+<style>
+  :root {
+    --bg: #070a12;
+    --bg-2: #0c1018;
+    --surface: rgba(255,255,255,0.045);
+    --surface-hover: rgba(255,255,255,0.075);
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.18);
+    --text: #eef1f7;
+    --muted: #9aa6b6;
+    --gold: #d4a84b;
+    --gold-soft: #f0d694;
+    --radius: 16px;
+    --shadow: 0 18px 50px -20px rgba(0,0,0,.7);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+  /* 极光背景 */
+  body::before, body::after {
+    content: ""; position: fixed; inset: -20% -20% auto -20%; height: 70vh; z-index: 0;
+    pointer-events: none; filter: blur(70px); opacity: .55;
+  }
+  body::before {
+    background: radial-gradient(40% 60% at 20% 10%, rgba(124,108,240,.45), transparent 70%),
+                radial-gradient(45% 55% at 80% 0%, rgba(212,168,75,.38), transparent 70%);
+    animation: drift1 18s ease-in-out infinite alternate;
+  }
+  body::after {
+    top: auto; bottom: -10%; height: 50vh;
+    background: radial-gradient(40% 50% at 70% 100%, rgba(79,70,229,.35), transparent 70%),
+                radial-gradient(35% 50% at 15% 90%, rgba(55,138,221,.30), transparent 70%);
+    animation: drift2 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { from { transform: translate3d(-3%,0,0) scale(1); } to { transform: translate3d(4%,2%,0) scale(1.08); } }
+  @keyframes drift2 { from { transform: translate3d(2%,0,0) scale(1.05); } to { transform: translate3d(-4%,-2%,0) scale(1); } }
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .35;
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap { position: relative; z-index: 1; }
+
+  /* 顶栏 */
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 28px;
+    background: rgba(8,11,18,.6);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    width: 34px; height: 34px; border-radius: 10px; flex: 0 0 34px;
+    background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    color: #1a1206; font-weight: 800; font-size: 17px;
+    box-shadow: 0 6px 18px -6px rgba(212,168,75,.6);
+  }
+  .brand { font-weight: 700; font-size: 15px; letter-spacing: .3px; }
+  .brand small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); letter-spacing: 1.5px; }
+  .topbar .spacer { flex: 1; }
+  .topbar .pill {
+    font-size: 12px; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px;
+  }
+
+  /* 英雄区 */
+  .hero { max-width: 1120px; margin: 0 auto; padding: 64px 28px 26px; text-align: center; }
+  .hero .eyebrow {
+    display: inline-block; font-size: 12px; letter-spacing: 2px; color: var(--gold-soft);
+    border: 1px solid rgba(212,168,75,.35); border-radius: 999px; padding: 5px 14px; margin-bottom: 18px;
+    background: rgba(212,168,75,.07);
+  }
+  .hero h1 {
+    margin: 0; font-size: clamp(30px, 5vw, 50px); font-weight: 800; line-height: 1.15; letter-spacing: -.5px;
+    background: linear-gradient(120deg, #fff 10%, var(--gold-soft) 55%, var(--gold) 90%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .hero p { margin: 16px auto 0; max-width: 620px; color: var(--muted); font-size: 16px; }
+
+  /* 搜索 */
+  .search {
+    max-width: 560px; margin: 30px auto 0; position: relative;
+  }
+  .search input {
+    width: 100%; padding: 14px 16px 14px 46px; font-size: 15px; color: var(--text);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; outline: none;
+    transition: border-color .15s, background .15s;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search input:focus { border-color: var(--gold); background: var(--surface-hover); }
+  .search .ico {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 16px;
+  }
+
+  /* 分组 */
+  main { max-width: 1120px; margin: 0 auto; padding: 18px 28px 80px; }
+  .group { margin-top: 40px; }
+  .group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .group-head h2 { margin: 0; font-size: 18px; font-weight: 700; }
+  .group-head .count {
+    font-size: 12px; color: var(--muted); border: 1px solid var(--border);
+    border-radius: 999px; padding: 2px 10px;
+  }
+  .group-head .line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+
+  .card {
+    --mc: #378ADD;
+    position: relative; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; cursor: pointer; text-align: left;
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    display: flex; gap: 16px; align-items: flex-start;
+    animation: rise .5s ease both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .card::after {
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .2s;
+    background: radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--mc) 22%, transparent), transparent 60%);
+    pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-4px); border-color: var(--border-strong);
+    background: var(--surface-hover);
+    box-shadow: 0 20px 44px -22px color-mix(in srgb, var(--mc) 70%, #000);
+  }
+  .card:hover::after { opacity: 1; }
+  .card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .icon {
+    width: 50px; height: 50px; border-radius: 13px; flex: 0 0 50px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: #fff; font-weight: 700;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--mc) 85%, #fff 0%), color-mix(in srgb, var(--mc) 55%, #000 20%));
+    box-shadow: 0 8px 22px -8px color-mix(in srgb, var(--mc) 80%, transparent);
+  }
+  .card-body { min-width: 0; flex: 1; }
+  .card-title { font-size: 16.5px; font-weight: 700; margin: 2px 0 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .card-desc { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 2px 9px; }
+  .badge {
+    font-size: 10px; color: var(--gold-soft);
+    border: 1px solid rgba(212,168,75,.35); border-radius: 6px; padding: 1px 6px; font-weight: 600;
+  }
+  .empty-group { display: none; }
+  .no-result { text-align: center; color: var(--muted); padding: 60px 0; font-size: 15px; display: none; }
+
+  /* modal */
+  .overlay {
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(6,8,14,.85); backdrop-filter: blur(6px);
+    display: none; align-items: stretch; justify-content: center; padding: 22px;
+  }
+  .overlay.open { display: flex; animation: fade .2s ease; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .frame-wrap {
+    background: var(--bg-2); border: 1px solid var(--border-strong); border-radius: 16px;
+    width: 100%; max-width: 1240px; display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: var(--shadow); animation: pop .22s ease;
+  }
+  @keyframes pop { from { transform: scale(.98); opacity: .6; } to { transform: none; opacity: 1; } }
+  .frame-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 13px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.03);
+  }
+  .frame-bar strong { font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .frame-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  .frame-bar .acts { display: flex; gap: 8px; }
+  .frame-bar button {
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    border-radius: 9px; padding: 7px 13px; cursor: pointer; font-size: 13px; transition: .15s;
+  }
+  .frame-bar button:hover { color: var(--text); border-color: var(--gold); }
+  iframe { flex: 1; width: 100%; border: 0; background: #fff; min-height: 72vh; }
+
+  footer {
+    position: relative; z-index: 1; text-align: center; color: var(--muted); font-size: 12px;
+    padding: 30px 20px 40px; border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding-top: 44px; }
+    .topbar, .hero, main { padding-left: 18px; padding-right: 18px; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="logo">工</div>
+      <div class="brand">我的工作台<small>WORKBENCH</small></div>
+      <div class="spacer"></div>
+      <div class="pill" id="modCount">模块加载中…</div>
+    </div>
+
+    <section class="hero">
+      <span class="eyebrow">统一入口 · 集中管理</span>
+      <h1>我的工作台</h1>
+      <p id="wb-subtitle">一个入口，集中管理我所有的项目与工具。后续功能将持续接入。</p>
+      <div class="search">
+        <span class="ico">⌕</span>
+        <input id="q" type="text" placeholder="搜索模块 / 标签，例如「备考」「HR」「战略」…" autocomplete="off" />
+      </div>
+    </section>
+
+    <main id="main"></main>
+    <div class="no-result" id="noResult">没有匹配的模块，换个关键词试试。</div>
+
+    <footer>
+      部署于 GitHub Pages · 静态托管 · 模块化架构，新项目即插即用
+    </footer>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="frame-wrap">
+      <div class="frame-bar">
+        <strong><span class="dot"></span><span id="frame-title">模块</span></strong>
+        <div class="acts">
+          <button id="openNew">新窗口打开</button>
+          <button onclick="closeFrame()">关闭</button>
+        </div>
+      </div>
+      <iframe id="frame" src="about:blank" title="模块内容"></iframe>
+    </div>
+  </div>
+
+<script>
+  const FALLBACK = {
+    title: "我的工作台",
+    subtitle: "一个入口，集中管理我所有的项目与工具。后续功能将持续接入。",
+    groups: ["工作台", "人力资本战略", "备考中心"],
+    modules: [
+      { id:"welcome", title:"使用说明", desc:"如何把新项目/模块接入这个工作台", type:"static", path:"welcome/index.html", color:"#378ADD", icon:"?", group:"工作台", tags:["指南","接入"] },
+      { id:"hcss", title:"人力资本战略工作室", type:"static", path:"hcss/index.html", icon:"◈", desc:"HR 战略能力体系：战略目标分析、能力矩阵、HR 体系、管理方格测评", color:"#d4a84b", group:"人力资本战略", tags:["HR","战略","人才盘点","领导力"] },
+      { id:"mindmap", title:"备考思维导图", desc:"中级经济师（人力）备考思维导图 · 可编辑 · 持续更新", type:"link", url:"mindmap.html", color:"#7c6cf0", icon:"✦", group:"备考中心", tags:["备考","经济师","思维导图"], hidden:true },
+      { id:"study", title:"双科冲刺备考站", desc:"中级经济师 人力 + 经济基础 双科冲刺备考", type:"link", url:"study.html", color:"#4f46e5", icon:"✎", group:"备考中心", tags:["备考","刷题","经济师"] }
+    ]
+  };
+
+  const overlay = document.getElementById('overlay');
+  const frame = document.getElementById('frame');
+  const frameTitle = document.getElementById('frame-title');
+  let lastUrl = '';
+
+  function openFrame(url, title) {
+    frameTitle.textContent = title || '模块';
+    lastUrl = url;
+    frame.src = url;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeFrame() {
+    overlay.classList.remove('open');
+    frame.src = 'about:blank';
+    document.body.style.overflow = '';
+  }
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeFrame(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeFrame(); });
+  document.getElementById('openNew').addEventListener('click', () => { if (lastUrl) window.open(lastUrl, '_blank'); });
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function openModule(mod) {
+    if (mod.type === 'link') {
+      window.open(mod.url, '_blank');
+    } else if (mod.type === 'iframe') {
+      openFrame(mod.url, mod.title);
+    } else {
+      let src = mod.url;
+      if (mod.path) src = 'modules/' + mod.path;
+      openFrame(src || 'about:blank', mod.title);
+    }
+  }
+
+  function typeBadge(t) {
+    if (t === 'link') return '外链';
+    if (t === 'iframe') return '嵌入';
+    return '站内';
+  }
+
+  function cardHTML(mod, idx) {
+    const color = mod.color || '#378ADD';
+    const initial = mod.icon || (mod.title || '?').trim().charAt(0);
+    const tags = (mod.tags || []).map(t => '<span class="tag">' + esc(t) + '</span>').join('');
+    const hay = (mod.title + ' ' + (mod.desc||'') + ' ' + (mod.tags||[]).join(' ')).toLowerCase();
+    return '<div class="card" style="--mc:' + color + '; animation-delay:' + (idx*60) + 'ms" ' +
+           'data-idx="' + idx + '" data-hay="' + esc(hay) + '" tabindex="0" role="button" aria-label="' + esc(mod.title) + '">' +
+      '<div class="icon">' + esc(initial) + '</div>' +
+      '<div class="card-body">' +
+        '<div class="card-title">' + esc(mod.title) + '<span class="badge">' + typeBadge(mod.type) + '</span></div>' +
+        '<div class="card-desc">' + esc(mod.desc || '') + '</div>' +
+        '<div class="tags">' + tags + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function render(m) {
+    document.title = (m.title || '我的工作台');
+    document.getElementById('wb-subtitle').textContent = m.subtitle || '';
+    const main = document.getElementById('main');
+    const groups = m.groups || [];
+    const mods = (m.modules || []).filter(mod => !mod.hidden);
+    document.getElementById('modCount').textContent = mods.length + ' 个模块';
+    main.innerHTML = '';
+    if (!mods.length) {
+      main.innerHTML = '<div class="no-result" style="display:block">还没有模块。</div>';
+      return;
+    }
+    // 按 groups 顺序渲染，未分组的放最后
+    const grouped = {};
+    mods.forEach(mod => { const g = mod.group || '其他'; (grouped[g] = grouped[g] || []).push(mod); });
+    const order = groups.concat(Object.keys(grouped).filter(g => !groups.includes(g)));
+    let globalIdx = 0;
+    order.forEach(g => {
+      const list = grouped[g]; if (!list) return;
+      const sec = document.createElement('section');
+      sec.className = 'group';
+      sec.dataset.group = g;
+      sec.innerHTML = '<div class="group-head"><h2>' + esc(g) + '</h2>' +
+        '<span class="count">' + list.length + '</span><span class="line"></span></div>' +
+        '<div class="cards"></div>';
+      const cardsEl = sec.querySelector('.cards');
+      list.forEach(mod => {
+        cardsEl.insertAdjacentHTML('beforeend', cardHTML(mod, globalIdx++));
+      });
+      main.appendChild(sec);
+    });
+    // 绑定点击/键盘（用 data-idx 直接定位模块，避免标题反查出错）
+    main.querySelectorAll('.card').forEach(el => {
+      const mod = mods[+el.dataset.idx];
+      el.addEventListener('click', () => openModule(mod));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModule(mod); } });
+    });
+  }
+
+  // 搜索过滤
+  document.getElementById('q').addEventListener('input', (e) => {
+    const kw = e.target.value.trim().toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('.group').forEach(sec => {
+      let gVisible = 0;
+      sec.querySelectorAll('.card').forEach(card => {
+        const hit = !kw || (card.dataset.hay || '').includes(kw);
+        card.style.display = hit ? '' : 'none';
+        if (hit) gVisible++;
+      });
+      sec.style.display = gVisible ? '' : 'none';
+      visible += gVisible;
+    });
+    document.getElementById('noResult').style.display = visible ? 'none' : 'block';
+  });
+
+  fetch('manifest.json')
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(render)
+    .catch(() => render(FALLBACK));
+</script>
+</body>
+</html>
