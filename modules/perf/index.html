@@ -115,19 +115,35 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .emp-panel{margin:2px 0 14px;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
 .emp-h{font-size:12px;color:var(--muted);margin-bottom:6px}
 .emp-list{display:block}
-.emp-grid{display:flex;flex-wrap:wrap;gap:10px}
-.emp-square{position:relative;width:118px;height:118px;background:#fff;border:1px solid var(--line);border-radius:10px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8px 10px;transition:box-shadow .15s,border-color .15s}
+.emp-grid{display:block}
+.emp-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;align-items:stretch}
+.emp-square{position:relative;width:66px;min-height:66px;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6px 5px 5px;transition:box-shadow .15s,border-color .15s}
 .emp-square:hover{box-shadow:0 3px 10px rgba(220,90,40,.18);border-color:var(--brand)}
 .emp-square.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .emp-square.on .emp-sq-meta{color:rgba(255,255,255,.88)}
 .emp-square.on .emp-sq-score{color:#fff}
 .emp-square.on .emp-x{color:#fff;border-color:rgba(255,255,255,.6)}
-.emp-sq-name{font-weight:800;font-size:15px;line-height:1.2;max-width:100%;word-break:break-all}
+.emp-sq-name{font-weight:800;font-size:12px;line-height:1.15;max-width:100%;word-break:break-all}
 .emp-square.on .emp-sq-name{color:#fff}
-.emp-sq-meta{font-size:12px;color:var(--muted);margin-top:5px;white-space:nowrap}
-.emp-sq-score{font-size:22px;font-weight:800;margin-top:6px;color:var(--brand)}
-.emp-x{position:absolute;top:3px;right:5px;width:20px;height:20px;line-height:18px;text-align:center;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:14px;font-weight:700;cursor:pointer;padding:0}
+.emp-sq-meta{font-size:9px;color:var(--muted);margin-top:3px;white-space:nowrap}
+.emp-sq-score{font-size:15px;font-weight:800;margin-top:3px;color:var(--brand)}
+.emp-x{position:absolute;top:2px;right:3px;width:16px;height:16px;line-height:14px;text-align:center;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;padding:0}
 .emp-x:hover{color:#ef4444;border-color:#ef4444;background:#fef2f2}
+/* 组织架构图 */
+.org-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 14px;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.org-arrow{color:var(--muted);font-weight:700}
+.org-note{color:var(--muted);font-size:13px}
+.org-dept{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:12px;background:#fff}
+.org-dept-h{font-weight:800;font-size:15px;margin-bottom:8px;color:var(--ink)}
+.org-lv{margin-left:0}
+.org-lv .org-lv{margin-left:20px;border-left:2px solid #f0c6a8;padding-left:14px;margin-top:8px}
+.org-lv-label{font-size:12px;color:var(--muted);margin:2px 0 4px;font-weight:700}
+.org-boxes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.org-box{position:relative;min-width:92px;max-width:170px;padding:7px 10px;border:1px solid var(--brand);background:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;color:var(--ink)}
+.org-box.ok:hover{box-shadow:0 2px 8px rgba(220,90,40,.18)}
+.org-box.ok .ob-lv{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:2px}
+.org-box.empty{border-style:dashed;border-color:#caa;color:var(--muted);background:#faf7f4;font-weight:400}
+.org-box.empty:hover{border-color:var(--brand);color:var(--brand);background:#fff5ee}
 .block{border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .block-h{background:linear-gradient(90deg,#fff4ec,#fef6ee);padding:10px 16px;font-weight:700;display:flex;align-items:center;gap:10px;font-size:14px}
 .block-h .pct{margin-left:auto;font-size:13px;color:var(--muted)}
@@ -344,7 +360,7 @@ function renderJobs(){
     }).join("");
     app.innerHTML = crumb + `<div class="jobs-wrap"><div class="sec-title">${esc(s.label)} · 部门岗位</div>
       <div class="sec-sub">点击岗位查看完整考核表（KPI + MBO + 加减分 + 否定项），单元格可直接编辑；部门与岗位支持新增 / 删除（会话内生效，刷新后还原；需永久保存请让我写回文件）。</div>
-      <div class="jobs-toolbar"><button class="btn" onclick="addDept()">＋ 新增部门</button></div>
+      <div class="jobs-toolbar"><button class="btn" onclick="addDept()">＋ 新增部门</button><button class="btn btn-2" onclick="goOrg()">🏢 组织架构图</button></div>
       ${depts}</div>`;
   } else {
     const roles = {管理:[],专业:[],一线:[]};
@@ -388,6 +404,7 @@ function jobTile(role, kind, di, tag){
 function goScenicJob(di,kind){curSec=0;curDept=di;curRole=kind;curPost=-1;view="job";render();}
 function goPost(di,pi){curDept=di;curPost=pi;view="job";render();}
 function goJob(ji){curJob=ji;view="job";render();}
+function goOrg(){view="org";render();}
 
 function getRole(){
   const s = SECTIONS[curSec];
@@ -416,8 +433,10 @@ function renderJob(){
     return `<option value="${esc(q.name)}" ${(role.supervisor===q.name)?'selected':''}>${esc(dn+' · '+q.name+'（'+effLevel(q)+'）')}</option>`;
   }).join("");
   const isAuto = !role.supervisor || role.supervisor==="__auto__";
+  // 公司层虚拟上级：rank 低于当前岗即可选（至少能选 总经理 / 董事长）
+  const compOpts = COMPANY_LEVELS.filter(l=>levelRank(l)<levelRank(effLevel(role))).map(l=>`<option value="${l}" ${role.supervisor===l?'selected':''}>${l}（公司层）</option>`).join("");
   const supSel = `<select class="meta-sel" onchange="setSupervisor(this.value)">
-      <option value="__auto__" ${isAuto?'selected':''}>（系统默认：${esc(effSup||'无上级')}）</option>${supOpts}</select>`;
+      <option value="__auto__" ${isAuto?'selected':''}>（系统默认：${esc(effSup||'无上级')}）</option>${compOpts}${supOpts}</select>`;
   const roleSel = `<select class="meta-sel" onchange="getRole().role=this.value;renderJob()">${["一线","管理","专业"].map(r=>`<option ${role.role===r?'selected':''}>${r}</option>`).join("")}</select>`;
   const levelSel = `<select class="meta-sel" onchange="setLevel(this.value)">
       <option value="__auto__" ${(!role.level)?'selected':''}>（按名称自动：${esc(inferLevel(role.name))}）</option>
@@ -426,6 +445,7 @@ function renderJob(){
     <b onclick="goJobs(${curSec})">${esc(crumbLabel)}</b><span class="sep">/</span><span>${esc(title)}</span></div>`;
   let html = crumb + `<div class="sheet"><h2>${esc(title)}<span class="h2-sub">（${esc(effLevel(role))}）</span></h2>
     <div class="person-bar">
+      <label class="pf"><span>岗位名称</span><input class="per-in" type="text" value="${esc(role.name)}" onchange="renamePost(this.value)" placeholder="岗位名称"></label>
       <label class="pf"><span>被考核人</span><input class="per-in" type="text" value="${esc(role._eval_name||'')}" oninput="getRole()._eval_name=this.value" placeholder="填写姓名"></label>
       <label class="pf"><span>考核期间</span><input class="per-in" type="text" value="${esc(role._eval_period||'')}" oninput="getRole()._eval_period=this.value" placeholder="如 2026-08"></label>
       <label class="pf"><span>所属部门</span><b>${esc(crumbLabel)}</b></label>
@@ -435,8 +455,13 @@ function renderJob(){
   const seasonBar = `<div class="season-bar">季节考核表：<button class="season-btn ${CUR_SEASON==='off'?'on':''}" onclick="setSeason('off')">淡季</button><button class="season-btn ${CUR_SEASON==='peak'?'on':''}" onclick="setSeason('peak')">旺季</button><span class="season-tip">切换前会自动保存当前表（两套独立权重/目标）</span></div>`;
   const savedForPost = getSavedList().filter(x=>x.industry===s.label && x.dept===crumbLabel && x.post===role.name)
     .sort((a,b)=> (a.period||"").localeCompare(b.period||"") || (a.season==="peak"?1:0)-(b.season==="peak"?1:0) || (a.ts||0)-(b.ts||0));
-  const empPanel = savedForPost.length ? `<div class="emp-panel"><div class="emp-h">已保存打分（点击方格载入该人当月考评；按月份一个方格一个方格排列，每人每月可留存历史；右上角 × 删除）：</div><div class="emp-list"><div class="emp-grid">`+
-    savedForPost.map(x=>`<div class="emp-square ${role._loaded_eval===x._key?'on':''}" onclick="loadEvalByKey('${encodeURIComponent(x._key)}')"><button class="emp-x" title="删除该记录" onclick="event.stopPropagation();delEval('${encodeURIComponent(x._key)}')">×</button><div class="emp-sq-name">${esc(x.name)}</div><div class="emp-sq-meta">${esc(x.season==='peak'?'旺季':'淡季')} · ${esc(x.period||'—')}</div><div class="emp-sq-score">${esc(x.final||'')}</div></div>`).join("")+`</div></div></div>` : "";
+  let empInner = "";
+  if(savedForPost.length){
+    const byName = {};
+    savedForPost.forEach(x=>{ (byName[x.name] = byName[x.name]||[]).push(x); });
+    empInner = Object.keys(byName).map(nm=>`<div class="emp-row">`+ byName[nm].map(x=>`<div class="emp-square ${role._loaded_eval===x._key?'on':''}" onclick="loadEvalByKey('${encodeURIComponent(x._key)}')"><button class="emp-x" title="删除该记录" onclick="event.stopPropagation();delEval('${encodeURIComponent(x._key)}')">×</button><div class="emp-sq-name">${esc(x.name)}</div><div class="emp-sq-meta">${esc(x.season==='peak'?'旺季':'淡季')} · ${esc(x.period||'—')}</div><div class="emp-sq-score">${esc(x.final||'')}</div></div>`).join("") + `</div>`).join("");
+  }
+  const empPanel = savedForPost.length ? `<div class="emp-panel"><div class="emp-h">已保存打分（点击方格载入该人当月考评；按姓名分行、每人每月一个方格、按月份排列，可留存历史；右上角 × 删除）：</div><div class="emp-list">${empInner}</div></div>` : "";
   html += seasonBar + empPanel;
 
   // === KPI 9 列表格 ===
@@ -611,6 +636,8 @@ function blockTarget(r, key){
 // 公司层级（自上而下）：董事长 > 总经理 > 分管副总 > 部门总监 > 部门副总监 > 经理 > 副经理 > 主管 > 专员
 const LEVELS = ["董事长","总经理","分管副总","部门总监","部门副总监","经理","副经理","主管","专员"];
 const COMPANY_LEVELS = ["董事长","总经理","分管副总"];
+// 虚拟公司层节点（非实际岗位，仅用于上级选项与默认上级推导）
+const COMPANY_NODES = [{name:"总经理",level:"总经理"},{name:"分管副总",level:"分管副总"},{name:"董事长",level:"董事长"}];
 function levelRank(lv){ const i = LEVELS.indexOf(lv); return i<0 ? (LEVELS.length-1) : i; }
 function inferLevel(name){
   if(!name) return "专员";
@@ -632,7 +659,8 @@ function allPostsInSection(s){
   else { (s.jobs||[]).forEach(p=>out.push(p)); }
   return out;
 }
-// 返回岗位 p 的「系统默认上级」名称：同部门内「最接近且更高」的一级（即直接上级）；部门内无更高则跳公司层
+// 返回岗位 p 的「系统默认上级」名称：同部门内「最接近且更高」的一级（即直接上级）；
+// 部门内无更高岗 → 部门统一上级=总经理（董事长/总经理 为虚拟公司层）；总经理→董事长
 function computeSuperior(p, s, deptPosts){
   const myRank = levelRank(effLevel(p));
   const deptCands = (deptPosts||[]).filter(q=>q!==p && levelRank(effLevel(q))<myRank);
@@ -640,12 +668,8 @@ function computeSuperior(p, s, deptPosts){
     deptCands.sort((a,b)=>levelRank(effLevel(b))-levelRank(effLevel(a))); // 取最高 rank（最接近 myRank）者 = 直接上级
     return (deptCands[0].name)||"";
   }
-  const coCands = allPostsInSection(s).filter(q=>q!==p && COMPANY_LEVELS.indexOf(effLevel(q))>=0 && levelRank(effLevel(q))<myRank);
-  if(coCands.length){
-    coCands.sort((a,b)=>levelRank(effLevel(b))-levelRank(effLevel(a)));
-    return (coCands[0].name)||"";
-  }
-  return "";
+  if(effLevel(p)==="总经理") return "董事长";
+  return "总经理";
 }
 // 有效上级：显式覆盖优先，否则系统默认
 function effectiveSuperior(p, s, deptPosts){
@@ -665,6 +689,13 @@ function currentDeptPosts(s){
 }
 function setSupervisor(v){ const r=getRole(); r.supervisor = (v==="__auto__")? "" : v; renderJob(); }
 function setLevel(v){ const r=getRole(); r.level = (v==="__auto__")? "" : v; renderJob(); }
+// 岗位名称可编辑：改名同时同步引用该岗位的上级指向，避免悬空
+function renamePost(v){
+  const s=SECTIONS[curSec], r=getRole(), old=(r.name||"");
+  v=(v||"").trim(); if(!v || v===old){ return; }
+  allPostsInSection(s).forEach(p=>{ if(p.supervisor===old) p.supervisor=v; });
+  r.name=v; renderJob();
+}
 // ===== 淡旺季两套考核表（诉求 4）=====
 let CUR_SEASON = "off"; // off=淡季, peak=旺季
 function seasonSlots(r){ return CUR_SEASON==="peak" ? ["kpi_peak","mbo_peak"] : ["kpi_off","mbo_off"]; }
@@ -900,12 +931,55 @@ function delPost(di, pi){
   d.posts.splice(pi,1); repairSupervisors(s); renderJobs();
 }
 
+// ===== 组织架构图（诉求：按 8 部门建完整架构，逐级展开，缺失岗位虚线占位可点击新增）=====
+const ORG_LV_ORDER = ["部门总监","部门副总监","经理","副经理","主管","专员"];
+const ORG_LV_TITLE = {"部门总监":"总监","部门副总监":"副总监","经理":"经理","副经理":"副经理","主管":"主管","专员":"专员"};
+function addPostAt(di, level){
+  const s=SECTIONS[curSec]; const d=s.depts[di]; if(!d) return;
+  if(!d.posts) d.posts=[];
+  const title = ORG_LV_TITLE[level]||level;
+  const name = (d.dept||"") + title;                 // 例：综合部经理
+  const role = (level==="专员") ? "一线" : "管理";
+  d.posts.push({name:name, role:role, level:level, kpi:[], mbo:[], add:[], deny:"", supervisor:"", cycle:"月", area:"", _kpiTarget:null, deny_triggered:false});
+  renderOrg();
+}
+function renderOrg(){
+  const app=document.getElementById("app");
+  const s=SECTIONS[curSec];
+  const crumb=`<div class="crumb"><b onclick="goHome()">🏠 全部行业</b><span class="sep">/</span><span>${esc(s.label)}</span></div>`;
+  let html=crumb+`<div class="jobs-wrap"><div class="sec-title">${esc(s.label)} · 组织架构图</div>
+    <div class="sec-sub">架构：董事长 → 总经理 → 各部门（总监 → 副总监 → 经理 → 副经理 → 主管 → 专员）。点击<strong>实线岗位</strong>进入其考核表；点击<strong>虚线「＋ 层级」</strong>按对应部门与层级新增岗位（会话内生效，刷新后还原）。架构图完整展示，未设岗位以虚线占位，逐步完善。</div>
+    <div class="jobs-toolbar"><button class="btn" onclick="goJobs(curSec)">← 返回部门岗位</button></div>`;
+  if(!s.depts){ html+=`<div class="sec-sub">当前行业无部门结构，暂不支持组织架构图。</div></div>`; app.innerHTML=html; return; }
+  html+=`<div class="org-top"><span class="org-box ok" style="cursor:default">董事长</span><span class="org-arrow">→</span><span class="org-box ok" style="cursor:default">总经理</span><span class="org-arrow">→</span><span class="org-note">统管 ${s.depts.length} 个部门（各部门上级=总经理）</span></div>`;
+  s.depts.forEach((d,di)=>{
+    const groups={};
+    (d.posts||[]).forEach((p,pi)=>{ const lv=effLevel(p); (groups[lv]=groups[lv]||[]).push({p,pi}); });
+    function lvBoxes(level){
+      const arr=groups[level]||[];
+      let b=arr.map(o=>`<div class="org-box ok" title="点击进入 ${esc(o.p.name)} 考核表" onclick="goPost(${di},${o.pi})">${esc(o.p.name)}<span class="ob-lv">${ORG_LV_TITLE[level]||level}</span></div>`).join("");
+      b+=`<div class="org-box empty" title="在「${esc(d.dept)}」新增${ORG_LV_TITLE[level]||level}" onclick="addPostAt(${di},'${level}')">＋ ${ORG_LV_TITLE[level]||level}</div>`;
+      return `<div class="org-boxes">${b}</div>`;
+    }
+    const tree = lvBoxes("部门总监")
+      + `<div class="org-lv">${lvBoxes("部门副总监")}`
+      + `<div class="org-lv">${lvBoxes("经理")}`
+      + `<div class="org-lv">${lvBoxes("副经理")}`
+      + `<div class="org-lv"><div class="org-lv-label">主管</div>${lvBoxes("主管")}`
+      + `<div class="org-lv"><div class="org-lv-label">专员</div>${lvBoxes("专员")}</div></div></div></div></div>`;
+    html+=`<div class="org-dept"><div class="org-dept-h">${esc(d.dept)} <span class="cnt">${(d.posts||[]).length} 个岗位</span></div>${tree}</div>`;
+  });
+  html+=`</div>`;
+  app.innerHTML=html;
+}
+
 function render(){
   document.body.classList.toggle("cover-dark", view==="home");
   const app = document.getElementById("app");
   if(view==="home"){renderTabs(); renderHome();}
   else if(view==="jobs"){renderJobs();}
   else if(view==="job"){renderJob();}
+  else if(view==="org"){renderOrg();}
   window.scrollTo(0,0);
 }
 render();
