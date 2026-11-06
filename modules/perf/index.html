@@ -405,13 +405,14 @@ function renderJob(){
         </td>
         <td><input class="score-in" type="number" step="0.1" value="${esc(x.score||'')}" oninput="onField('kpi',${i},'score',this.value)" placeholder="得分"></td>
         <td><span contenteditable="true" oninput="onField('kpi',${i},'freq',this.innerText)">${esc(x.freq||'月')}</span></td>
+        <td style="text-align:center;width:40px"><button class="btn btn-warn" style="padding:2px 6px;font-size:11px;line-height:1.2" title="删除此行" onclick="event.stopPropagation();delRow('kpi',${i})">✕</button></td>
       </tr>`).join("");
     html += `<div class="block"><div class="block-h">一、重点工作指标（KPI）<span class="pct">占比 <input class="w-in" style="width:52px;padding:3px 4px" type="number" min="0" max="100" step="1" value="${wPct(kpiTarget)}" onchange="onSplit(this.value)">% ｜ 小计 <b id="kpiSum">0%</b></span></div>
       <table><thead><tr>
         <th style="width:34px">#</th><th style="width:78px">绩效领域</th><th style="width:14%">指标</th>
         <th>指标定义及说明 / 计算公式</th><th style="width:16%">衡量标准</th>
         <th style="width:64px">权重%</th><th style="width:160px">目标值·基础/目标/挑战</th>
-        <th style="width:60px">得分</th><th style="width:56px">统计频率</th>
+        <th style="width:60px">得分</th><th style="width:56px">统计频率</th><th style="width:40px">操作</th>
       </tr></thead><tbody>${rows}</tbody></table>
       <button class="btn" onclick="addKpi('kpi')">+ 加一行 KPI</button>
       <div class="formula">计分：得分 = 权重 × 100 − 当月累计扣分，最低 0 分；频率「日/实时/周」按日累计；月结按当月累计汇总总分；扣分采用<strong>阶梯加重</strong>，累计达违纪线进入处分流程。</div>
@@ -431,13 +432,14 @@ function renderJob(){
         <td><span contenteditable="true" oninput="onField('mbo',${i},'target',this.innerText)" placeholder="可选目标">${esc(x.target||'')}</span></td>
         <td><input class="score-in" type="number" step="0.1" value="${esc(x.score||'')}" oninput="onField('mbo',${i},'score',this.value)" placeholder="得分"></td>
         <td><span contenteditable="true" oninput="onField('mbo',${i},'freq',this.innerText)">${esc(x.freq||'实时')}</span></td>
+        <td style="text-align:center;width:40px"><button class="btn btn-warn" style="padding:2px 6px;font-size:11px;line-height:1.2" title="删除此行" onclick="event.stopPropagation();delRow('mbo',${i})">✕</button></td>
       </tr>`).join("");
     html += `<div class="block"><div class="block-h">二、工作行为类指标（MBO）<span class="pct">占比 ${wPct(mboTarget)}% ｜ 小计 <b id="mboSum">0%</b></span></div>
       <table><thead><tr>
         <th style="width:34px">#</th><th style="width:78px">绩效领域</th><th>项目</th>
         <th>指标定义及说明 / 计算公式</th><th style="width:22%">衡量标准</th>
         <th style="width:64px">权重%</th><th style="width:140px">目标值/参考</th>
-        <th style="width:60px">得分</th><th style="width:56px">统计频率</th>
+        <th style="width:60px">得分</th><th style="width:56px">统计频率</th><th style="width:40px">操作</th>
       </tr></thead><tbody>${rows}</tbody></table>
       <button class="btn btn-2" onclick="addKpi('mbo')">+ 加一行 MBO</button>
     </div>`;
@@ -535,6 +537,14 @@ function delAdd(idx){
   const r = getRole();
   if(!r.add||!r.add[idx]) return;
   r.add.splice(idx, 1);
+  renderJob();
+}
+function delRow(key, i){
+  // 删除 KPI / MBO 表格中的任意一行
+  const r = getRole();
+  if(!r[key] || !r[key][i]) return;
+  if(r[key].length <= 1){ alert("至少保留 1 行，无法删除最后一行"); return; }
+  r[key].splice(i, 1);
   renderJob();
 }
 
