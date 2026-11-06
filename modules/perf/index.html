@@ -192,6 +192,12 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .oce-temp{stroke:#c2410c;stroke-width:2.5;stroke-dasharray:5 4}
 .oce-line{stroke:#e3c6ad;stroke-width:2.5}
 .oce-line:hover{stroke:#c2410c;stroke-width:3.5}
+.oce-fline{stroke:#c2410c;stroke-width:2.5}
+.oce-fline:hover{stroke:#ef4444;stroke-width:3.5}
+.oce-point{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#c2410c;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);cursor:grab;z-index:8}
+.oce-point.dragging{cursor:grabbing;z-index:13}
+.oce-point .oc-x{position:absolute;top:-9px;right:-9px;width:16px;height:16px;line-height:14px;text-align:center;border:1px solid #fca5a5;background:#fff;color:#ef4444;font-size:11px;font-weight:700;border-radius:50%;cursor:pointer;padding:0;z-index:6}
+.oce-point .oc-x:hover{background:#ef4444;color:#fff;border-color:#ef4444}
 .oce-modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:200}
 .oce-modal{background:#fff;border-radius:12px;padding:18px 20px;width:min(440px,92vw);box-shadow:0 10px 40px rgba(0,0,0,.25)}
 .oce-modal h3{margin:0 0 10px;font-size:15px}
@@ -983,8 +989,12 @@ function delPost(di, pi){
   const s = SECTIONS[curSec];
   const d = s.depts[di];
   if(!d || !d.posts || !d.posts[pi]) return;
+  const pname = d.posts[pi].name;
   if(!confirm("确定删除该岗位？其直接下属将自动上提一级（系统默认上级）；此操作仅当前会话内生效。")) return;
   d.posts.splice(pi,1); repairSupervisors(s);
+  // 清理引用该岗位的自由连线，避免悬空
+  const edges=getOrgEdges(s,di).filter(e=>e[0]!=="oceN:"+pname && e[1]!=="oceN:"+pname);
+  setOrgEdges(s,di,edges);
   if(view==="org") renderOrg(); else renderJobs();
 }
 
@@ -998,6 +1008,81 @@ function isMgmtLevel(lv){ return ["分管副总","部门总监","部门副总监
 function orgPosKey(s,di,pi){ const d=s.depts[di]; const p=d.posts[pi]; return LS_PREFIX+"pos#"+s.label+"#"+(d.dept||"")+"#"+(p.name||pi); }
 function getOrgPos(s,di,pi){ try{ const v=localStorage.getItem(orgPosKey(s,di,pi)); return v?JSON.parse(v):null; }catch(e){ return null; } }
 function setOrgPos(s,di,pi,x,y){ try{ localStorage.setItem(orgPosKey(s,di,pi), JSON.stringify({x:Math.round(x),y:Math.round(y)})); }catch(e){} }
+
+// —— 自由交点 & 自由连线（localStorage，刷新后保留；随岗位框/交点一起移动）——
+// 交点：{id,x,y}（id 形如 oceP3）；自由连线：[[refA,refB],...]，ref 为 oceP3（交点）或 oceN:岗位名（方框）或 oceExec0/1（公司层）
+function orgPtsKey(s,di){ return LS_PREFIX+"pts#"+s.label+"#"+(s.depts[di]?s.depts[di].dept:di); }
+function getOrgPts(s,di){ try{ const v=localStorage.getItem(orgPtsKey(s,di)); return v?JSON.parse(v):[]; }catch(e){ return []; } }
+function setOrgPts(s,di,arr){ try{ localStorage.setItem(orgPtsKey(s,di), JSON.stringify(arr)); }catch(e){} }
+function orgEdgeKey(s,di){ return LS_PREFIX+"edge#"+s.label+"#"+(s.depts[di]?s.depts[di].dept:di); }
+function getOrgEdges(s,di){ try{ const v=localStorage.getItem(orgEdgeKey(s,di)); return v?JSON.parse(v):[]; }catch(e){ return []; } }
+function setOrgEdges(s,di,arr){ try{ localStorage.setItem(orgEdgeKey(s,di), JSON.stringify(arr)); }catch(e){} }
+function addFreeEdge(s,di,aRef,bRef){
+  if(!aRef||!bRef||aRef===bRef) return;
+  const edges=getOrgEdges(s,di);
+  if(edges.some(e=>(e[0]===aRef&&e[1]===bRef)||(e[0]===bRef&&e[1]===aRef))) return;  // 去重
+  edges.push([aRef,bRef]); setOrgEdges(s,di,edges);
+}
+// 由元素生成持久引用（方框用岗位名，交点/公司层用其 id）
+function refOfEl(el,s,di){
+  if(el.classList.contains("oce-point")) return el.id;
+  if(el.classList.contains("oce-node")){ const pi=+el.dataset.pi; if(pi<0) return el.id; const p=s.depts[di].posts[pi]; return p?("oceN:"+p.name):null; }
+  return null;
+}
+// 由持久引用反查当前 DOM 元素（岗位按名解析，重排后依然有效）
+function resolveElById(ref,s,di){
+  if(!ref) return null;
+  if(ref.indexOf("oceP")===0||ref.indexOf("oceExec")===0) return document.getElementById(ref);
+  if(ref.indexOf("oceN:")===0){ const nm=ref.slice(5); const idx=(s.depts[di].posts||[]).findIndex(q=>q.name===nm); if(idx<0) return null; return document.getElementById("oceN"+idx); }
+  return document.getElementById(ref);
+}
+// 新增交点（在画布指定坐标），直接插入 DOM，避免整页重渲染丢失模式状态
+function addPointAt(s,di,x,y){
+  const pts=getOrgPts(s,di); let max=0;
+  pts.forEach(p=>{ const m=/^oceP(\d+)$/.exec(p.id); if(m) max=Math.max(max,+m[1]); });
+  const id="oceP"+(max+1);
+  pts.push({id:id, x:Math.round(x), y:Math.round(y)}); setOrgPts(s,di,pts);
+  const canvas=document.getElementById("oceCanvas");
+  if(canvas){
+    const div=document.createElement("div");
+    div.className="oce-point"; div.id=id; div.dataset.pid=id;
+    div.style.left=x+"px"; div.style.top=y+"px";
+    div.innerHTML=`<button class="oc-x" title="删除交点" onclick="event.stopPropagation();delPoint(${di},'${id}')">×</button>`;
+    canvas.appendChild(div);
+  }
+}
+function updatePointPos(s,di,pid,x,y){
+  const pts=getOrgPts(s,di); const p=pts.find(q=>q.id===pid);
+  if(p){ p.x=Math.round(x); p.y=Math.round(y); setOrgPts(s,di,pts); }
+}
+function delPoint(di,pid){
+  const s=SECTIONS[curSec]; const pts=getOrgPts(s,di); const i=pts.findIndex(p=>p.id===pid);
+  if(i<0) return;
+  if(!confirm("删除该交点？与之相连的自由连线也会一并删除。")) return;
+  pts.splice(i,1); setOrgPts(s,di,pts);
+  const edges=getOrgEdges(s,di).filter(e=>e[0]!==pid && e[1]!==pid);
+  setOrgEdges(s,di,edges);
+  renderOrg();
+}
+function delFreeEdge(di,ei){
+  const s=SECTIONS[curSec]; const edges=getOrgEdges(s,di);
+  if(!edges[ei]) return;
+  if(!confirm("删除这条自由连线？")) return;
+  edges.splice(ei,1); setOrgEdges(s,di,edges); drawOrgLines(s,di);
+}
+function toggleAddPoint(){
+  OCE.addPoint=!OCE.addPoint;
+  if(OCE.addPoint && OCE.connect){ OCE.connect=false; const cb=document.getElementById("oceConnectBtn"); if(cb){ cb.textContent="🔗 连线模式：关"; cb.classList.remove("on"); } }
+  const c=document.getElementById("oceCanvas"); const b=document.getElementById("ocePtBtn");
+  if(c) c.classList.toggle("connect", OCE.addPoint||OCE.connect);
+  if(b){ b.textContent="🔘 加交点："+(OCE.addPoint?"开":"关"); b.classList.toggle("on",OCE.addPoint); }
+}
+// 重渲染后，按 OCE 状态同步工具栏按钮（避免 delPoint/resetOrgLayout 重渲后状态丢失）
+function syncOrgTools(){
+  const cb=document.getElementById("oceConnectBtn"); if(cb){ cb.textContent="🔗 连线模式："+(OCE.connect?"开":"关"); cb.classList.toggle("on",OCE.connect); }
+  const pb=document.getElementById("ocePtBtn"); if(pb){ pb.textContent="🔘 加交点："+(OCE.addPoint?"开":"关"); pb.classList.toggle("on",OCE.addPoint); }
+  const cc=document.getElementById("oceCanvas"); if(cc) cc.classList.toggle("connect", OCE.connect||OCE.addPoint);
+}
 
 // 自动布局（仅在无保存位置时）：按层级 rank 分列、纵向堆叠，作为可拖拽的初始画布
 // 默认布局：同一层级（兄弟）横向并排，不同层级上下分行 → 整张图横向铺开（宽 > 高）
@@ -1060,7 +1145,7 @@ function movePostToDept(pi, newDi){
 
 // ===== 画布渲染 + 连线 / 拖拽 =====
 let OC_CANVAS=null;
-let OCE={connect:false};
+let OCE={connect:false, addPoint:false};
 function nodeClass(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); return "oce-node "+(assist?"assist":(mgmt?"mgmt":"spec")); }
 function nodeTag(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); let t=mgmt?("管理·"+(ORG_LV_TITLE[lv]||lv)):("高级专员·"+(ORG_LV_TITLE[lv]||lv)); if(assist) t="协助·"+(ORG_LV_TITLE[lv]||lv); return t; }
 function centerOf(node,canvas){ const r=node.getBoundingClientRect(), c=canvas.getBoundingClientRect(); return {x:r.left-c.left+r.width/2, y:r.top-c.top+r.height/2}; }
@@ -1069,6 +1154,7 @@ function drawOrgLines(s,di){
   const svg=document.getElementById("oceLines"); const canvas=document.getElementById("oceCanvas");
   if(!svg||!canvas) return;
   const d=s.depts[di]; let lines="";
+  // 1) 上下级关系（方框→方框，来自 supervisor）
   (d.posts||[]).forEach((p,pi)=>{
     if(!p.supervisor) return;
     const supIdx=(d.posts||[]).findIndex(q=>q.name===p.supervisor);
@@ -1077,6 +1163,13 @@ function drawOrgLines(s,di){
     if(!a||!b) return;
     const ca=centerOf(a,canvas), cb=centerOf(b,canvas);
     lines+=`<line class="oce-line" data-sub="${pi}" x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" onclick="delLine(${di},${pi})"><title>点击删除此上下级关系：${esc(p.supervisor)} → ${esc(p.name)}</title></line>`;
+  });
+  // 2) 自由连线（方框 / 交点 / 公司层 任意两点）
+  (getOrgEdges(s,di)||[]).forEach((e,ei)=>{
+    const a=resolveElById(e[0],s,di), b=resolveElById(e[1],s,di);
+    if(!a||!b) return;
+    const ca=centerOf(a,canvas), cb=centerOf(b,canvas);
+    lines+=`<line class="oce-fline" data-fe="${ei}" x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" onclick="delFreeEdge(${di},${ei})"><title>点击删除此自由连线</title></line>`;
   });
   svg.innerHTML=lines;
 }
@@ -1110,24 +1203,42 @@ function makesCycle(s,d,fromPi,toPi){
 }
 
 let _drag=null, _conn=null;
+function startDrag(el,e,key,kind){
+  const r=el.getBoundingClientRect();
+  _drag={el:el, dx:(e.clientX-r.left), dy:(e.clientY-r.top), moved:false, kind:kind, key:key};
+  el.classList.add("dragging");
+}
+function startConnect(el, ref){
+  const svg=document.getElementById("oceLines"); const canvas=OC_CANVAS;
+  if(!svg||!canvas) return;
+  const c=centerOf(el,canvas);
+  const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+  line.setAttribute("class","oce-temp"); line.setAttribute("x1",c.x); line.setAttribute("y1",c.y);
+  line.setAttribute("x2",c.x); line.setAttribute("y2",c.y); svg.appendChild(line);
+  _conn={fromRef:ref, line:line};
+}
 function onCanvasPointerDown(e){
   const canvas=OC_CANVAS; if(!canvas) return;
-  const node=e.target.closest(".oce-node"); if(!node) return;
   if(e.target.closest(".oc-x")||e.target.closest(".oc-deptsel")) return;   // 删除/部门下拉 不触发
-  const pi=+node.dataset.pi;
-  if(pi<0) return;                 // 公司层（董事长/总经理）为只读展示节点
-  const r=node.getBoundingClientRect(), cr=canvas.getBoundingClientRect();
-  if(OCE.connect){
-    const svg=document.getElementById("oceLines");
-    const x0=r.left-cr.left+r.width/2, y0=r.top-cr.top+r.height/2;
-    const line=document.createElementNS("http://www.w3.org/2000/svg","line");
-    line.setAttribute("class","oce-temp"); line.setAttribute("x1",x0); line.setAttribute("y1",y0);
-    line.setAttribute("x2",x0); line.setAttribute("y2",y0); svg.appendChild(line);
-    _conn={from:pi, line:line};
-  } else {
-    _drag={pi:pi, node:node, dx:(e.clientX-r.left), dy:(e.clientY-r.top), moved:false};
-    node.classList.add("dragging");
+  const node=e.target.closest(".oce-node");
+  const pt=e.target.closest(".oce-point");
+  // —— 加交点模式：点在空白处即新增一个自由交点 ——
+  if(OCE.addPoint){
+    if(node||pt) return;
+    const cr=canvas.getBoundingClientRect();
+    addPointAt(SECTIONS[curSec], curDept, e.clientX-cr.left, e.clientY-cr.top);
+    return;
   }
+  // —— 连线模式：从方框 / 交点 拖到另一个 方框 / 交点 ——
+  if(OCE.connect){
+    const s=SECTIONS[curSec];
+    if(node){ const pi=+node.dataset.pi; const ref = pi>=0 ? ("oceN:"+s.depts[curDept].posts[pi].name) : node.id; startConnect(node, ref); return; }
+    if(pt){ startConnect(pt, pt.dataset.pid); return; }
+    return;
+  }
+  // —— 拖拽：方框（不含公司层）或 交点 均可拖动，连线实时跟随 ——
+  if(node){ const pi=+node.dataset.pi; if(pi<0) return; startDrag(node, e, pi, "box"); }
+  else if(pt){ startDrag(pt, e, pt.dataset.pid, "point"); }
 }
 function onCanvasPointerMove(e){
   const canvas=OC_CANVAS; if(!canvas) return;
@@ -1136,7 +1247,8 @@ function onCanvasPointerMove(e){
     _drag.moved=true;
     let x=e.clientX-cr.left-_drag.dx, y=e.clientY-cr.top-_drag.dy;
     x=Math.max(0,x); y=Math.max(0,y);
-    _drag.node.style.left=x+"px"; _drag.node.style.top=y+"px";
+    _drag.el.style.left=x+"px"; _drag.el.style.top=y+"px";
+    drawOrgLines(SECTIONS[curSec], curDept);   // 拖动时实时重绘连线，线条跟着框走
   } else if(_conn){
     _conn.line.setAttribute("x2", e.clientX-cr.left);
     _conn.line.setAttribute("y2", e.clientY-cr.top);
@@ -1145,21 +1257,35 @@ function onCanvasPointerMove(e){
 function onCanvasPointerUp(e){
   const canvas=OC_CANVAS; if(!canvas){ _drag=null; _conn=null; return; }
   if(_drag){
-    const node=_drag.node; node.classList.remove("dragging");
-    const pi=_drag.pi;
-    const x=parseFloat(node.style.left)||0, y=parseFloat(node.style.top)||0;
-    setOrgPos(SECTIONS[curSec], curDept, pi, x, y);
-    if(!_drag.moved && pi>=0){ goPost(curDept, pi); }      // 没拖动＝点击进入考核表（公司层节点除外）
+    const el=_drag.el; el.classList.remove("dragging");
+    const x=parseFloat(el.style.left)||0, y=parseFloat(el.style.top)||0;
+    if(_drag.kind==="box"){
+      setOrgPos(SECTIONS[curSec], curDept, _drag.key, x, y);
+      if(!_drag.moved){ goPost(curDept, _drag.key); }      // 没拖动＝点击进入考核表
+    } else {
+      updatePointPos(SECTIONS[curSec], curDept, _drag.key, x, y);
+    }
     _drag=null;
   } else if(_conn){
-    const target=e.target.closest(".oce-node");
+    const s=SECTIONS[curSec], d=s.depts[curDept];
+    const tnode=e.target.closest(".oce-node");
+    const tpoint=e.target.closest(".oce-point");
     if(_conn.line) _conn.line.remove();
-    if(target){
-      const tpi=+target.dataset.pi;
-      if(tpi!==_conn.from){
-        const s=SECTIONS[curSec], d=s.depts[curDept];
-        if(makesCycle(s,d,_conn.from,tpi)){ alert("不能把上级连到自己的下属之下（会形成循环）。"); }
-        else { d.posts[tpi].supervisor=d.posts[_conn.from].name; drawOrgLines(s,curDept); }
+    let tRef=null;
+    if(tnode){ const tpi=+tnode.dataset.pi; tRef = tpi>=0 ? ("oceN:"+d.posts[tpi].name) : tnode.id; }
+    else if(tpoint){ tRef=tpoint.dataset.pid; }
+    if(tRef && tRef!==_conn.fromRef){
+      if(_conn.fromRef.indexOf("oceN:")===0 && tRef.indexOf("oceN:")===0){
+        // 两端都是岗位方框 → 建立/修改上下级关系
+        const fromIdx=(d.posts||[]).findIndex(q=>q.name===_conn.fromRef.slice(5));
+        const toIdx=(d.posts||[]).findIndex(q=>q.name===tRef.slice(5));
+        if(fromIdx>=0 && toIdx>=0){
+          if(makesCycle(s,d,fromIdx,toIdx)){ alert("不能把上级连到自己的下属之下（会形成循环）。"); }
+          else { d.posts[toIdx].supervisor=d.posts[fromIdx].name; drawOrgLines(s,curDept); }
+        }
+      } else {
+        // 任一端是交点（或公司层）→ 自由连线（纯视觉锚点，不写入上下级）
+        addFreeEdge(s,curDept,_conn.fromRef,tRef); drawOrgLines(s,curDept);
       }
     }
     _conn=null;
@@ -1201,16 +1327,21 @@ function renderOrg(){
         <div class="oc-dept"><select class="oc-deptsel" title="改派部门（联动）" onchange="movePostToDept(${pi}, +this.value)">${deptSel}</select></div>
       </div>`;
   });
-  // 顶部公司层（只读展示节点，不在部门 posts 内，不可删除/改派/进考核表）
-  const execHTML=`<div class="oce-node exec" data-pi="-1" style="left:24px;top:24px"><div class="oce-name">董事长</div><span class="ob-lv">公司最高负责人</span></div>`+
-    `<div class="oce-node exec" data-pi="-1" style="left:200px;top:24px"><div class="oce-name">总经理</div><span class="ob-lv">各部门上级</span></div>`;
+  // 顶部公司层（只读展示节点，不在部门 posts 内，不可删除/改派/进考核表；带稳定 id 可作连线端点）
+  const execHTML=`<div class="oce-node exec" data-pi="-1" id="oceExec0" style="left:24px;top:24px"><div class="oce-name">董事长</div><span class="ob-lv">公司最高负责人</span></div>`+
+    `<div class="oce-node exec" data-pi="-1" id="oceExec1" style="left:200px;top:24px"><div class="oce-name">总经理</div><span class="ob-lv">各部门上级</span></div>`;
   nodesHTML=execHTML+nodesHTML;
+  // 自由交点（可在空白处长按新增，可拖动，可用连线连接；刷新后保留）
+  (getOrgPts(s,di)||[]).forEach(pt=>{
+    nodesHTML+=`<div class="oce-point" id="${pt.id}" data-pid="${pt.id}" style="left:${pt.x}px;top:${pt.y}px"><button class="oc-x" title="删除交点" onclick="event.stopPropagation();delPoint(${di},'${pt.id}')">×</button></div>`;
+  });
   const addMenu=ORG_LV_ORDER.map(l=>`<button onclick="addPostAt(${di},'${l}')">＋ ${ORG_LV_TITLE[l]||l}</button>`).join("");
   const toolbar=`<div class="oce-toolbar">
       <button class="oce-btn" id="oceConnectBtn" onclick="toggleConnect()">🔗 连线模式：关</button>
+      <button class="oce-btn" id="ocePtBtn" onclick="toggleAddPoint()">🔘 加交点：关</button>
       <div class="oce-btn add">＋ 新增岗位<span class="oce-menu" id="oceAddMenu">${addMenu}</span></div>
       <button class="oce-btn" onclick="resetOrgLayout(${di})">↺ 重置布局</button>
-      <span class="oce-hint">拖拽方框可自由移动/对齐；开启「连线模式」后，从一个框拖到另一个框＝把后者设为前者的下属（指定上下级）；点击连线可删除该关系。</span>
+      <span class="oce-hint">拖拽方框/交点＝移动（连线实时跟随）；开启「连线模式」从一个元素拖到另一个元素＝连线（两端都是岗位框＝设上下级，任一端是交点＝自由连线）；「加交点」开启后点空白处＝放一个交点；点击连线/点上的 × 可删除。</span>
     </div>`;
   const canvas=`<div class="oce-canvas" id="oceCanvas"><svg class="oce-lines" id="oceLines"></svg>${nodesHTML}</div>`;
   app.innerHTML=crumb+`<div class="jobs-wrap"><div class="sec-title">${esc(s.label)} · 组织架构图（可拖拽 / 鼠标连线）</div>
@@ -1219,6 +1350,7 @@ function renderOrg(){
     ${tabs}${legend}${toolbar}${canvas}</div>`;
   drawOrgLines(s,di);
   initOrgEditor(s,di);
+  syncOrgTools();
 }
 
 function render(){
