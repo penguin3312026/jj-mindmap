@@ -172,9 +172,9 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .oce-menu button{display:block;width:100%;text-align:left;padding:6px 10px;border:0;background:#fff;cursor:pointer;font-size:13px;border-radius:6px}
 .oce-menu button:hover{background:#fff4ec;color:var(--brand)}
 .oce-hint{font-size:12px;color:var(--muted);margin-left:auto;max-width:46%}
-.oce-canvas{position:relative;height:560px;overflow:auto;background:#fcfcfb;background-image:linear-gradient(#eee 1px,transparent 1px),linear-gradient(90deg,#eee 1px,transparent 1px);background-size:20px 20px}
+.oce-canvas{position:relative;height:720px;overflow:auto;background:#fcfcfb;background-image:linear-gradient(#eee 1px,transparent 1px),linear-gradient(90deg,#eee 1px,transparent 1px);background-size:20px 20px}
 .oce-canvas.connect{cursor:crosshair}
-.oce-lines{position:absolute;top:0;left:0;width:2400px;height:1200px;pointer-events:none}
+.oce-lines{position:absolute;top:0;left:0;width:3600px;height:1500px;pointer-events:none}
 .oce-lines line{pointer-events:stroke;cursor:pointer}
 .oce-node{position:absolute;min-width:76px;max-width:150px;padding:6px 9px 4px;border:1.5px solid var(--brand);background:#fff;border-radius:8px;font-size:12px;font-weight:700;text-align:center;color:var(--ink);line-height:1.2;cursor:grab;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .oce-node.mgmt{border-color:#c2410c;background:#fff4ec}
@@ -1000,13 +1000,18 @@ function getOrgPos(s,di,pi){ try{ const v=localStorage.getItem(orgPosKey(s,di,pi
 function setOrgPos(s,di,pi,x,y){ try{ localStorage.setItem(orgPosKey(s,di,pi), JSON.stringify({x:Math.round(x),y:Math.round(y)})); }catch(e){} }
 
 // 自动布局（仅在无保存位置时）：按层级 rank 分列、纵向堆叠，作为可拖拽的初始画布
+// 默认布局：同一层级（兄弟）横向并排，不同层级上下分行 → 整张图横向铺开（宽 > 高）
+// 顶部两行留给公司层（董事长 / 总经理），部门内层级紧随其下，上级在上、下级在下。
 function autoLayoutDept(s,di){
   const d=s.depts[di]; if(!d||!d.posts) return {};
-  const pos={}; const colCount={};
-  (d.posts||[]).forEach((p,pi)=>{
-    const col=levelRank(effLevel(p));
-    const row=(colCount[col]||0); colCount[col]=row+1;
-    pos[pi]={x: 24+col*158, y: 24+row*84};
+  const posts=(d.posts||[]);
+  const ranks=posts.map(p=>levelRank(effLevel(p)));
+  const minR = ranks.length?Math.min.apply(null,ranks):0;   // 部门内最高层级从顶部之下开始
+  const pos={}; const rowCount={};
+  posts.forEach((p,pi)=>{
+    const row=levelRank(effLevel(p))-minR+2;     // +2 给 董事长/总经理 留两行
+    const col=(rowCount[row]||0); rowCount[row]=col+1;       // 同层兄弟 → 横向列
+    pos[pi]={x: 24+col*172, y: 24+row*96};
   });
   return pos;
 }
@@ -1110,6 +1115,7 @@ function onCanvasPointerDown(e){
   const node=e.target.closest(".oce-node"); if(!node) return;
   if(e.target.closest(".oc-x")||e.target.closest(".oc-deptsel")) return;   // 删除/部门下拉 不触发
   const pi=+node.dataset.pi;
+  if(pi<0) return;                 // 公司层（董事长/总经理）为只读展示节点
   const r=node.getBoundingClientRect(), cr=canvas.getBoundingClientRect();
   if(OCE.connect){
     const svg=document.getElementById("oceLines");
@@ -1143,7 +1149,7 @@ function onCanvasPointerUp(e){
     const pi=_drag.pi;
     const x=parseFloat(node.style.left)||0, y=parseFloat(node.style.top)||0;
     setOrgPos(SECTIONS[curSec], curDept, pi, x, y);
-    if(!_drag.moved){ goPost(curDept, pi); }      // 没拖动＝点击进入考核表
+    if(!_drag.moved && pi>=0){ goPost(curDept, pi); }      // 没拖动＝点击进入考核表（公司层节点除外）
     _drag=null;
   } else if(_conn){
     const target=e.target.closest(".oce-node");
@@ -1195,6 +1201,10 @@ function renderOrg(){
         <div class="oc-dept"><select class="oc-deptsel" title="改派部门（联动）" onchange="movePostToDept(${pi}, +this.value)">${deptSel}</select></div>
       </div>`;
   });
+  // 顶部公司层（只读展示节点，不在部门 posts 内，不可删除/改派/进考核表）
+  const execHTML=`<div class="oce-node exec" data-pi="-1" style="left:24px;top:24px"><div class="oce-name">董事长</div><span class="ob-lv">公司最高负责人</span></div>`+
+    `<div class="oce-node exec" data-pi="-1" style="left:200px;top:24px"><div class="oce-name">总经理</div><span class="ob-lv">各部门上级</span></div>`;
+  nodesHTML=execHTML+nodesHTML;
   const addMenu=ORG_LV_ORDER.map(l=>`<button onclick="addPostAt(${di},'${l}')">＋ ${ORG_LV_TITLE[l]||l}</button>`).join("");
   const toolbar=`<div class="oce-toolbar">
       <button class="oce-btn" id="oceConnectBtn" onclick="toggleConnect()">🔗 连线模式：关</button>
