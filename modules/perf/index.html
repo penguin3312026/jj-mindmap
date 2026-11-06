@@ -441,7 +441,7 @@ function renderJob(){
   html += seasonBar + empPanel;
 
   // === KPI 9 列表格 ===
-  if(role.kpi && role.kpi.length){
+  if(role.kpi){
     const rows = role.kpi.map((x,i)=>`
       <tr>
         <td style="text-align:center;color:var(--muted)">${i+1}</td>
@@ -467,14 +467,14 @@ function renderJob(){
         <th>指标定义及说明 / 计算公式</th><th style="width:16%">衡量标准</th>
         <th style="width:64px">权重%</th><th style="width:160px">目标值·基础/目标/挑战</th>
         <th style="width:60px">得分</th><th style="width:56px">统计频率</th><th style="width:40px">操作</th>
-      </tr></thead><tbody>${rows}</tbody></table>
+      </tr></thead><tbody>${rows || '<tr><td colspan="10" class="empty">尚无 KPI 指标，点击下方「+ 加一行 KPI」添加</td></tr>'}</tbody></table>
       <button class="btn" onclick="addKpi('kpi')">+ 加一行 KPI</button>
       <div class="formula">计分：得分 = 权重 × 100 − 当月累计扣分，最低 0 分；频率「日/实时/周」按日累计；月结按当月累计汇总总分；扣分采用<strong>阶梯加重</strong>，累计达违纪线进入处分流程。</div>
     </div>`;
   }
 
   // === MBO 9 列表格 ===
-  if(role.mbo && role.mbo.length){
+  if(role.mbo){
     const rows = role.mbo.map((x,i)=>`
       <tr>
         <td style="text-align:center;color:var(--muted)">${i+1}</td>
@@ -494,13 +494,13 @@ function renderJob(){
         <th>指标定义及说明 / 计算公式</th><th style="width:22%">衡量标准</th>
         <th style="width:64px">权重%</th><th style="width:140px">目标值/参考</th>
         <th style="width:60px">得分</th><th style="width:56px">统计频率</th><th style="width:40px">操作</th>
-      </tr></thead><tbody>${rows}</tbody></table>
+      </tr></thead><tbody>${rows || '<tr><td colspan="10" class="empty">尚无 MBO 指标，点击下方「+ 加一行 MBO」添加</td></tr>'}</tbody></table>
       <button class="btn btn-2" onclick="addKpi('mbo')">+ 加一行 MBO</button>
     </div>`;
   }
 
   // === 加减分 上下结构 + 着色区分（v11：单块堆叠，加分绿/减分红；去掉冗余"类别"列更紧凑） ===
-  if(role.add && role.add.length){
+  if(role.add){
     const pos = role.add.filter(a=>a.t==="加分项");
     const neg = role.add.filter(a=>a.t==="减分项");
     function addCol(a, idx){
