@@ -138,12 +138,14 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .org-lv{margin-left:0}
 .org-lv .org-lv{margin-left:20px;border-left:2px solid #f0c6a8;padding-left:14px;margin-top:8px}
 .org-lv-label{font-size:12px;color:var(--muted);margin:2px 0 4px;font-weight:700}
-.org-boxes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.org-box{position:relative;min-width:92px;max-width:170px;padding:7px 10px;border:1px solid var(--brand);background:#fff;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;color:var(--ink)}
+.org-boxes{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.org-box{position:relative;min-width:58px;max-width:116px;padding:4px 8px;border:1px solid var(--brand);background:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;color:var(--ink);line-height:1.25}
 .org-box.ok:hover{box-shadow:0 2px 8px rgba(220,90,40,.18)}
-.org-box.ok .ob-lv{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:2px}
-.org-box.empty{border-style:dashed;border-color:#caa;color:var(--muted);background:#faf7f4;font-weight:400}
+.org-box.ok .ob-lv{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:1px}
+.org-box.empty{border-style:dashed;border-color:#caa;color:var(--muted);background:#faf7f4;font-weight:400;min-width:46px;max-width:92px;padding:4px 8px;font-size:12px}
 .org-box.empty:hover{border-color:var(--brand);color:var(--brand);background:#fff5ee}
+.org-x{position:absolute;top:-7px;right:-7px;width:16px;height:16px;line-height:14px;text-align:center;border:1px solid #fca5a5;background:#fff;color:#ef4444;font-size:11px;font-weight:700;border-radius:50%;cursor:pointer;padding:0;z-index:2}
+.org-x:hover{background:#ef4444;color:#fff;border-color:#ef4444}
 .block{border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .block-h{background:linear-gradient(90deg,#fff4ec,#fef6ee);padding:10px 16px;font-weight:700;display:flex;align-items:center;gap:10px;font-size:14px}
 .block-h .pct{margin-left:auto;font-size:13px;color:var(--muted)}
@@ -643,9 +645,9 @@ function inferLevel(name){
   if(!name) return "专员";
   if(name.indexOf("董事长")>=0) return "董事长";
   if(name.indexOf("总经理")>=0) return "总经理";
-  if(name.indexOf("分管副总")>=0 || name.indexOf("副总")>=0) return "分管副总";
   if(name.indexOf("部门副总监")>=0 || name.indexOf("副总监")>=0) return "部门副总监";
   if(name.indexOf("部门总监")>=0 || name.indexOf("总监")>=0) return "部门总监";
+  if(name.indexOf("分管副总")>=0 || name.indexOf("副总")>=0) return "分管副总";
   if(name.indexOf("副经理")>=0) return "副经理";
   if(name.indexOf("经理")>=0) return "经理";
   if(name.indexOf("主管")>=0) return "主管";
@@ -928,7 +930,8 @@ function delPost(di, pi){
   const d = s.depts[di];
   if(!d || !d.posts || !d.posts[pi]) return;
   if(!confirm("确定删除该岗位？其直接下属将自动上提一级（系统默认上级）；此操作仅当前会话内生效。")) return;
-  d.posts.splice(pi,1); repairSupervisors(s); renderJobs();
+  d.posts.splice(pi,1); repairSupervisors(s);
+  if(view==="org") renderOrg(); else renderJobs();
 }
 
 // ===== 组织架构图（诉求：按 8 部门建完整架构，逐级展开，缺失岗位虚线占位可点击新增）=====
@@ -957,7 +960,7 @@ function renderOrg(){
     (d.posts||[]).forEach((p,pi)=>{ const lv=effLevel(p); (groups[lv]=groups[lv]||[]).push({p,pi}); });
     function lvBoxes(level){
       const arr=groups[level]||[];
-      let b=arr.map(o=>`<div class="org-box ok" title="点击进入 ${esc(o.p.name)} 考核表" onclick="goPost(${di},${o.pi})">${esc(o.p.name)}<span class="ob-lv">${ORG_LV_TITLE[level]||level}</span></div>`).join("");
+      let b=arr.map(o=>`<div class="org-box ok" title="点击进入 ${esc(o.p.name)} 考核表" onclick="goPost(${di},${o.pi})"><button class="org-x" title="删除该岗位" onclick="event.stopPropagation();delPost(${di},${o.pi})">×</button>${esc(o.p.name)}<span class="ob-lv">${ORG_LV_TITLE[level]||level}</span></div>`).join("");
       b+=`<div class="org-box empty" title="在「${esc(d.dept)}」新增${ORG_LV_TITLE[level]||level}" onclick="addPostAt(${di},'${level}')">＋ ${ORG_LV_TITLE[level]||level}</div>`;
       return `<div class="org-boxes">${b}</div>`;
     }
