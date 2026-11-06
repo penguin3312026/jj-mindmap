@@ -175,7 +175,7 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .oce-canvas{position:relative;height:720px;overflow:auto;background:#fcfcfb;background-image:linear-gradient(#eee 1px,transparent 1px),linear-gradient(90deg,#eee 1px,transparent 1px);background-size:20px 20px}
 .oce-canvas.connect{cursor:crosshair}
 .oce-lines{position:absolute;top:0;left:0;width:3600px;height:1500px;pointer-events:none}
-.oce-lines line{pointer-events:stroke;cursor:pointer}
+.oce-lines line, .oce-lines path{pointer-events:stroke;cursor:pointer}
 .oce-node{position:absolute;min-width:76px;max-width:150px;padding:6px 9px 4px;border:1.5px solid var(--brand);background:#fff;border-radius:8px;font-size:12px;font-weight:700;text-align:center;color:var(--ink);line-height:1.2;cursor:grab;user-select:none;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .oce-node.mgmt{border-color:#c2410c;background:#fff4ec}
 .oce-node.spec{border-color:#0d9488;background:#effcf9;color:#0f766e}
@@ -1001,6 +1001,7 @@ function delPost(di, pi){
 // ===== 组织架构图：可拖拽 + 鼠标连线的画布编辑器 =====
 const ORG_LV_ORDER = ["部门总监","部门副总监","经理","副经理","主管","专员"];
 const ORG_LV_TITLE = {"部门总监":"总监","部门副总监":"副总监","经理":"经理","副经理":"副经理","主管":"主管","专员":"专员"};
+const ORG_CENTER_X = 540;   // 自动布局的横向居中锚点（默认居中对齐，而非左对齐）
 // 管理干部层（中层领导干部）；主管/专员属专业层，主管=高级专员，不算管理
 function isMgmtLevel(lv){ return ["分管副总","部门总监","部门副总监","经理","副经理"].indexOf(lv)>=0; }
 
@@ -1081,22 +1082,32 @@ function toggleAddPoint(){
 function syncOrgTools(){
   const cb=document.getElementById("oceConnectBtn"); if(cb){ cb.textContent="🔗 连线模式："+(OCE.connect?"开":"关"); cb.classList.toggle("on",OCE.connect); }
   const pb=document.getElementById("ocePtBtn"); if(pb){ pb.textContent="🔘 加交点："+(OCE.addPoint?"开":"关"); pb.classList.toggle("on",OCE.addPoint); }
-  const cc=document.getElementById("oceCanvas"); if(cc) cc.classList.toggle("connect", OCE.connect||OCE.addPoint);
+  const ob=document.getElementById("oceOrthoBtn"); if(ob){ ob.textContent="▦ 正交连线："+(OCE.ortho?"开":"关"); ob.classList.toggle("on",OCE.ortho); }
+  const cc=document.getElementById("oceCanvas"); if(cc){ cc.classList.toggle("connect", OCE.connect||OCE.addPoint); cc.classList.toggle("ortho", OCE.ortho); }
 }
 
 // 自动布局（仅在无保存位置时）：按层级 rank 分列、纵向堆叠，作为可拖拽的初始画布
-// 默认布局：同一层级（兄弟）横向并排，不同层级上下分行 → 整张图横向铺开（宽 > 高）
+// 默认布局：同一层级（兄弟）横向并排、不同层级上下分行 → 整张图横向铺开（宽 > 高）
+// 每一层以 ORG_CENTER_X 为锚点【居中对齐】（单行时正居中；一行放不下时退化为左对齐避免裁切）
 // 顶部两行留给公司层（董事长 / 总经理），部门内层级紧随其下，上级在上、下级在下。
 function autoLayoutDept(s,di){
   const d=s.depts[di]; if(!d||!d.posts) return {};
   const posts=(d.posts||[]);
   const ranks=posts.map(p=>levelRank(effLevel(p)));
   const minR = ranks.length?Math.min.apply(null,ranks):0;   // 部门内最高层级从顶部之下开始
-  const pos={}; const rowCount={};
+  const COL_GAP=172, BOX_W=116, ROW_H=96, TOP=24, MARGIN=24;
+  const rowNodes={};
   posts.forEach((p,pi)=>{
     const row=levelRank(effLevel(p))-minR+2;     // +2 给 董事长/总经理 留两行
-    const col=(rowCount[row]||0); rowCount[row]=col+1;       // 同层兄弟 → 横向列
-    pos[pi]={x: 24+col*172, y: 24+row*96};
+    (rowNodes[row]=rowNodes[row]||[]).push(pi);  // 同层兄弟 → 同一行
+  });
+  const pos={};
+  Object.keys(rowNodes).map(Number).sort((a,b)=>a-b).forEach(row=>{
+    const arr=rowNodes[row];
+    const totalW=(arr.length-1)*COL_GAP + BOX_W;
+    let startX = arr.length===1 ? (ORG_CENTER_X - BOX_W/2) : (ORG_CENTER_X - totalW/2);
+    if(startX < MARGIN) startX = MARGIN;          // 一行太宽 → 退化为左对齐，避免左侧被裁切
+    arr.forEach((pi,k)=>{ pos[pi]={x: Math.round(startX + k*COL_GAP), y: TOP + row*ROW_H}; });
   });
   return pos;
 }
@@ -1145,11 +1156,19 @@ function movePostToDept(pi, newDi){
 
 // ===== 画布渲染 + 连线 / 拖拽 =====
 let OC_CANVAS=null;
-let OCE={connect:false, addPoint:false};
+let OCE={connect:false, addPoint:false, ortho:(function(){ try{ return localStorage.getItem("perf_eval_v1_ortho")==="1"; }catch(e){ return false; } })()};
 function nodeClass(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); return "oce-node "+(assist?"assist":(mgmt?"mgmt":"spec")); }
 function nodeTag(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); let t=mgmt?("管理·"+(ORG_LV_TITLE[lv]||lv)):("高级专员·"+(ORG_LV_TITLE[lv]||lv)); if(assist) t="协助·"+(ORG_LV_TITLE[lv]||lv); return t; }
 function centerOf(node,canvas){ const r=node.getBoundingClientRect(), c=canvas.getBoundingClientRect(); return {x:r.left-c.left+r.width/2, y:r.top-c.top+r.height/2}; }
 
+// 生成一条连线元素：OCE.ortho 开 → 直角（横平竖直）折线 path；关 → 直线 line
+function edgeEl(cls, x1, y1, x2, y2, attrs, title){
+  if(OCE.ortho){
+    const my=((parseFloat(y1)+parseFloat(y2))/2).toFixed(1);
+    return `<path class="${cls}" ${attrs} d="M ${x1} ${y1} V ${my} H ${x2} V ${y2}"><title>${title}</title></path>`;
+  }
+  return `<line class="${cls}" ${attrs} x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"><title>${title}</title></line>`;
+}
 function drawOrgLines(s,di){
   const svg=document.getElementById("oceLines"); const canvas=document.getElementById("oceCanvas");
   if(!svg||!canvas) return;
@@ -1162,14 +1181,18 @@ function drawOrgLines(s,di){
     const a=document.getElementById("oceN"+supIdx), b=document.getElementById("oceN"+pi);
     if(!a||!b) return;
     const ca=centerOf(a,canvas), cb=centerOf(b,canvas);
-    lines+=`<line class="oce-line" data-sub="${pi}" x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" onclick="delLine(${di},${pi})"><title>点击删除此上下级关系：${esc(p.supervisor)} → ${esc(p.name)}</title></line>`;
+    lines+=edgeEl("oce-line", ca.x.toFixed(1), ca.y.toFixed(1), cb.x.toFixed(1), cb.y.toFixed(1),
+      `data-sub="${pi}" onclick="delLine(${di},${pi})"`,
+      `点击删除此上下级关系：${esc(p.supervisor)} → ${esc(p.name)}`);
   });
   // 2) 自由连线（方框 / 交点 / 公司层 任意两点）
   (getOrgEdges(s,di)||[]).forEach((e,ei)=>{
     const a=resolveElById(e[0],s,di), b=resolveElById(e[1],s,di);
     if(!a||!b) return;
     const ca=centerOf(a,canvas), cb=centerOf(b,canvas);
-    lines+=`<line class="oce-fline" data-fe="${ei}" x1="${ca.x.toFixed(1)}" y1="${ca.y.toFixed(1)}" x2="${cb.x.toFixed(1)}" y2="${cb.y.toFixed(1)}" onclick="delFreeEdge(${di},${ei})"><title>点击删除此自由连线</title></line>`;
+    lines+=edgeEl("oce-fline", ca.x.toFixed(1), ca.y.toFixed(1), cb.x.toFixed(1), cb.y.toFixed(1),
+      `data-fe="${ei}" onclick="delFreeEdge(${di},${ei})"`,
+      "点击删除此自由连线");
   });
   svg.innerHTML=lines;
 }
@@ -1185,6 +1208,15 @@ function toggleConnect(){
   const c=document.getElementById("oceCanvas"); const b=document.getElementById("oceConnectBtn");
   if(c) c.classList.toggle("connect",OCE.connect);
   if(b){ b.textContent="🔗 连线模式："+(OCE.connect?"开":"关"); b.classList.toggle("on",OCE.connect); }
+}
+// 一键切换「横平竖直」正交连线：开 → 所有连线改为直角折线（上下级关系线 / 自由连线 / 拖拽预览 同步）
+function toggleOrtho(){
+  OCE.ortho=!OCE.ortho;
+  try{ localStorage.setItem("perf_eval_v1_ortho", OCE.ortho?"1":"0"); }catch(e){}
+  const b=document.getElementById("oceOrthoBtn");
+  if(b){ b.textContent="▦ 正交连线："+(OCE.ortho?"开":"关"); b.classList.toggle("on",OCE.ortho); }
+  const cc=document.getElementById("oceCanvas"); if(cc) cc.classList.toggle("ortho",OCE.ortho);
+  drawOrgLines(SECTIONS[curSec], curDept);
 }
 function resetOrgLayout(di){
   const s=SECTIONS[curSec]; (s.depts[di].posts||[]).forEach((p,pi)=>{ try{ localStorage.removeItem(orgPosKey(s,di,pi)); }catch(e){} });
@@ -1212,10 +1244,10 @@ function startConnect(el, ref){
   const svg=document.getElementById("oceLines"); const canvas=OC_CANVAS;
   if(!svg||!canvas) return;
   const c=centerOf(el,canvas);
-  const line=document.createElementNS("http://www.w3.org/2000/svg","line");
-  line.setAttribute("class","oce-temp"); line.setAttribute("x1",c.x); line.setAttribute("y1",c.y);
-  line.setAttribute("x2",c.x); line.setAttribute("y2",c.y); svg.appendChild(line);
-  _conn={fromRef:ref, line:line};
+  const line=document.createElementNS("http://www.w3.org/2000/svg","path");
+  line.setAttribute("class","oce-temp"); line.setAttribute("d",`M ${c.x} ${c.y} L ${c.x} ${c.y}`);
+  svg.appendChild(line);
+  _conn={fromRef:ref, line:line, x1:c.x, y1:c.y};
 }
 function onCanvasPointerDown(e){
   const canvas=OC_CANVAS; if(!canvas) return;
@@ -1250,8 +1282,11 @@ function onCanvasPointerMove(e){
     _drag.el.style.left=x+"px"; _drag.el.style.top=y+"px";
     drawOrgLines(SECTIONS[curSec], curDept);   // 拖动时实时重绘连线，线条跟着框走
   } else if(_conn){
-    _conn.line.setAttribute("x2", e.clientX-cr.left);
-    _conn.line.setAttribute("y2", e.clientY-cr.top);
+    const x2=e.clientX-cr.left, y2=e.clientY-cr.top;
+    const d = OCE.ortho
+      ? `M ${_conn.x1} ${_conn.y1} V ${((_conn.y1+y2)/2).toFixed(1)} H ${x2} V ${y2}`
+      : `M ${_conn.x1} ${_conn.y1} L ${x2} ${y2}`;
+    _conn.line.setAttribute("d", d);
   }
 }
 function onCanvasPointerUp(e){
@@ -1327,9 +1362,10 @@ function renderOrg(){
         <div class="oc-dept"><select class="oc-deptsel" title="改派部门（联动）" onchange="movePostToDept(${pi}, +this.value)">${deptSel}</select></div>
       </div>`;
   });
-  // 顶部公司层（只读展示节点，不在部门 posts 内，不可删除/改派/进考核表；带稳定 id 可作连线端点）
-  const execHTML=`<div class="oce-node exec" data-pi="-1" id="oceExec0" style="left:24px;top:24px"><div class="oce-name">董事长</div><span class="ob-lv">公司最高负责人</span></div>`+
-    `<div class="oce-node exec" data-pi="-1" id="oceExec1" style="left:200px;top:24px"><div class="oce-name">总经理</div><span class="ob-lv">各部门上级</span></div>`;
+  // 顶部公司层（只读展示节点，不在部门 posts 内，不可删除/改派/进考核表；带稳定 id 可作连线端点；整体居中）
+  const EXEC_W=116, EXEC_GAP=176;
+  const execHTML=`<div class="oce-node exec" data-pi="-1" id="oceExec0" style="left:${ORG_CENTER_X-EXEC_GAP/2-EXEC_W/2}px;top:24px"><div class="oce-name">董事长</div><span class="ob-lv">公司最高负责人</span></div>`+
+    `<div class="oce-node exec" data-pi="-1" id="oceExec1" style="left:${ORG_CENTER_X+EXEC_GAP/2-EXEC_W/2}px;top:24px"><div class="oce-name">总经理</div><span class="ob-lv">各部门上级</span></div>`;
   nodesHTML=execHTML+nodesHTML;
   // 自由交点（可在空白处长按新增，可拖动，可用连线连接；刷新后保留）
   (getOrgPts(s,di)||[]).forEach(pt=>{
@@ -1339,13 +1375,12 @@ function renderOrg(){
   const toolbar=`<div class="oce-toolbar">
       <button class="oce-btn" id="oceConnectBtn" onclick="toggleConnect()">🔗 连线模式：关</button>
       <button class="oce-btn" id="ocePtBtn" onclick="toggleAddPoint()">🔘 加交点：关</button>
+      <button class="oce-btn" id="oceOrthoBtn" onclick="toggleOrtho()">▦ 正交连线：关</button>
       <div class="oce-btn add">＋ 新增岗位<span class="oce-menu" id="oceAddMenu">${addMenu}</span></div>
       <button class="oce-btn" onclick="resetOrgLayout(${di})">↺ 重置布局</button>
-      <span class="oce-hint">拖拽方框/交点＝移动（连线实时跟随）；开启「连线模式」从一个元素拖到另一个元素＝连线（两端都是岗位框＝设上下级，任一端是交点＝自由连线）；「加交点」开启后点空白处＝放一个交点；点击连线/点上的 × 可删除。</span>
     </div>`;
   const canvas=`<div class="oce-canvas" id="oceCanvas"><svg class="oce-lines" id="oceLines"></svg>${nodesHTML}</div>`;
   app.innerHTML=crumb+`<div class="jobs-wrap"><div class="sec-title">${esc(s.label)} · 组织架构图（可拖拽 / 鼠标连线）</div>
-    <div class="sec-sub">这是<strong>可编辑画布</strong>：方框可自由拖动对齐；开启「连线模式」后，用鼠标从一个上级框拖到下级框即可建立<strong>上下级关系（连线＝上级 → 下级）</strong>；点击连线可删除该关系。每个岗位框下方有<strong>部门下拉</strong>，改派后该岗位会从原部门消失、出现在新部门，上级/下属关系全系统联动（架构图、考核表、上级下拉都会跟着变）。</div>
     <div class="jobs-toolbar"><button class="btn" onclick="goJobs(curSec)">← 返回部门岗位</button></div>
     ${tabs}${legend}${toolbar}${canvas}</div>`;
   drawOrgLines(s,di);
