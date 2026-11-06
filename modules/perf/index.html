@@ -114,21 +114,20 @@ body.cover-dark .card .pill{font-size:11px;padding:3px 10px;border-radius:999px;
 .season-tip{color:var(--muted);font-size:12px;margin-left:6px}
 .emp-panel{margin:2px 0 14px;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
 .emp-h{font-size:12px;color:var(--muted);margin-bottom:6px}
-.emp-list{display:block;overflow-x:auto}
-.emp-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden}
-.emp-table th{background:#fff4ec;color:var(--ink);font-weight:700;text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
-.emp-table td{padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
-.emp-table tr{cursor:pointer}
-.emp-table tr:hover{background:#fff8f2}
-.emp-table tr.on{background:var(--brand);color:#fff}
-.emp-table tr.on td{color:#fff}
-.emp-name{font-weight:700;color:var(--brand)}
-.emp-table tr.on .emp-name{color:#fff}
-.emp-score{font-weight:700}
-.emp-btn{padding:3px 9px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:12px;color:var(--muted)}
-.emp-btn:hover{border-color:var(--brand);color:var(--brand)}
-.emp-del{border-color:#f87171;color:#ef4444}
-.emp-del:hover{border-color:#ef4444;background:#fef2f2;color:#ef4444}
+.emp-list{display:block}
+.emp-grid{display:flex;flex-wrap:wrap;gap:10px}
+.emp-square{position:relative;width:118px;height:118px;background:#fff;border:1px solid var(--line);border-radius:10px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8px 10px;transition:box-shadow .15s,border-color .15s}
+.emp-square:hover{box-shadow:0 3px 10px rgba(220,90,40,.18);border-color:var(--brand)}
+.emp-square.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.emp-square.on .emp-sq-meta{color:rgba(255,255,255,.88)}
+.emp-square.on .emp-sq-score{color:#fff}
+.emp-square.on .emp-x{color:#fff;border-color:rgba(255,255,255,.6)}
+.emp-sq-name{font-weight:800;font-size:15px;line-height:1.2;max-width:100%;word-break:break-all}
+.emp-square.on .emp-sq-name{color:#fff}
+.emp-sq-meta{font-size:12px;color:var(--muted);margin-top:5px;white-space:nowrap}
+.emp-sq-score{font-size:22px;font-weight:800;margin-top:6px;color:var(--brand)}
+.emp-x{position:absolute;top:3px;right:5px;width:20px;height:20px;line-height:18px;text-align:center;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:14px;font-weight:700;cursor:pointer;padding:0}
+.emp-x:hover{color:#ef4444;border-color:#ef4444;background:#fef2f2}
 .block{border:1px solid var(--line);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .block-h{background:linear-gradient(90deg,#fff4ec,#fef6ee);padding:10px 16px;font-weight:700;display:flex;align-items:center;gap:10px;font-size:14px}
 .block-h .pct{margin-left:auto;font-size:13px;color:var(--muted)}
@@ -436,8 +435,8 @@ function renderJob(){
   const seasonBar = `<div class="season-bar">季节考核表：<button class="season-btn ${CUR_SEASON==='off'?'on':''}" onclick="setSeason('off')">淡季</button><button class="season-btn ${CUR_SEASON==='peak'?'on':''}" onclick="setSeason('peak')">旺季</button><span class="season-tip">切换前会自动保存当前表（两套独立权重/目标）</span></div>`;
   const savedForPost = getSavedList().filter(x=>x.industry===s.label && x.dept===crumbLabel && x.post===role.name)
     .sort((a,b)=> (a.period||"").localeCompare(b.period||"") || (a.season==="peak"?1:0)-(b.season==="peak"?1:0) || (a.ts||0)-(b.ts||0));
-  const empPanel = savedForPost.length ? `<div class="emp-panel"><div class="emp-h">已保存打分（点击某行载入该人当月考评；每人每月一行，可留存历史）：</div><div class="emp-list"><table class="emp-table"><thead><tr><th>姓名</th><th>季节</th><th>考核期间</th><th>得分</th><th style="text-align:right">操作</th></tr></thead><tbody>`+
-    savedForPost.map(x=>`<tr class="${role._loaded_eval===x._key?'on':''}" onclick="loadEvalByKey('${encodeURIComponent(x._key)}')"><td class="emp-name">${esc(x.name)}</td><td>${esc(x.season==='peak'?'旺季':'淡季')}</td><td>${esc(x.period||'—')}</td><td class="emp-score">${esc(x.final||'')}</td><td style="text-align:right"><button class="emp-btn emp-del" onclick="event.stopPropagation();delEval('${encodeURIComponent(x._key)}')">删除</button></td></tr>`).join("")+`</tbody></table></div></div>` : "";
+  const empPanel = savedForPost.length ? `<div class="emp-panel"><div class="emp-h">已保存打分（点击方格载入该人当月考评；按月份一个方格一个方格排列，每人每月可留存历史；右上角 × 删除）：</div><div class="emp-list"><div class="emp-grid">`+
+    savedForPost.map(x=>`<div class="emp-square ${role._loaded_eval===x._key?'on':''}" onclick="loadEvalByKey('${encodeURIComponent(x._key)}')"><button class="emp-x" title="删除该记录" onclick="event.stopPropagation();delEval('${encodeURIComponent(x._key)}')">×</button><div class="emp-sq-name">${esc(x.name)}</div><div class="emp-sq-meta">${esc(x.season==='peak'?'旺季':'淡季')} · ${esc(x.period||'—')}</div><div class="emp-sq-score">${esc(x.final||'')}</div></div>`).join("")+`</div></div></div>` : "";
   html += seasonBar + empPanel;
 
   // === KPI 9 列表格 ===
