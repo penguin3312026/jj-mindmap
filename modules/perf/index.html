@@ -691,6 +691,7 @@ function saveEval(){
   alert("已保存 "+snap.name+" 在"+((snap.season==="peak")?"旺":"淡")+"季、"+(snap.period||"未填期间")+" 的打分");
 }
 function loadEvalByKey(key){
+  key = (typeof key==="string") ? decodeURIComponent(key) : key;  // 卡片传入的是 encodeURIComponent 后的 key，需解码才能命中 localStorage 原始键
   let snap; try{ snap=JSON.parse(localStorage.getItem(LS_PREFIX+key)||"null"); }catch(e){ snap=null; }
   if(!snap) return;
   const role=getRole();
