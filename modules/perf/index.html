@@ -1159,7 +1159,9 @@ let OC_CANVAS=null;
 let OCE={connect:false, addPoint:false, ortho:(function(){ try{ return localStorage.getItem("perf_eval_v1_ortho")==="1"; }catch(e){ return false; } })()};
 function nodeClass(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); return "oce-node "+(assist?"assist":(mgmt?"mgmt":"spec")); }
 function nodeTag(lv){ const mgmt=isMgmtLevel(lv), assist=isDeputy(lv); let t=mgmt?("管理·"+(ORG_LV_TITLE[lv]||lv)):("高级专员·"+(ORG_LV_TITLE[lv]||lv)); if(assist) t="协助·"+(ORG_LV_TITLE[lv]||lv); return t; }
-function centerOf(node,canvas){ const r=node.getBoundingClientRect(), c=canvas.getBoundingClientRect(); return {x:r.left-c.left+r.width/2, y:r.top-c.top+r.height/2}; }
+function centerOf(node,canvas){ const r=node.getBoundingClientRect(), c=canvas.getBoundingClientRect(); return {x:r.left-c.left+canvas.scrollLeft+r.width/2, y:r.top-c.top+canvas.scrollTop+r.height/2}; }
+// 把鼠标视口坐标换算成「画布内容坐标系」（必须加 scrollLeft/Top，否则画布一滚动所有框和线都会整体偏移）
+function ptToCanvas(e,canvas){ const c=canvas.getBoundingClientRect(); return {x:e.clientX-c.left+canvas.scrollLeft, y:e.clientY-c.top+canvas.scrollTop}; }
 
 // 生成一条连线元素：OCE.ortho 开 → 直角（横平竖直）折线 path；关 → 直线 line
 function edgeEl(cls, x1, y1, x2, y2, attrs, title){
@@ -1237,17 +1239,19 @@ function makesCycle(s,d,fromPi,toPi){
 let _drag=null, _conn=null;
 function startDrag(el,e,key,kind){
   const r=el.getBoundingClientRect();
-  _drag={el:el, dx:(e.clientX-r.left), dy:(e.clientY-r.top), moved:false, kind:kind, key:key};
+  _drag={el:el, dx:(e.clientX-r.left), dy:(e.clientY-r.top), moved:false, kind:kind, key:key, pid:e.pointerId};
   el.classList.add("dragging");
+  try{ el.setPointerCapture(e.pointerId); }catch(_){}
 }
-function startConnect(el, ref){
+function startConnect(el, ref, e){
   const svg=document.getElementById("oceLines"); const canvas=OC_CANVAS;
   if(!svg||!canvas) return;
   const c=centerOf(el,canvas);
   const line=document.createElementNS("http://www.w3.org/2000/svg","path");
   line.setAttribute("class","oce-temp"); line.setAttribute("d",`M ${c.x} ${c.y} L ${c.x} ${c.y}`);
   svg.appendChild(line);
-  _conn={fromRef:ref, line:line, x1:c.x, y1:c.y};
+  _conn={fromRef:ref, line:line, x1:c.x, y1:c.y, pid:e?e.pointerId:null};
+  if(e){ try{ canvas.setPointerCapture(e.pointerId); }catch(_){} }
 }
 function onCanvasPointerDown(e){
   const canvas=OC_CANVAS; if(!canvas) return;
@@ -1257,15 +1261,15 @@ function onCanvasPointerDown(e){
   // —— 加交点模式：点在空白处即新增一个自由交点 ——
   if(OCE.addPoint){
     if(node||pt) return;
-    const cr=canvas.getBoundingClientRect();
-    addPointAt(SECTIONS[curSec], curDept, e.clientX-cr.left, e.clientY-cr.top);
+    const p=ptToCanvas(e,canvas);
+    addPointAt(SECTIONS[curSec], curDept, p.x, p.y);
     return;
   }
   // —— 连线模式：从方框 / 交点 拖到另一个 方框 / 交点 ——
   if(OCE.connect){
     const s=SECTIONS[curSec];
-    if(node){ const pi=+node.dataset.pi; const ref = pi>=0 ? ("oceN:"+s.depts[curDept].posts[pi].name) : node.id; startConnect(node, ref); return; }
-    if(pt){ startConnect(pt, pt.dataset.pid); return; }
+    if(node){ const pi=+node.dataset.pi; const ref = pi>=0 ? ("oceN:"+s.depts[curDept].posts[pi].name) : node.id; startConnect(node, ref, e); return; }
+    if(pt){ startConnect(pt, pt.dataset.pid, e); return; }
     return;
   }
   // —— 拖拽：方框（不含公司层）或 交点 均可拖动，连线实时跟随 ——
@@ -1277,12 +1281,14 @@ function onCanvasPointerMove(e){
   const cr=canvas.getBoundingClientRect();
   if(_drag){
     _drag.moved=true;
-    let x=e.clientX-cr.left-_drag.dx, y=e.clientY-cr.top-_drag.dy;
+    const p=ptToCanvas(e,canvas);
+    let x=p.x-_drag.dx, y=p.y-_drag.dy;
     x=Math.max(0,x); y=Math.max(0,y);
     _drag.el.style.left=x+"px"; _drag.el.style.top=y+"px";
     drawOrgLines(SECTIONS[curSec], curDept);   // 拖动时实时重绘连线，线条跟着框走
   } else if(_conn){
-    const x2=e.clientX-cr.left, y2=e.clientY-cr.top;
+    const p=ptToCanvas(e,canvas);
+    const x2=p.x, y2=p.y;
     const d = OCE.ortho
       ? `M ${_conn.x1} ${_conn.y1} V ${((_conn.y1+y2)/2).toFixed(1)} H ${x2} V ${y2}`
       : `M ${_conn.x1} ${_conn.y1} L ${x2} ${y2}`;
@@ -1293,6 +1299,7 @@ function onCanvasPointerUp(e){
   const canvas=OC_CANVAS; if(!canvas){ _drag=null; _conn=null; return; }
   if(_drag){
     const el=_drag.el; el.classList.remove("dragging");
+    try{ el.releasePointerCapture(_drag.pid); }catch(_){}
     const x=parseFloat(el.style.left)||0, y=parseFloat(el.style.top)||0;
     if(_drag.kind==="box"){
       setOrgPos(SECTIONS[curSec], curDept, _drag.key, x, y);
@@ -1303,9 +1310,12 @@ function onCanvasPointerUp(e){
     _drag=null;
   } else if(_conn){
     const s=SECTIONS[curSec], d=s.depts[curDept];
-    const tnode=e.target.closest(".oce-node");
-    const tpoint=e.target.closest(".oce-point");
+    if(_conn.pid!=null){ try{ canvas.releasePointerCapture(_conn.pid); }catch(_){} }
     if(_conn.line) _conn.line.remove();
+    // 连线时画布持有 pointer capture，e.target 会是画布本身，必须用 elementFromPoint 取真实落点元素
+    const hit=document.elementFromPoint(e.clientX, e.clientY);
+    const tnode=hit?hit.closest(".oce-node"):null;
+    const tpoint=hit?hit.closest(".oce-point"):null;
     let tRef=null;
     if(tnode){ const tpi=+tnode.dataset.pi; tRef = tpi>=0 ? ("oceN:"+d.posts[tpi].name) : tnode.id; }
     else if(tpoint){ tRef=tpoint.dataset.pid; }
@@ -1338,7 +1348,7 @@ function initOrgEditor(s,di){
   canvas.addEventListener("pointerdown", onCanvasPointerDown);
   canvas.addEventListener("pointermove", onCanvasPointerMove);
   canvas.addEventListener("pointerup", onCanvasPointerUp);
-  canvas.addEventListener("pointerleave", onCanvasPointerUp);
+  canvas.addEventListener("pointercancel", onCanvasPointerUp);
 }
 
 function renderOrg(){
